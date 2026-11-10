@@ -1,0 +1,853 @@
+<Window x:Class="Umacalc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Umacalc.ViewModels"
+        xmlns:models="clr-namespace:Umacalc.Models"
+        mc:Ignorable="d"
+        Title="Umacalc - Umamusume Stat Gain Calculator"
+        Height="760" Width="1040"
+        MinHeight="560" MinWidth="780"
+        Background="{StaticResource BgDarkBrush}"
+        Foreground="{StaticResource TextPrimaryBrush}"
+        Topmost="{Binding IsAlwaysOnTop}"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <!-- ================= FULL DASHBOARD MODE ================= -->
+        <Grid Visibility="{Binding IsCompactMode, Converter={StaticResource BoolToVisibilityInvertedConverter}}">
+            <Grid.RowDefinitions>
+                <!-- 0. Header Bar -->
+                <RowDefinition Height="Auto" />
+                <!-- 1. Trainable Turns Banner -->
+                <RowDefinition Height="Auto" />
+                <!-- 2. Scrollable Body: Stat Cards + Actions + Tabs -->
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- 0. HEADER BAR -->
+            <Border Grid.Row="0" Background="#111827" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="0,0,0,1" Padding="16,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Title & Brand with Stock Logo Image -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="#1E3A8A" CornerRadius="8" Width="36" Height="36" Margin="0,0,10,0" Padding="4">
+                            <Image Source="/Assets/horse_logo.png" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="UMA" FontSize="18" FontWeight="Black" Foreground="#60A5FA" />
+                                <TextBlock Text="CALC" FontSize="18" FontWeight="Black" Foreground="#F59E0B" />
+                            </StackPanel>
+                            <TextBlock Text="Trainable Turn Calculator" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Scenario Selector (Dark Themed & High Contrast) -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
+                        <TextBlock Text="Scenario:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" />
+                        <ComboBox ItemsSource="{Binding Scenarios}"
+                                  SelectedItem="{Binding SelectedScenario}"
+                                  Style="{StaticResource DarkComboBoxStyle}"
+                                  Width="300" Height="34"
+                                  FontSize="12"
+                                  FontWeight="SemiBold">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="2">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#FFFFFF" />
+                                        <TextBlock Text=" (" Foreground="#93C5FD" />
+                                        <TextBlock Text="{Binding JapaneseName}" Foreground="#93C5FD" FontStyle="Italic" />
+                                        <TextBlock Text=")" Foreground="#93C5FD" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Header Utility Buttons -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Always-On-Top Pin Button -->
+                        <Button Command="{Binding ToggleAlwaysOnTopCommand}"
+                                Style="{StaticResource FlatButtonStyle}"
+                                Padding="12,6"
+                                Margin="0,0,8,0"
+                                ToolTip="Keep Umacalc Window Always On Top">
+                            <TextBlock Text="{Binding PinButtonText}" FontSize="11" />
+                        </Button>
+
+                        <!-- Compact HUD Button -->
+                        <Button Click="SwitchToCompact_Click"
+                                Style="{StaticResource FlatButtonStyle}"
+                                Background="#0284C7"
+                                BorderBrush="#38BDF8"
+                                Padding="12,6"
+                                Margin="0,0,8,0"
+                                ToolTip="Switch to Mini Floating HUD">
+                            <TextBlock Text="Compact Mode" FontSize="11" FontWeight="Bold" />
+                        </Button>
+
+                        <!-- Reset Run Button -->
+                        <Button Command="{Binding ResetRunCommand}"
+                                Style="{StaticResource FlatButtonStyle}"
+                                Background="#7F1D1D"
+                                BorderBrush="#EF4444"
+                                Padding="12,6"
+                                ToolTip="Reset all trained turns back to zero">
+                            <TextBlock Text="Reset" FontSize="11" FontWeight="Bold" Foreground="#FCA5A5" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 1. TRAINABLE TURNS PROGRESS BANNER -->
+            <Border Grid.Row="1" Background="#161F30" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="0,0,0,1" Padding="16,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Top Row: Turns Badge + Suggestion + Budget Adjuster -->
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left: Remaining Trainable Turns Hero -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Background="#064E3B" BorderBrush="#059669" BorderThickness="1.5" CornerRadius="8" Padding="12,6" Margin="0,0,14,0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="TRAINABLE TURNS LEFT" FontSize="9" FontWeight="Black" Foreground="#6EE7B7" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding TrainableTurnsRemaining}" FontSize="24" FontWeight="Black" Foreground="#A7F3D0" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+
+                            <StackPanel VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Progress: " FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <TextBlock Text="{Binding TotalTurnsTrained}" FontSize="13" FontWeight="Black" Foreground="#FFFFFF" />
+                                    <TextBlock Text=" / " FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    <TextBlock Text="{Binding TrainableTurns}" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" />
+                                    <TextBlock Text=" turns trained" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding SelectedScenario.Name, StringFormat='Scenario: {0}'}" FontSize="11" Foreground="#94A3B8" Margin="0,2,0,0" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Center: Suggestion Advisor -->
+                        <Border Grid.Column="1" Background="#1E293B" BorderBrush="#3B82F6" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="16,0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Border Background="#B45309" CornerRadius="4" Padding="6,2" Margin="0,0,8,0">
+                                    <TextBlock Text="SUGGESTION" FontSize="9" FontWeight="Black" Foreground="#FEF3C7" VerticalAlignment="Center" />
+                                </Border>
+                                <TextBlock Text="{Binding RecommendedNextStat}" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Right: Trainable Turns Quick Tweak (+ / - / +5) -->
+                        <Border Grid.Column="2" Background="#1E293B" BorderBrush="#334155" BorderThickness="1" CornerRadius="6" Padding="8,4" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Budget:" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                <Button Command="{Binding AdjustTrainableTurnsCommand}" CommandParameter="-1"
+                                        Content="-" Width="22" Height="22" Style="{StaticResource FlatButtonStyle}" Padding="0" Margin="0,0,3,0" ToolTip="Reduce trainable turns budget by 1" />
+                                <TextBlock Text="{Binding TrainableTurns}" FontSize="13" FontWeight="Black" Foreground="#38BDF8" VerticalAlignment="Center" Margin="3,0" />
+                                <Button Command="{Binding AdjustTrainableTurnsCommand}" CommandParameter="1"
+                                        Content="+" Width="22" Height="22" Style="{StaticResource FlatButtonStyle}" Padding="0" Margin="3,0,6,0" ToolTip="Increase trainable turns budget by 1" />
+                                <Button Command="{Binding AddQuickTurnsCommand}" CommandParameter="5"
+                                        Content="+5" Width="30" Height="22" Style="{StaticResource FlatButtonStyle}" Background="#1E3A8A" BorderBrush="#3B82F6" Padding="0" FontSize="10" FontWeight="Bold" ToolTip="Quick Add +5 Trainable Turns" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Bottom Row: Clean Full-Width Progress Bar -->
+                    <Border Grid.Row="1" Height="8" Background="#0F172A" CornerRadius="4" ClipToBounds="True">
+                        <ProgressBar Value="{Binding TrainableProgressPercentage, Mode=OneWay}"
+                                     Minimum="0" Maximum="100"
+                                     Height="8"
+                                     Foreground="#10B981"
+                                     Background="Transparent"
+                                     BorderThickness="0" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- 2. SCROLLABLE BODY: Stat Cards + Action Bar + Settings/History Tabs -->
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="16,12">
+
+                    <!-- THE 5 STAT ACTION CARDS WITH STOCK IMAGES -->
+                    <ItemsControl ItemsSource="{Binding StatGoals}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="5" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="5"
+                                        Background="#161F30"
+                                        BorderBrush="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}"
+                                        BorderThickness="2"
+                                        CornerRadius="10"
+                                        SnapsToDevicePixels="True">
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <!-- Checkbox & Secondary Gain Tag -->
+                                            <RowDefinition Height="Auto" />
+                                            <!-- Big Interactive Train Button with Stock Image -->
+                                            <RowDefinition Height="Auto" />
+                                            <!-- Progress Status & Bar -->
+                                            <RowDefinition Height="Auto" />
+                                            <!-- Assigned Turns Fine Tuner (+ / -) -->
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Row 0: Target Checkbox & Secondary Bonus Pill -->
+                                        <Grid Grid.Row="0" Margin="0,0,0,8">
+                                            <CheckBox IsChecked="{Binding IsSelected}"
+                                                      Style="{StaticResource StatCheckboxStyle}"
+                                                      Content="Max Out"
+                                                      FontWeight="Bold"
+                                                      VerticalAlignment="Center" />
+                                            <Border HorizontalAlignment="Right" Background="#1E293B" CornerRadius="4" Padding="5,2" ToolTip="{Binding SecondaryGain, StringFormat='Secondary Gain: {0}'}">
+                                                <TextBlock Text="{Binding SecondaryGainShort}" FontSize="9" FontWeight="Bold" Foreground="#38BDF8" />
+                                            </Border>
+                                        </Grid>
+
+                                        <!-- Row 1: The Big Train Click Button with Stock Icon Image -->
+                                        <Button Grid.Row="1"
+                                                Command="{Binding DataContext.TrainStatCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}"
+                                                Cursor="Hand"
+                                                Margin="0,0,0,8">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border x:Name="btnBorder"
+                                                            Background="#1E293B"
+                                                            BorderBrush="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}"
+                                                            BorderThickness="1.5"
+                                                            CornerRadius="8"
+                                                            Padding="6,8">
+                                                        <Grid>
+                                                            <!-- Subtle colored glow layer -->
+                                                            <Border Background="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}" Opacity="0.08" CornerRadius="6" />
+
+                                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <!-- Stock Image Icon -->
+                                                                <Image Source="{Binding ImagePath}"
+                                                                       Width="44" Height="44"
+                                                                       HorizontalAlignment="Center"
+                                                                       Margin="0,0,0,4"
+                                                                       RenderOptions.BitmapScalingMode="HighQuality" />
+
+                                                                <!-- Stat Name -->
+                                                                <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="Black" Foreground="#FFFFFF" HorizontalAlignment="Center" />
+
+                                                                <!-- Big Remaining Turns Display -->
+                                                                <Border Margin="0,6,0,4"
+                                                                        Background="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}"
+                                                                        CornerRadius="6"
+                                                                        Padding="10,5"
+                                                                        HorizontalAlignment="Center">
+                                                                    <StackPanel HorizontalAlignment="Center">
+                                                                        <TextBlock Text="TURNS LEFT" FontSize="8" FontWeight="Black" Foreground="#FFFFFF" Opacity="0.9" HorizontalAlignment="Center" />
+                                                                        <TextBlock Text="{Binding ButtonTurnsDisplay}" FontSize="20" FontWeight="Black" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,1,0,0" />
+                                                                    </StackPanel>
+                                                                </Border>
+
+                                                                <!-- Action Prompt -->
+                                                                <Border Background="#334155" CornerRadius="4" Padding="8,2" Margin="0,3,0,0">
+                                                                    <TextBlock Text="+1 TRAIN" FontSize="11" FontWeight="Black" Foreground="#38BDF8" HorizontalAlignment="Center" />
+                                                                </Border>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="btnBorder" Property="Background" Value="#243450" />
+                                                            <Setter TargetName="btnBorder" Property="BorderThickness" Value="2.5" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter TargetName="btnBorder" Property="Background" Value="#0F172A" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+
+                                        <!-- Row 2: Progress & Description -->
+                                        <StackPanel Grid.Row="2" Margin="0,0,0,6">
+                                            <Grid Margin="0,0,0,3">
+                                                <TextBlock Text="{Binding StatusDescription}" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
+                                                <TextBlock HorizontalAlignment="Right" FontSize="10" FontWeight="Bold" Foreground="#F8FAFC">
+                                                    <Run Text="{Binding UsedTurns}" />
+                                                    <Run Text="/" />
+                                                    <Run Text="{Binding AssignedTurns}" />
+                                                </TextBlock>
+                                            </Grid>
+                                            <Border Height="5" Background="#0F172A" CornerRadius="2.5" ClipToBounds="True">
+                                                <ProgressBar Value="{Binding ProgressPercentage, Mode=OneWay}"
+                                                             Minimum="0" Maximum="100"
+                                                             Height="5"
+                                                             Foreground="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}"
+                                                             Background="Transparent"
+                                                             BorderThickness="0" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <!-- Row 3: Assigned Turns Fine-Tuning -->
+                                        <Border Grid.Row="3" Background="#0F172A" CornerRadius="6" Padding="4,3">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Grid.Column="0"
+                                                        Command="{Binding DataContext.AdjustAssignedTurnsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding Name, StringFormat='{}{0}:-1'}"
+                                                        Content="-"
+                                                        Width="24" Height="22"
+                                                        Style="{StaticResource FlatButtonStyle}"
+                                                        Padding="0"
+                                                        FontSize="13"
+                                                        FontWeight="Bold"
+                                                        ToolTip="Decrease assigned turns for this stat" />
+
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding AssignedTurns, StringFormat='Assigned: {0}'}"
+                                                           FontSize="10"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+
+                                                <Button Grid.Column="2"
+                                                        Command="{Binding DataContext.AdjustAssignedTurnsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding Name, StringFormat='{}{0}:1'}"
+                                                        Content="+"
+                                                        Width="24" Height="22"
+                                                        Style="{StaticResource FlatButtonStyle}"
+                                                        Padding="0"
+                                                        FontSize="13"
+                                                        FontWeight="Bold"
+                                                        ToolTip="Increase assigned turns for this stat" />
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- QUICK ACTION BAR: Recalculate & Undo -->
+                    <Border Background="#161F30" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" CornerRadius="8" Padding="14,8" Margin="5,10,5,10">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Command="{Binding RecalculateCommand}"
+                                        Style="{StaticResource FlatButtonStyle}"
+                                        Background="#1E293B"
+                                        BorderBrush="#3B82F6"
+                                        Padding="14,6"
+                                        Margin="0,0,10,0"
+                                        ToolTip="Recalculate and rebalance turns equally/proportionally across checked stats">
+                                    <TextBlock Text="Recalculate Budget" FontSize="12" Foreground="#FFFFFF" />
+                                </Button>
+                                <TextBlock Text="Tip: If you run fewer races than expected, click '+5' in the budget box to add more training turns!" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                            </StackPanel>
+
+                            <Button HorizontalAlignment="Right"
+                                    Command="{Binding UndoCommand}"
+                                    Style="{StaticResource FlatButtonStyle}"
+                                    Background="#1E293B"
+                                    BorderBrush="#64748B"
+                                    Padding="16,6"
+                                    ToolTip="Undo last recorded stat training">
+                                <TextBlock Text="Undo Last Train" FontSize="12" FontWeight="Bold" Foreground="#CBD5E1" />
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- BOTTOM TABS: Build Presets, Scenario Info, History -->
+                    <Border Background="#161F30" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="5,0,5,10">
+                        <TabControl Background="Transparent" BorderThickness="0">
+                            <TabControl.Resources>
+                                <Style TargetType="TabItem">
+                                    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+                                    <Setter Property="FontSize" Value="12" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="Padding" Value="12,6" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="TabItem">
+                                                <Border x:Name="tabBorder"
+                                                        Background="#1E293B"
+                                                        BorderBrush="{StaticResource BorderDarkBrush}"
+                                                        BorderThickness="1,1,1,0"
+                                                        CornerRadius="6,6,0,0"
+                                                        Margin="0,0,4,0"
+                                                        Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter ContentSource="Header" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="tabBorder" Property="Background" Value="#2563EB" />
+                                                        <Setter Property="Foreground" Value="#FFFFFF" />
+                                                        <Setter Property="FontWeight" Value="Bold" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="tabBorder" Property="Background" Value="#334155" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TabControl.Resources>
+
+                            <!-- TAB 1: BUILD PRESETS -->
+                            <TabItem Header="Recommended Build Presets">
+                                <StackPanel Margin="0,10,0,0">
+                                    <TextBlock Text="One-click build presets with support card deck specialities and inheritance strategy:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,8" />
+
+                                    <!-- 1. Distance Archetypes -->
+                                    <TextBlock Text="Race Distance Presets:" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Margin="0,4,0,6" />
+                                    <WrapPanel Margin="0,0,0,6">
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="sprint"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Short distance (1000m-1400m): Max top speed and lane positioning. Negligible stamina.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Sprint (1000m-1400m)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#1E3A8A" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 4 SPD • 2 WIS" FontSize="10" FontWeight="SemiBold" Foreground="#93C5FD" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="mile"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Mile distance (1600m): Standard Champions Meeting meta. High speed, corner acceleration, and wisdom.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Mile Meta (1600m)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#1E3A8A" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 2 WIS • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#93C5FD" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="medium"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Medium distance (2000m-2400m): Triple Crown classic races. Balanced speed, stamina, and power.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Medium (2000m-2400m)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#1E3A8A" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 2 STA • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#93C5FD" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="long"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Long distance (2500m-3600m): Tenno Sho Spring &amp; Arima Kinen. Stamina survival is top priority.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Long Distance (2500m-3600m)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#7C2D12" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 STA • 2 SPD • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#FDBA74" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="dirt"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Dirt tracks (Tokyo Daishoten, Champions Cup): Dirt heavily reduces momentum, requiring massive Power.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Dirt Track Powerhouse" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#78350F" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 POW • 2 SPD • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#FDE047" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+                                    </WrapPanel>
+
+                                    <!-- 2. Running Style Archetypes -->
+                                    <TextBlock Text="Running Style Presets:" FontSize="11" FontWeight="Bold" Foreground="#34D399" Margin="0,4,0,6" />
+                                    <WrapPanel Margin="0,0,0,6">
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="runner"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Front Runner (Nige / 逃げ): High Wisdom ensures immediate gate skill activation to take the rail early.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Front Runner (Nige / 逃げ)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#064E3B" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 2 WIS • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#A7F3D0" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="leader"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Pace Setter (Senkou / 先行): Stalking the leader and kicking into top gear in the final turn.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Pace Setter (Senkou / 先行)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#064E3B" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 2 POW • 1 WIS" FontSize="10" FontWeight="SemiBold" Foreground="#A7F3D0" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="betwixt"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Betwixt / Late (Sashi / 差し): Mid-pack burst needing huge Power to punch through traffic.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Betwixt (Sashi / 差し)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#064E3B" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 POW • 2 SPD • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#A7F3D0" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="chaser"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Chaser / End (Oikomi / 追込 - Gold Ship style): Extreme Power and late burst around the outside.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Chaser (Oikomi / 追込)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#064E3B" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 POW • 2 STA • 1 SPD" FontSize="10" FontWeight="SemiBold" Foreground="#A7F3D0" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+                                    </WrapPanel>
+
+                                    <!-- 3. Meta & Specials -->
+                                    <TextBlock Text="Meta &amp; Specialty Presets:" FontSize="11" FontWeight="Bold" Foreground="#F472B6" Margin="0,4,0,6" />
+                                    <WrapPanel Margin="0,0,0,8">
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="guts_meta"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Guts Training Meta: Climax/MANT root strategy. Exploits huge secondary Speed and Power bonuses.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Guts Root Meta" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#831843" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 GUT • 2 SPD • 1 WIS" FontSize="10" FontWeight="SemiBold" Foreground="#FBCFE8" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="factor_farm"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Inheritance / Factor Farm: Targets 600+ (B-rank) in all 5 stats for 3-star Blue Factor rolls.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Factor Farm (All B-Rank)" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#831843" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 2 SPD • 1 STA • 1 POW • 1 GUT • 1 WIS" FontSize="10" FontWeight="SemiBold" Foreground="#FBCFE8" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="wisdom_engine"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Wisdom &amp; Skill Point Farm: Energy recovery, high skill point generation, and debuff Umas.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Wisdom &amp; SP Farm" FontWeight="Bold" FontSize="11" />
+                                                <Border Background="#831843" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 WIS • 2 SPD • 1 PAL" FontSize="10" FontWeight="SemiBold" Foreground="#FBCFE8" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="sp"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Pure 50/50 split between Speed and Power.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Speed + Power Duo" FontSize="11" />
+                                                <Border Background="#334155" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 3 POW" FontSize="10" Foreground="#CBD5E1" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="ss"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Pure 50/50 split between Speed and Stamina.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Speed + Stamina Duo" FontSize="11" />
+                                                <Border Background="#334155" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 3 STA" FontSize="10" Foreground="#CBD5E1" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Command="{Binding SelectPresetCommand}" CommandParameter="sw"
+                                                Style="{StaticResource FlatButtonStyle}" Margin="0,0,8,8" Background="#1E293B"
+                                                ToolTip="Pure 50/50 split between Speed and Wisdom.">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Speed + Wisdom Duo" FontSize="11" />
+                                                <Border Background="#334155" CornerRadius="3" Padding="5,1" Margin="6,0,0,0">
+                                                    <TextBlock Text="Deck: 3 SPD • 3 WIS" FontSize="10" Foreground="#CBD5E1" />
+                                                </Border>
+                                            </StackPanel>
+                                        </Button>
+                                    </WrapPanel>
+
+                                    <!-- 4. ACTIVE SUPPORT CARD DECK BLUEPRINT PANEL -->
+                                    <Border Background="#111827" BorderBrush="#3B82F6" BorderThickness="1.5" CornerRadius="8" Padding="14,10" Margin="0,4,0,4">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Header & 6-Slot Visual Badges -->
+                                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Border Background="#2563EB" CornerRadius="4" Padding="6,2" Margin="0,0,8,0">
+                                                        <TextBlock Text="ACTIVE DECK BLUEPRINT" FontSize="9" FontWeight="Black" Foreground="#FFFFFF" />
+                                                    </Border>
+                                                    <TextBlock Text="{Binding ActivePreset.Name, StringFormat='Build: {0}'}" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC" />
+                                                </StackPanel>
+
+                                                <!-- Visual Slot Pills -->
+                                                <ItemsControl HorizontalAlignment="Right" ItemsSource="{Binding ActivePreset.DeckComposition}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}" CornerRadius="4" Padding="7,2" Margin="3,0">
+                                                                <TextBlock Text="{Binding DisplayText}" FontSize="10" FontWeight="Black" Foreground="#FFFFFF" />
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+
+                                            <!-- Specialities Breakdown -->
+                                            <Grid Grid.Row="1" Margin="0,0,0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Card Specialities:" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Width="135" />
+                                                <TextBlock Grid.Column="1" Text="{Binding ActivePreset.DeckRecommendation}" FontSize="11" FontWeight="SemiBold" Foreground="#F8FAFC" />
+                                            </Grid>
+
+                                            <!-- Key Example Cards -->
+                                            <Grid Grid.Row="2" Margin="0,0,0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Key Example Cards:" FontSize="11" FontWeight="Bold" Foreground="#F59E0B" Width="135" />
+                                                <TextBlock Grid.Column="1" Text="{Binding ActivePreset.KeyCardsSuggestion}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" />
+                                            </Grid>
+
+                                            <!-- Inheritance Spark Recommendation -->
+                                            <Grid Grid.Row="3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="Inheritance Advice:" FontSize="11" FontWeight="Bold" Foreground="#10B981" Width="135" />
+                                                <TextBlock Grid.Column="1" Text="{Binding ActivePreset.InheritanceTip}" FontSize="11" Foreground="#A7F3D0" TextWrapping="Wrap" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </TabItem>
+
+                            <!-- TAB 2: SCENARIO INFO & STRATEGY -->
+                            <TabItem Header="Scenario Guide &amp; Mechanics">
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Background="#1E293B" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding SelectedScenario.Name}" FontSize="15" FontWeight="Black" Foreground="#38BDF8" />
+                                            <TextBlock Text="{Binding SelectedScenario.JapaneseName}" FontSize="11" FontStyle="Italic" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,6" />
+                                            <TextBlock Text="{Binding SelectedScenario.Description}" FontSize="12" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}" LineHeight="18" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                                <TextBlock Text="Stat Cap: " FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+                                                <TextBlock Text="{Binding SelectedScenario.StatCap}" FontSize="11" FontWeight="Black" Foreground="#F59E0B" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Background="#1E293B" CornerRadius="6" Padding="12">
+                                        <StackPanel>
+                                            <TextBlock Text="Strategy Recommendation:" FontSize="13" FontWeight="Bold" Foreground="#10B981" Margin="0,0,0,4" />
+                                            <TextBlock Text="{Binding SelectedScenario.Tips}" FontSize="12" TextWrapping="Wrap" Foreground="{StaticResource TextPrimaryBrush}" LineHeight="18" />
+                                            <TextBlock Text="• Only turns you train are tracked. Racing and resting turns do not consume your training budget." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,8,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </TabItem>
+
+                            <!-- TAB 3: TRAINING HISTORY LOG -->
+                            <TabItem Header="Training History">
+                                <Grid Margin="0,10,0,0">
+                                    <ListBox ItemsSource="{Binding TurnHistory}"
+                                             Height="140"
+                                             Background="#1E293B"
+                                             BorderBrush="#334155"
+                                             BorderThickness="1"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Padding="8,4" BorderBrush="#334155" BorderThickness="0,0,0,1">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0" Text="{Binding FormattedDescription}" FontSize="11" FontWeight="Bold" Foreground="#F8FAFC" />
+                                                        <Border Grid.Column="1" Background="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}" CornerRadius="4" Padding="5,1" Margin="10,0">
+                                                            <TextBlock Text="{Binding StatName}" FontSize="9" FontWeight="Black" Foreground="#FFFFFF" />
+                                                        </Border>
+                                                        <TextBlock Grid.Column="2" Text="{Binding Note}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                                                        <TextBlock Grid.Column="3" Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss}'}" FontSize="10" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- ================= COMPACT OVERLAY HUD MODE ================= -->
+        <Grid Visibility="{Binding IsCompactMode, Converter={StaticResource BoolToVisibilityConverter}}"
+              Background="#0F172A">
+            <Border BorderBrush="#3B82F6" BorderThickness="2" CornerRadius="8" Padding="8,5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Compact Top Bar with Quick Budget Adjusters -->
+                    <Grid Grid.Row="0" Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left: Title & Turns Left Hero Badge -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="/Assets/horse_logo.png" Width="16" Height="16" Margin="0,0,5,0" RenderOptions.BitmapScalingMode="HighQuality" />
+                            <TextBlock Text="UMACALC" FontSize="12" FontWeight="Black" Foreground="#60A5FA" Margin="0,0,8,0" VerticalAlignment="Center" />
+                            <Border Background="#064E3B" CornerRadius="4" Padding="5,2" Margin="0,0,6,0">
+                                <TextBlock Text="{Binding TrainableTurnsRemaining, StringFormat='{}{0} Left'}" FontSize="10" FontWeight="Black" Foreground="#6EE7B7" />
+                            </Border>
+                            <TextBlock Text="{Binding StatusSummary}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <!-- Center: Quick Add Buttons so you never get stuck! -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6,0">
+                            <Button Command="{Binding AdjustTrainableTurnsCommand}" CommandParameter="-1"
+                                    Content="-" Width="18" Height="18" Style="{StaticResource FlatButtonStyle}" Padding="0" FontSize="11" FontWeight="Bold" Margin="0,0,2,0" ToolTip="Reduce Budget by 1" />
+                            <Button Command="{Binding AdjustTrainableTurnsCommand}" CommandParameter="1"
+                                    Content="+" Width="18" Height="18" Style="{StaticResource FlatButtonStyle}" Padding="0" FontSize="11" FontWeight="Bold" Margin="0,0,4,0" ToolTip="Add 1 Trainable Turn" />
+                            <Button Command="{Binding AddQuickTurnsCommand}" CommandParameter="5"
+                                    Content="+5 Turns" Height="18" Style="{StaticResource FlatButtonStyle}" Background="#1E3A8A" BorderBrush="#3B82F6" Padding="6,0" FontSize="9" FontWeight="Bold" ToolTip="Add +5 Trainable Turns Immediately" />
+                        </StackPanel>
+
+                        <!-- Right: Undo & Expand -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Command="{Binding UndoCommand}"
+                                    Style="{StaticResource FlatButtonStyle}"
+                                    Background="#334155"
+                                    BorderBrush="#475569"
+                                    Padding="8,2"
+                                    Margin="0,0,5,0"
+                                    ToolTip="Undo Last Trained Turn">
+                                <TextBlock Text="Undo" FontSize="10" />
+                            </Button>
+
+                            <Button Click="SwitchToFull_Click"
+                                    Style="{StaticResource FlatButtonStyle}"
+                                    Background="#2563EB"
+                                    BorderBrush="#38BDF8"
+                                    Padding="8,2"
+                                    ToolTip="Expand to Full Dashboard">
+                                <TextBlock Text="Expand" FontSize="10" FontWeight="Bold" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Compact 5 Stat Buttons with Dynamic Stock Images and Labels -->
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding StatGoals}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="1" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.TrainStatCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}"
+                                        Margin="2"
+                                        Cursor="Hand">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="cBorder"
+                                                    Background="#161F30"
+                                                    BorderBrush="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}"
+                                                    BorderThickness="1.5"
+                                                    CornerRadius="6"
+                                                    Padding="4,3">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                        <Image Source="{Binding ImagePath}" Width="16" Height="16" Margin="0,0,3,0" RenderOptions.BitmapScalingMode="HighQuality" />
+                                                        <TextBlock Text="{Binding ShortName}" FontSize="11" FontWeight="Black" Foreground="#FFFFFF" />
+                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding CompactTurnsDisplay}" FontSize="11" FontWeight="Black" Foreground="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="{Binding UsedTurns, StringFormat='({0} trained)'}" FontSize="8" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                                </StackPanel>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="cBorder" Property="Background" Value="#243450" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="cBorder" Property="Background" Value="#0F172A" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
