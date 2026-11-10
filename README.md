@@ -45,16 +45,6 @@ A clean, responsive C# WPF desktop companion application designed for *Umamusume
      - *Speed + Stamina Duo*: `Deck: 3 SPD • 3 STA`
      - *Speed + Wisdom Duo*: `Deck: 3 SPD • 3 WIS`
 
-4. **Never-Get-Stuck Turn Tracking**:
-   - Exceeding a target displays `GOAL MET!` or `+1 Bonus` / `+2 Bonus`.
-   - Training past your initial budget automatically expands it without locking buttons at `0 Left`.
-   - Quick-add buttons (`+5 Turns`, `+`, `-`) directly in both Full and Compact HUD modes.
-
-5. **Silent & High-Contrast**:
-   - 100% silent clicks (no Windows asterisk chime).
-   - Fully custom dark dropdown for scenario selection.
-   - Authentic game icons (Shoe, Heart, Muscle Arm, Flame, Mortarboard Graduation Cap).
-
 ---
 
 ## 🚀 How to Run
