@@ -759,6 +759,186 @@ class UmacalcApp {
     if (input) input.click();
   }
 
+  openTrainedCharaFilePicker() {
+    const input = document.getElementById("umadumpCharaFileInput");
+    if (input) input.click();
+  }
+
+  handleTrainedCharaFileSelect(input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (Array.isArray(data)) {
+          this.trainedCharas = data;
+          this.trainedCharaFileName = file.name;
+          try {
+            localStorage.setItem("umacalc_trained_chara_count", data.length);
+            localStorage.setItem("umacalc_trained_chara_name", file.name);
+          } catch (_) {}
+          this.renderActiveBlueprint();
+        } else {
+          alert("Invalid JSON format: Expected an array of trained characters from umadump.");
+        }
+      } catch (err) {
+        alert("Failed to parse JSON: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    input.value = "";
+  }
+
+  clearTrainedCharas() {
+    this.trainedCharas = null;
+    this.trainedCharaFileName = "";
+    try {
+      localStorage.removeItem("umacalc_trained_chara_count");
+      localStorage.removeItem("umacalc_trained_chara_name");
+    } catch (_) {}
+    this.renderActiveBlueprint();
+  }
+
+  evaluateBestLegacies(preset) {
+    if (!this.trainedCharas || !window.LEGACY_CATALOG) return [];
+    const catalog = window.LEGACY_CATALOG;
+    const factorNames = catalog.factorNames || {};
+    const charaNames = catalog.charaNames || {};
+    const cardToChara = catalog.cardToChara || {};
+
+    const pid = (preset.id || "").toLowerCase();
+
+    const getPreferredStats = (p) => {
+      switch (p) {
+        case "sprint": return ["Speed", "Power"];
+        case "mile": return ["Speed", "Power"];
+        case "medium": return ["Speed", "Stamina", "Power"];
+        case "long": return ["Stamina", "Speed"];
+        case "dirt": return ["Power", "Speed"];
+        case "runner":
+        case "front_runner": return ["Speed", "Wit"];
+        case "leader":
+        case "pace_setter": return ["Power", "Speed", "Stamina"];
+        case "betwixt":
+        case "late_bloomer": return ["Power", "Speed", "Stamina"];
+        case "chaser": return ["Power", "Stamina", "Speed"];
+        case "guts_meta": return ["Guts", "Speed", "Power"];
+        case "wisdom_engine":
+        case "wisdom_sp": return ["Wit", "Speed"];
+        default: return ["Speed", "Stamina", "Power"];
+      }
+    };
+
+    const isAptitudeRelevant = (p, name) => {
+      switch (p) {
+        case "sprint": return name === "Sprint" || name === "Turf";
+        case "mile": return name === "Mile" || name === "Turf";
+        case "medium": return name === "Medium" || name === "Turf";
+        case "long": return name === "Long" || name === "Turf";
+        case "dirt": return name === "Dirt";
+        case "runner":
+        case "front_runner": return name === "Front Runner" || name === "Turf";
+        case "leader":
+        case "pace_setter": return name === "Pace Chaser" || name === "Turf";
+        case "betwixt":
+        case "late_bloomer": return name === "Late Surger" || name === "Turf";
+        case "chaser": return name === "End Closer" || name === "Turf";
+        default: return name === "Turf";
+      }
+    };
+
+    const parseFactor = (fid) => {
+      let stars = fid % 100;
+      if (stars === 0) stars = 1;
+      const grp = Math.floor(fid / 100);
+      let cat = "White";
+      if (grp >= 1 && grp <= 5) cat = "Blue";
+      else if (grp >= 11 && grp <= 34) cat = "Pink";
+      else if (fid >= 10000000) cat = "Green";
+      return {
+        id: fid,
+        name: factorNames[fid] || `Factor #${fid}`,
+        stars: stars,
+        category: cat
+      };
+    };
+
+    const preferred = getPreferredStats(pid);
+    const scoredList = [];
+
+    this.trainedCharas.forEach(c => {
+      const cardId = c.card_id;
+      const charaId = cardToChara[cardId] || 0;
+      const charaName = charaNames[charaId] || `Card #${cardId}`;
+
+      const selfFactors = (c.factor_info_array || []).map(f => parseFactor(f.factor_id));
+      const ancestorFactors = [];
+      (c.succession_chara_array || []).forEach(p => {
+        (p.factor_info_array || []).forEach(f => ancestorFactors.push(parseFactor(f.factor_id)));
+      });
+
+      const allFactors = selfFactors.concat(ancestorFactors);
+      const blueFactors = allFactors.filter(f => f.category === "Blue");
+      const pinkFactors = allFactors.filter(f => f.category === "Pink");
+      const selfBlue = selfFactors.filter(f => f.category === "Blue").reduce((sum, f) => sum + f.stars, 0);
+      const totalBlue = blueFactors.reduce((sum, f) => sum + f.stars, 0);
+
+      let score = (totalBlue * 120) + (selfBlue * 250);
+
+      blueFactors.forEach(f => {
+        if (preferred.includes(f.name)) score += f.stars * 180;
+      });
+
+      pinkFactors.forEach(f => {
+        if (isAptitudeRelevant(pid, f.name)) score += f.stars * 200;
+      });
+
+      const uniqueGreen = selfFactors.find(f => f.category === "Green");
+      if (uniqueGreen) score += 150;
+
+      score += Math.min(300, (c.wins || 0) * 10);
+      score += Math.floor((c.rank_score || 0) / 100);
+
+      // Summaries
+      const blueMap = {};
+      blueFactors.forEach(f => blueMap[f.name] = (blueMap[f.name] || 0) + f.stars);
+      const blueSummary = Object.keys(blueMap).length > 0
+        ? Object.keys(blueMap).sort((a,b) => blueMap[b] - blueMap[a]).map(k => `${k} ${blueMap[k]}★`).join(" • ")
+        : "No Blue Factors";
+
+      const matchedBlue = blueFactors.filter(f => preferred.includes(f.name));
+      const matchMap = {};
+      matchedBlue.forEach(f => matchMap[f.name] = (matchMap[f.name] || 0) + f.stars);
+      const keyBlueStr = Object.keys(matchMap).length > 0
+        ? Object.keys(matchMap).map(k => `${k} +${matchMap[k]}★`).join(", ")
+        : "Balanced Stats";
+
+      const selfPink = selfFactors.find(f => f.category === "Pink");
+      const pinkAptitude = selfPink ? `${selfPink.name} ${selfPink.stars}★` : "Aptitude Balanced";
+      const greenName = uniqueGreen ? uniqueGreen.name : "Standard Legacy Sparks";
+
+      const roleBadge = selfBlue >= 3 ? `PRIMARY PARENT (${totalBlue}★ BLUE)` : `GRANDPARENT (${totalBlue}★ BLUE)`;
+      const pinkReason = selfPink ? ` • Grants ${selfPink.name} ${selfPink.stars}★ aptitude growth` : "";
+      const reason = `Transfers ${keyBlueStr} to hit required ${preset.name} stat caps${pinkReason} with ${totalBlue}★ total lineage spark potential.`;
+
+      scoredList.push({
+        trainedCharaId: c.trained_chara_id,
+        charaName: `${charaName} (ID #${c.trained_chara_id})`,
+        roleBadge: roleBadge,
+        blueStatsBadge: `${totalBlue}★ Blue Lineage (${blueSummary})`,
+        pinkAptitudeBadge: pinkAptitude,
+        highlightFactor: greenName,
+        reason: reason,
+        score: score
+      });
+    });
+
+    scoredList.sort((a, b) => b.score - a.score);
+    return scoredList.slice(0, 3);
+  }
+
   handleUmadumpFileSelect(input) {
     const file = input.files && input.files[0];
     if (!file) return;
@@ -1223,9 +1403,49 @@ class UmacalcApp {
           </div>
         </div>
 
-        <!-- Row 3: Inheritance -->
+        <!-- Row 3: Inheritance & Legacies -->
         <div class="inheritance-advice-box">
-          <strong>Parent Sparks &amp; Inheritance Advice:</strong> ${preset.inheritance}
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div>
+              <span class="badge" style="background: #047857; color: #ffffff; font-size: 0.65rem; padding: 2px 5px; border-radius: 3px; font-weight: 800; margin-right: 6px;">PARENT SPARKS</span>
+              <strong style="color: #6ee7b7; font-size: 0.8rem;">Inheritance Advice:</strong>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn btn-sm btn-primary" style="font-size: 0.65rem; padding: 3px 6px;" onclick="window.UmacalcApp.openTrainedCharaFilePicker()">📂 Select trained_chara_data.json</button>
+              ${this.trainedCharas ? `<button class="btn btn-sm btn-danger" style="font-size: 0.65rem; padding: 3px 6px;" onclick="window.UmacalcApp.clearTrainedCharas()">✕ Clear</button>` : ""}
+            </div>
+          </div>
+          <div style="font-size: 0.75rem; color: #ecfdf5; margin-bottom: 6px;">${preset.inheritance}</div>
+
+          ${(() => {
+            const legacies = this.evaluateBestLegacies(preset);
+            if (!legacies || legacies.length === 0) return "";
+            let lHtml = `
+              <div style="background: #042f2e; border: 1px solid #0d9488; border-radius: 6px; padding: 6px; margin-top: 6px;">
+                <div style="font-size: 0.72rem; font-weight: 800; color: #5eead4; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                  <span style="background: #0d9488; color: #ffffff; padding: 1px 4px; border-radius: 3px; font-size: 0.6rem;">OPTIMAL INHERITANCE PARENTS</span>
+                  <span>${this.trainedCharaFileName || "trained_chara_data.json"}: ${this.trainedCharas.length} Trained Legacies</span>
+                </div>
+            `;
+            legacies.forEach(l => {
+              lHtml += `
+                <div style="background: #0b2027; border: 1px solid #115e59; border-radius: 4px; padding: 6px; margin-bottom: 4px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 3px;">
+                    <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                      <span style="background: #0f766e; color: #ffffff; font-size: 0.62rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">${l.roleBadge}</span>
+                      <strong style="color: #ffffff; font-size: 0.75rem;">${l.charaName}</strong>
+                      <span style="background: #1e3a8a; border: 1px solid #3b82f6; color: #93c5fd; font-size: 0.62rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">${l.blueStatsBadge}</span>
+                      <span style="background: #831843; border: 1px solid #ec4899; color: #f472b6; font-size: 0.62rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">${l.pinkAptitudeBadge}</span>
+                    </div>
+                    <span style="background: #064e3b; border: 1px solid #10b981; color: #6ee7b7; font-size: 0.62rem; font-weight: bold; padding: 1px 4px; border-radius: 3px;">${l.highlightFactor}</span>
+                  </div>
+                  <div style="font-size: 0.68rem; color: #a7f3d0; line-height: 1.3;">${l.reason}</div>
+                </div>
+              `;
+            });
+            lHtml += `</div>`;
+            return lHtml;
+          })()}
         </div>
       </div>
     `;

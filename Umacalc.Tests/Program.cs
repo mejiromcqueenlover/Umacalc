@@ -337,6 +337,46 @@ class Program
             vm.ClearPlayerInventoryCommand.Execute(null);
             Assert(!vm.IsPlayerInventoryLoaded, "IsPlayerInventoryLoaded cleared");
             Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == false, "ActivePreset reverted to meta after clear");
+
+            // 5. Test Trained Chara Legacy Integration
+            Console.WriteLine("\n--> Testing Umadump Trained Chara Legacy Integration");
+            var legacyCatalog = LegacyCatalog.Instance;
+            Assert(legacyCatalog.FactorNames.Count >= 1000, $"LegacyCatalog loaded {legacyCatalog.FactorNames.Count} factor names (>= 1000)");
+            Assert(legacyCatalog.CharaNames.Count >= 100, $"LegacyCatalog loaded {legacyCatalog.CharaNames.Count} chara names (>= 100)");
+
+            string charaDumpPath = @"C:\Users\mejiromcqueenlover\Downloads\trained_chara_data.json";
+            if (File.Exists(charaDumpPath))
+            {
+                var charaInv = TrainedCharaInventory.Instance;
+                bool loaded = charaInv.LoadFromFile(charaDumpPath);
+                Assert(loaded, "TrainedCharaInventory.LoadFromFile parsed trained_chara_data.json successfully");
+                Assert(charaInv.Characters.Count == 237, $"Loaded 237 trained characters (actual: {charaInv.Characters.Count})");
+
+                // Evaluate Legacies for Long Distance preset
+                var targetLongPreset = presets.First(p => p.Id == "long");
+                var longLegacies = charaInv.EvaluateBestLegacies(targetLongPreset, 3);
+                Console.WriteLine($"[DEBUG] Top Long Legacy: ID #{longLegacies.First().TrainedCharaId} Role: '{longLegacies.First().RoleBadge}' Name: {longLegacies.First().CharaName}");
+                Assert(longLegacies.Count == 3, "Evaluated 3 optimal legacies for Long distance preset");
+                Assert(longLegacies.First().RoleBadge.Contains("PARENT") || longLegacies.First().RoleBadge.Contains("BLUE"), "Top legacy has PARENT/BLUE badge");
+                Assert(longLegacies.First().BlueStatsBadge.Contains("★ Blue"), "Top legacy displays Blue stats badge");
+                Assert(longLegacies.First().RecommendationReason.Contains("Long Distance"), "Top legacy recommendation reason is tailored to Long Distance preset");
+
+                // Evaluate Legacies for Sprint preset
+                var targetSprintPreset = presets.First(p => p.Id == "sprint");
+                var sprintLegacies = charaInv.EvaluateBestLegacies(targetSprintPreset, 3);
+                Assert(sprintLegacies.Count == 3, "Evaluated 3 optimal legacies for Sprint preset");
+                Assert(sprintLegacies.First().RecommendationReason.Contains("Sprint"), "Sprint legacy reason is tailored to Sprint preset");
+
+                // ViewModel integration test
+                vm.LoadTrainedCharaFile(charaDumpPath);
+                Assert(vm.IsTrainedCharaLoaded, "ViewModel has IsTrainedCharaLoaded = true");
+                Assert(vm.ActivePreset?.RecommendedLegacies.Count == 3, "ActivePreset contains 3 recommended legacies");
+                Assert(!string.IsNullOrEmpty(vm.ActivePreset?.RecommendedLegacies.First().CharaName), "Legacy recommendation has valid character name");
+
+                vm.ClearTrainedChara();
+                Assert(!vm.IsTrainedCharaLoaded, "IsTrainedCharaLoaded false after clear");
+                Assert(vm.ActivePreset?.RecommendedLegacies.Count == 0, "RecommendedLegacies cleared after clear command");
+            }
         }
     }
 

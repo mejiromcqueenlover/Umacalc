@@ -10,8 +10,8 @@ android {
         applicationId = "com.umacalc.app"
         minSdk = 21
         targetSdk = 33
-        versionCode = 3
-        versionName = "1.3"
+        versionCode = 4
+        versionName = "1.4"
     }
 
     signingConfigs {

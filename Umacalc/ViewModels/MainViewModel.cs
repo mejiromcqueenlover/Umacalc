@@ -19,6 +19,11 @@ public class MainViewModel : ViewModelBase
     private string _inventoryStatusText = "No umadump file loaded (showing meta defaults)";
     private string _inventoryLoadedFileName = string.Empty;
 
+    private TrainedCharaInventory? _trainedCharaInventory;
+    private bool _isTrainedCharaLoaded = false;
+    private string _charaStatusText = "No trained_chara file loaded (showing general factor guide)";
+    private string _charaLoadedFileName = string.Empty;
+
     public ObservableCollection<ScenarioData> Scenarios { get; }
     public ObservableCollection<StatGoal> StatGoals { get; }
     public ObservableCollection<TurnRecord> TurnHistory { get; }
@@ -60,6 +65,24 @@ public class MainViewModel : ViewModelBase
         set => SetProperty(ref _inventoryLoadedFileName, value);
     }
 
+    public bool IsTrainedCharaLoaded
+    {
+        get => _isTrainedCharaLoaded;
+        set => SetProperty(ref _isTrainedCharaLoaded, value);
+    }
+
+    public string CharaStatusText
+    {
+        get => _charaStatusText;
+        set => SetProperty(ref _charaStatusText, value);
+    }
+
+    public string CharaLoadedFileName
+    {
+        get => _charaLoadedFileName;
+        set => SetProperty(ref _charaLoadedFileName, value);
+    }
+
     public ICommand TrainStatCommand { get; }
     public ICommand UndoCommand { get; }
     public ICommand ResetRunCommand { get; }
@@ -73,6 +96,9 @@ public class MainViewModel : ViewModelBase
     public ICommand LoadUmadumpFileCommand { get; }
     public ICommand ToggleOwnedOnlyCommand { get; }
     public ICommand ClearPlayerInventoryCommand { get; }
+
+    public ICommand LoadTrainedCharaFileCommand { get; }
+    public ICommand ClearTrainedCharaCommand { get; }
 
     public MainViewModel()
     {
@@ -232,6 +258,9 @@ public class MainViewModel : ViewModelBase
         LoadUmadumpFileCommand = new RelayCommand(_ => LoadUmadumpFile());
         ToggleOwnedOnlyCommand = new RelayCommand(_ => ShowOnlyOwnedCards = !ShowOnlyOwnedCards);
         ClearPlayerInventoryCommand = new RelayCommand(_ => ClearPlayerInventory());
+
+        LoadTrainedCharaFileCommand = new RelayCommand(_ => LoadTrainedCharaFile());
+        ClearTrainedCharaCommand = new RelayCommand(_ => ClearTrainedChara());
 
         DistributeTurns();
     }
@@ -448,6 +477,15 @@ public class MainViewModel : ViewModelBase
             preset.RevertToDefaultCards();
         }
 
+        if (_trainedCharaInventory != null && _trainedCharaInventory.IsLoaded)
+        {
+            preset.ApplyTrainedCharas(_trainedCharaInventory);
+        }
+        else
+        {
+            preset.RevertToDefaultLegacies();
+        }
+
         foreach (var g in StatGoals)
         {
             if (preset.Weights.TryGetValue(g.Type, out int weight))
@@ -537,8 +575,68 @@ public class MainViewModel : ViewModelBase
             {
                 ActivePreset.RevertToDefaultCards();
             }
+
+            if (_trainedCharaInventory != null && _trainedCharaInventory.IsLoaded)
+            {
+                ActivePreset.ApplyTrainedCharas(_trainedCharaInventory);
+            }
+            else
+            {
+                ActivePreset.RevertToDefaultLegacies();
+            }
             OnPropertyChanged(nameof(ActivePreset));
         }
+    }
+
+    public void LoadTrainedCharaFile(string? path = null)
+    {
+        string? selectedFile = path;
+        if (string.IsNullOrEmpty(selectedFile))
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Select trained_chara_data.json from umadump",
+                Filter = "Umadump Trained Chara JSON (*trained_chara*.json;*.json)|*trained_chara*.json;*.json|All Files (*.*)|*.*",
+                FileName = "trained_chara_data.json"
+            };
+
+            string downloads = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+            if (Directory.Exists(downloads))
+            {
+                dialog.InitialDirectory = downloads;
+            }
+
+            if (dialog.ShowDialog() == true)
+            {
+                selectedFile = dialog.FileName;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(selectedFile) && File.Exists(selectedFile))
+        {
+            var inv = TrainedCharaInventory.Instance;
+            if (inv.LoadFromFile(selectedFile))
+            {
+                _trainedCharaInventory = inv;
+                IsTrainedCharaLoaded = true;
+                CharaLoadedFileName = inv.LoadedFileName ?? "trained_chara_data.json";
+                CharaStatusText = $"{CharaLoadedFileName}: {inv.Characters.Count} Trained Uma Legacies Loaded";
+                RefreshPresetCards();
+            }
+        }
+    }
+
+    public void ClearTrainedChara()
+    {
+        if (_trainedCharaInventory != null)
+        {
+            _trainedCharaInventory.Clear();
+            _trainedCharaInventory = null;
+        }
+        IsTrainedCharaLoaded = false;
+        CharaLoadedFileName = string.Empty;
+        CharaStatusText = "No trained_chara file loaded (showing general factor guide)";
+        RefreshPresetCards();
     }
 
     private void ApplyPreset(string? presetId)

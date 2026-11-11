@@ -61,8 +61,20 @@ public class BuildPreset : INotifyPropertyChanged
         }
     }
 
+    private List<LegacyRecommendationTier> _recommendedLegacies = new();
+    public List<LegacyRecommendationTier> RecommendedLegacies
+    {
+        get => _recommendedLegacies;
+        set
+        {
+            _recommendedLegacies = value;
+            OnPropertyChanged();
+        }
+    }
+
     public List<SupportCardTier> DefaultTrainingBonusCards { get; set; } = new();
     public List<SupportCardTier> DefaultInspirationBonusCards { get; set; } = new();
+    public List<LegacyRecommendationTier> DefaultRecommendedLegacies { get; set; } = new();
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -85,6 +97,16 @@ public class BuildPreset : INotifyPropertyChanged
         InspirationBonusCards = inventory.EvaluateBestInspirationCards(this, 3);
     }
 
+    public void ApplyTrainedCharas(TrainedCharaInventory charaInventory)
+    {
+        if (DefaultRecommendedLegacies.Count == 0 && RecommendedLegacies.Count > 0)
+        {
+            DefaultRecommendedLegacies = new List<LegacyRecommendationTier>(RecommendedLegacies);
+        }
+
+        RecommendedLegacies = charaInventory.EvaluateBestLegacies(this, 3);
+    }
+
     public void RevertToDefaultCards()
     {
         if (DefaultTrainingBonusCards.Count > 0)
@@ -94,6 +116,18 @@ public class BuildPreset : INotifyPropertyChanged
         if (DefaultInspirationBonusCards.Count > 0)
         {
             InspirationBonusCards = new List<SupportCardTier>(DefaultInspirationBonusCards);
+        }
+    }
+
+    public void RevertToDefaultLegacies()
+    {
+        if (DefaultRecommendedLegacies.Count > 0)
+        {
+            RecommendedLegacies = new List<LegacyRecommendationTier>(DefaultRecommendedLegacies);
+        }
+        else
+        {
+            RecommendedLegacies = new List<LegacyRecommendationTier>();
         }
     }
 
