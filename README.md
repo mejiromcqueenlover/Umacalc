@@ -23,6 +23,7 @@ A clean, responsive C# WPF desktop companion application designed for *Umamusume
    - Every build preset includes an exact **6-Card Support Deck Blueprint** (card specialities, counts, and deck split ratio).
    - Shows **Key Example Cards / Staples** (e.g. *Kitasan Black*, *Super Creek*, *Fine Motion*, *Tazuna*, *Riko Kashimoto*).
    - Provides **Parent Factor Inheritance Advice** (e.g. which 9★ sparks to borrow so you don't waste turns training off-stats).
+   - Shows the best options for **Training Bonus** and **Inspiration Bonus**.
    - Visual deck slot pills highlight the recommended card types on every preset button and in the active deck panel.
 
 3. **15 One-Click Build Presets**:
