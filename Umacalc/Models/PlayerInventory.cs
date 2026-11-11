@@ -109,8 +109,10 @@ public class PlayerInventory
             int lbBonus = owned.LimitBreakCount * 25;
             int lvlBonus = owned.Level;
 
-            // Score strongly values Training Bonus percentage, plus speciality rate and LB
-            int score = (tb * 1500) + (specRate * 12) + rarityBonus + lbBonus + lvlBonus;
+            int affinityBonus = HasPresetAffinity(preset.Id, card.CharaName) ? 400 : 0;
+
+            // Score strongly values Training Bonus percentage, preset affinity, speciality rate and LB
+            int score = (tb * 1500) + affinityBonus + (specRate * 12) + rarityBonus + lbBonus + lvlBonus;
             candidates.Add((card, owned, tb, score));
         }
 
@@ -119,37 +121,42 @@ public class PlayerInventory
             return preset.TrainingBonusCards;
         }
 
-        // Pick balanced best cards across the preset's slots
         var result = new List<SupportCardTier>();
         var usedCharaIds = new HashSet<int>();
 
-        // Sort candidates by score descending
-        var sorted = candidates.OrderByDescending(c => c.score).ToList();
+        // Get preset-tailored slot targets (e.g., Long -> [STA, STA, SPD, SPD])
+        var slotTargets = GetTargetSlotSequence(preset);
 
-        // Target specialities in order of deck slots
-        var primarySpecs = preset.DeckComposition.Select(d => d.ShortLabel.ToUpperInvariant()).Distinct().ToList();
-
-        // First pass: at least one top card for each primary speciality in the preset
-        foreach (var spec in primarySpecs)
+        // Fill each targeted slot with the best card matching that speciality
+        foreach (var targetSpec in slotTargets)
         {
-            var match = sorted.FirstOrDefault(c => c.card.Speciality.Equals(spec, StringComparison.OrdinalIgnoreCase) && !usedCharaIds.Contains(c.card.CharaId));
+            if (result.Count >= count) break;
+
+            var match = candidates
+                .Where(c => c.card.Speciality.Equals(targetSpec, StringComparison.OrdinalIgnoreCase) && !usedCharaIds.Contains(c.card.CharaId))
+                .OrderByDescending(c => c.score)
+                .FirstOrDefault();
+
             if (match.card != null)
             {
-                result.Add(CreateTrainingTier(match.card, match.entry, match.tb));
+                result.Add(CreateTrainingTier(preset.Id, match.card, match.entry, match.tb));
                 usedCharaIds.Add(match.card.CharaId);
-                sorted.Remove(match);
             }
-            if (result.Count >= count) break;
         }
 
-        // Second pass: fill remaining spots with the absolute best remaining scorers
-        foreach (var c in sorted)
+        // If any spots remain unfilled, fill from best remaining candidates matching the preset
+        if (result.Count < count)
         {
-            if (result.Count >= count) break;
-            if (usedCharaIds.Contains(c.card.CharaId)) continue;
+            var remaining = candidates
+                .Where(c => !usedCharaIds.Contains(c.card.CharaId))
+                .OrderByDescending(c => c.score);
 
-            result.Add(CreateTrainingTier(c.card, c.entry, c.tb));
-            usedCharaIds.Add(c.card.CharaId);
+            foreach (var c in remaining)
+            {
+                if (result.Count >= count) break;
+                result.Add(CreateTrainingTier(preset.Id, c.card, c.entry, c.tb));
+                usedCharaIds.Add(c.card.CharaId);
+            }
         }
 
         return result;
@@ -174,7 +181,8 @@ public class PlayerInventory
             if (hintLv < 2 && hintRate < 20) continue;
 
             int rarityBonus = card.Rarity switch { "SSR" => 50, "SR" => 30, _ => 10 };
-            int score = (hintLv * 250) + (hintRate * 8) + rarityBonus + (owned.LimitBreakCount * 15);
+            int affinityBonus = HasPresetAffinity(preset.Id, card.CharaName) ? 500 : 0;
+            int score = (hintLv * 250) + (hintRate * 8) + affinityBonus + rarityBonus + (owned.LimitBreakCount * 15);
             candidates.Add((card, owned, hintLv, hintRate, score));
         }
 
@@ -192,19 +200,59 @@ public class PlayerInventory
             if (result.Count >= count) break;
             if (usedCharaIds.Contains(c.card.CharaId)) continue;
 
-            result.Add(CreateInspirationTier(c.card, c.entry, c.hintLv, c.hintRate));
+            result.Add(CreateInspirationTier(preset.Id, c.card, c.entry, c.hintLv, c.hintRate));
             usedCharaIds.Add(c.card.CharaId);
         }
 
         return result;
     }
 
-    private static SupportCardTier CreateTrainingTier(SupportCardInfo card, PlayerCardEntry owned, int tb)
+    private static List<string> GetTargetSlotSequence(BuildPreset preset)
+    {
+        return preset.Id.ToLowerInvariant() switch
+        {
+            "sprint" => new List<string> { "SPD", "SPD", "SPD", "WIS" },
+            "mile" => new List<string> { "SPD", "SPD", "WIS", "POW" },
+            "medium" => new List<string> { "SPD", "STA", "SPD", "STA" },
+            "long" => new List<string> { "STA", "STA", "SPD", "SPD" },
+            "dirt" => new List<string> { "POW", "POW", "SPD", "SPD" },
+            "runner" or "front_runner" => new List<string> { "SPD", "SPD", "WIS", "WIS" },
+            "leader" or "pace_setter" => new List<string> { "SPD", "SPD", "POW", "WIS" },
+            "betwixt" or "late_bloomer" => new List<string> { "POW", "SPD", "STA", "POW" },
+            "chaser" => new List<string> { "POW", "POW", "SPD", "STA" },
+            "guts_meta" => new List<string> { "GUT", "GUT", "SPD", "WIS" },
+            "factor_farm" => new List<string> { "SPD", "STA", "POW", "WIS" },
+            "wisdom_engine" or "wisdom_sp" => new List<string> { "WIS", "WIS", "SPD", "SPD" },
+            "sp" or "sp_pow" => new List<string> { "SPD", "SPD", "POW", "POW" },
+            "ss" or "sp_sta" => new List<string> { "SPD", "SPD", "STA", "STA" },
+            "sw" or "sp_wis" => new List<string> { "SPD", "SPD", "WIS", "WIS" },
+            _ => preset.DeckComposition.Select(d => d.ShortLabel.ToUpperInvariant()).Take(4).ToList()
+        };
+    }
+
+    private static bool HasPresetAffinity(string presetId, string charaName)
+    {
+        return presetId.ToLowerInvariant() switch
+        {
+            "runner" or "front_runner" => charaName is "Mihono Bourbon" or "Silence Suzuka" or "Twin Turbo" or "Smart Falcon" or "Maruzensky" or "Daitaku Helios" or "Seiun Sky",
+            "leader" or "pace_setter" => charaName is "Tokai Teio" or "Fine Motion" or "Nishino Flower" or "Taiki Shuttle" or "Oguri Cap" or "Special Week",
+            "betwixt" or "late_bloomer" => charaName is "Vodka" or "Grass Wonder" or "Nice Nature" or "Symboli Rudolf" or "Mejiro Dober" or "Agnes Digital" or "Yukino Bijin",
+            "chaser" => charaName is "Narita Taishin" or "Gold Ship" or "Tamamo Cross" or "Mr. C.B." or "Admire Vega" or "Shinko Windy" or "Ines Fujin",
+            "sprint" => charaName is "Biko Pegasus" or "Taiki Shuttle" or "Curren Chan" or "Sakura Bakushin O" or "King Halo" or "Daitaku Helios",
+            "mile" => charaName is "Vodka" or "Yaeno Muteki" or "Fine Motion" or "Kitasan Black" or "Shinko Windy" or "Nishino Flower" or "Daitaku Helios",
+            "medium" => charaName is "Super Creek" or "Kitasan Black" or "Yaeno Muteki" or "Oguri Cap" or "Agnes Tachyon" or "Riko Kashimoto" or "Daiwa Scarlet",
+            "long" => charaName is "Super Creek" or "Manhattan Cafe" or "Grass Wonder" or "Tanino Gimlet" or "Seiun Sky" or "Mayano Top Gun" or "Biwa Hayahide",
+            "dirt" => charaName is "Smart Falcon" or "Oguri Cap" or "Agnes Digital" or "El Condor Pasa" or "Shinko Windy" or "Haru Urara",
+            "guts_meta" => charaName is "Biwa Hayahide" or "Sakura Laurel" or "Tamamo Cross" or "Mejiro McQueen" or "Zenno Rob Roy" or "Grass Wonder",
+            "wisdom_engine" or "wisdom_sp" => charaName is "Fine Motion" or "Mr. C.B." or "Nice Nature" or "Satono Diamond" or "Marvelous Sunday" or "Sweep Tosho",
+            _ => false
+        };
+    }
+
+    private static SupportCardTier CreateTrainingTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int tb)
     {
         string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
-        string reason = string.IsNullOrEmpty(card.CardTitle)
-            ? $"Training multiplier from your collection (Specialty Priority +{card.GetSpecialtyRate(owned.LimitBreakCount)})"
-            : $"{card.CardTitle} • Specialty Rate +{card.GetSpecialtyRate(owned.LimitBreakCount)}";
+        string reason = GetPresetTailoredTrainingReason(presetId, card, owned, tb);
 
         return new SupportCardTier
         {
@@ -219,14 +267,12 @@ public class PlayerInventory
         };
     }
 
-    private static SupportCardTier CreateInspirationTier(SupportCardInfo card, PlayerCardEntry owned, int hintLv, int hintRate)
+    private static SupportCardTier CreateInspirationTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int hintLv, int hintRate)
     {
         string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
         int discount = hintLv * 10;
         string rateStr = hintRate > 0 ? $" (+{hintRate}% Rate)" : "";
-        string reason = string.IsNullOrEmpty(card.CardTitle)
-            ? $"Hint event battery granting -{discount}% skill point discount"
-            : $"{card.CardTitle} • -{discount}% SP hint discount";
+        string reason = GetPresetTailoredInspirationReason(presetId, card, owned, hintLv, discount);
 
         return new SupportCardTier
         {
@@ -238,6 +284,108 @@ public class PlayerInventory
             IsPlayerOwned = true,
             OwnershipBadge = lbText,
             OwnershipColor = owned.LimitBreakCount == 4 ? "#10B981" : "#FBBF24"
+        };
+    }
+
+    private static string GetPresetTailoredTrainingReason(string presetId, SupportCardInfo card, PlayerCardEntry owned, int tb)
+    {
+        string spec = card.Speciality.ToUpperInvariant();
+        string titlePart = string.IsNullOrEmpty(card.CardTitle) ? "" : $"{card.CardTitle} • ";
+
+        return presetId.ToLowerInvariant() switch
+        {
+            "sprint" => spec switch
+            {
+                "SPD" => $"{titlePart}Top sprint speed engine (+{tb}%) • Caps 1200 top speed in short races",
+                "WIS" => $"{titlePart}Wisdom facility engine (+{tb}%) • Recovers energy while building early positioning",
+                _ => $"{titlePart}High training bonus (+{tb}%) for sprint burst"
+            },
+            "mile" => spec switch
+            {
+                "SPD" => $"{titlePart}Speed multiplier (+{tb}%) • Essential speed backbone for mile pace",
+                "POW" => $"{titlePart}Power powerhouse (+{tb}%) • Powers final-turn burst and lane overtaking",
+                "WIS" => $"{titlePart}Wisdom multiplier (+{tb}%) • Ensures high skill trigger rates for mile skills",
+                _ => $"{titlePart}Universal training boost (+{tb}%)"
+            },
+            "medium" => spec switch
+            {
+                "STA" => $"{titlePart}Medium distance endurance anchor (+{tb}%) • Reaches 750+ Stamina threshold",
+                "SPD" => $"{titlePart}Reliable speed growth (+{tb}%) • Keeps pace with Derby leaders",
+                "POW" => $"{titlePart}Power climb engine (+{tb}%) • Overcomes final stretch uphill slopes",
+                _ => $"{titlePart}Balanced stat engine (+{tb}%)"
+            },
+            "long" => spec switch
+            {
+                "STA" => $"{titlePart}Long distance stamina pillar (+{tb}%) • Sustains 2500m-3600m marathon endurance",
+                "SPD" => $"{titlePart}Crucial speed engine (+{tb}%) • Secures 1200 Speed cap while focusing Stamina turns",
+                "PAL" => $"{titlePart}Friend/Pal dating events (+{tb}%) • Stamina recovery & motivation cures",
+                _ => $"{titlePart}High training bonus (+{tb}%) for long distance"
+            },
+            "dirt" => spec switch
+            {
+                "POW" => $"{titlePart}Power powerhouse (+{tb}%) • Plows through heavy dirt track friction",
+                "SPD" => $"{titlePart}Speed engine (+{tb}%) • Fast dirt breakaway acceleration",
+                _ => $"{titlePart}Dirt track booster (+{tb}%)"
+            },
+            "runner" or "front_runner" => card.CharaName is "Mihono Bourbon" or "Silence Suzuka" or "Twin Turbo" or "Smart Falcon"
+                ? $"{titlePart}Core Front-Runner card (+{tb}%) • Groundwork & runaway lead synergy"
+                : (spec == "SPD"
+                    ? $"{titlePart}Front-runner speed engine (+{tb}%) • Takes and defends the inside rail lead"
+                    : $"{titlePart}Front-runner wisdom engine (+{tb}%) • Prevents mid-race pace drop"),
+            "leader" or "pace_setter" => card.CharaName is "Tokai Teio" or "Fine Motion" or "Nishino Flower" or "Taiki Shuttle"
+                ? $"{titlePart}Signature Pace Setter card (+{tb}%) • Direct attack & mid-pack position control"
+                : $"{titlePart}High training multiplier (+{tb}%) to shadow front runners",
+            "betwixt" or "late_bloomer" => spec switch
+            {
+                "POW" => $"{titlePart}Heavy power engine (+{tb}%) • Powers devastating mid-pack overtake surges",
+                "SPD" => $"{titlePart}Outside lane charge engine (+{tb}%) • Late spurt speed",
+                _ => $"{titlePart}Late bloomer stat multiplier (+{tb}%)"
+            },
+            "chaser" => card.CharaName is "Tamamo Cross" or "Gold Ship" or "Shinko Windy" or "Mr. C.B."
+                ? $"{titlePart}Core Chaser engine (+{tb}%) • Devastating late-race rear overtake power"
+                : (spec == "POW"
+                    ? $"{titlePart}Maximum power yields (+{tb}%) • Crucial for final straightaway spurt"
+                    : $"{titlePart}Endurance & speed anchor (+{tb}%) for late charge"),
+            "guts_meta" => spec switch
+            {
+                "GUT" => $"{titlePart}Root training anchor (+{tb}%) • Multi-stat yields across Speed, Power & Guts",
+                "SPD" => $"{titlePart}Speed complement (+{tb}%) • Balances high guts training",
+                _ => $"{titlePart}Guts meta synergy card (+{tb}%)"
+            },
+            "factor_farm" => $"{titlePart}Universal training bonus (+{tb}%) • Pushes all stats toward 600/1100 for 3★ Blue factors",
+            "wisdom_engine" or "wisdom_sp" => spec switch
+            {
+                "WIS" => $"{titlePart}Wisdom training engine (+{tb}%) • Energy recovery & massive SP gains",
+                _ => $"{titlePart}Turn-saving stat multiplier (+{tb}%)"
+            },
+            "sp" or "sp_pow" => $"{titlePart}Focused 2-stat engine (+{tb}%) • Raw speed & overpowering burst",
+            "ss" or "sp_sta" => $"{titlePart}Focused 2-stat engine (+{tb}%) • Top speed & classic endurance",
+            "sw" or "sp_wis" => $"{titlePart}Focused 2-stat engine (+{tb}%) • Zero-energy wisdom training synergy",
+            _ => $"{titlePart}Training multiplier (+{tb}%) • Specialty Rate +{card.GetSpecialtyRate(owned.LimitBreakCount)}"
+        };
+    }
+
+    private static string GetPresetTailoredInspirationReason(string presetId, SupportCardInfo card, PlayerCardEntry owned, int hintLv, int discount)
+    {
+        string titlePart = string.IsNullOrEmpty(card.CardTitle) ? "" : $"{card.CardTitle} • ";
+
+        return presetId.ToLowerInvariant() switch
+        {
+            "sprint" => $"{titlePart}Sprint acceleration & corner tricks at -{discount}% SP discount",
+            "mile" => $"{titlePart}Tail Held High & mile burst skills at -{discount}% SP discount",
+            "medium" => $"{titlePart}Middle distance recovery & mid-leg acceleration at -{discount}% SP discount",
+            "long" => $"{titlePart}Long distance stamina recovery & pacing skills at -{discount}% SP discount",
+            "dirt" => $"{titlePart}Dirt track passives & sand overtaking skills at -{discount}% SP discount",
+            "runner" or "front_runner" => card.CharaName is "Mihono Bourbon" or "Silence Suzuka" or "Twin Turbo"
+                ? $"{titlePart}Essential Groundwork (地固め) & escape skills at -{discount}% SP discount"
+                : $"{titlePart}Front-runner positioning & early lead tricks at -{discount}% SP discount",
+            "leader" or "pace_setter" => $"{titlePart}Speed Star & Senkou corner hints at -{discount}% SP discount",
+            "betwixt" or "late_bloomer" => $"{titlePart}Tail Held High, Ramp Up & Sashi overtake hints at -{discount}% SP discount",
+            "chaser" => $"{titlePart}Straightaway Spurt, Oikomi Corner & late charge hints at -{discount}% SP discount",
+            "guts_meta" => $"{titlePart}Guts stamina conservation & position fight hints at -{discount}% SP discount",
+            "factor_farm" => $"{titlePart}High-frequency hint battery to unlock maximum White Factor skill sparks",
+            "wisdom_engine" or "wisdom_sp" => $"{titlePart}Massive skill point discounts (-{discount}% off) across key skills",
+            _ => $"{titlePart}Hint battery granting -{discount}% skill point discount"
         };
     }
 

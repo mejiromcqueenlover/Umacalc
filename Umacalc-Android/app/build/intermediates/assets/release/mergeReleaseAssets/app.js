@@ -838,6 +838,160 @@ class UmacalcApp {
     const catalog = window.SUPPORT_CARD_CATALOG;
     const ownedMap = this.playerInventory;
 
+    const hasAffinity = (presetId, name) => {
+      const pid = (presetId || "").toLowerCase();
+      switch (pid) {
+        case "runner":
+        case "front_runner": return ["Mihono Bourbon", "Silence Suzuka", "Twin Turbo", "Smart Falcon", "Maruzensky", "Daitaku Helios", "Seiun Sky"].includes(name);
+        case "leader":
+        case "pace_setter": return ["Tokai Teio", "Fine Motion", "Nishino Flower", "Taiki Shuttle", "Oguri Cap", "Special Week"].includes(name);
+        case "betwixt":
+        case "late_bloomer": return ["Vodka", "Grass Wonder", "Nice Nature", "Symboli Rudolf", "Mejiro Dober", "Agnes Digital", "Yukino Bijin"].includes(name);
+        case "chaser": return ["Narita Taishin", "Gold Ship", "Tamamo Cross", "Mr. C.B.", "Admire Vega", "Shinko Windy", "Ines Fujin"].includes(name);
+        case "sprint": return ["Biko Pegasus", "Taiki Shuttle", "Curren Chan", "Sakura Bakushin O", "King Halo", "Daitaku Helios"].includes(name);
+        case "mile": return ["Vodka", "Yaeno Muteki", "Fine Motion", "Kitasan Black", "Shinko Windy", "Nishino Flower", "Daitaku Helios"].includes(name);
+        case "medium": return ["Super Creek", "Kitasan Black", "Yaeno Muteki", "Oguri Cap", "Agnes Tachyon", "Riko Kashimoto", "Daiwa Scarlet"].includes(name);
+        case "long": return ["Super Creek", "Manhattan Cafe", "Grass Wonder", "Tanino Gimlet", "Seiun Sky", "Mayano Top Gun", "Biwa Hayahide"].includes(name);
+        case "dirt": return ["Smart Falcon", "Oguri Cap", "Agnes Digital", "El Condor Pasa", "Shinko Windy", "Haru Urara"].includes(name);
+        case "guts_meta": return ["Biwa Hayahide", "Sakura Laurel", "Tamamo Cross", "Mejiro McQueen", "Zenno Rob Roy", "Grass Wonder"].includes(name);
+        case "factor_farm": return false;
+        case "wisdom_engine":
+        case "wisdom_sp": return ["Fine Motion", "Mr. C.B.", "Nice Nature", "Satono Diamond", "Marvelous Sunday", "Sweep Tosho"].includes(name);
+        default: return false;
+      }
+    };
+
+    const getTailoredTrainingReason = (presetId, card, tb) => {
+      const pid = (presetId || "").toLowerCase();
+      const spec = card.speciality.toUpperCase();
+      const title = card.cardTitle ? `${card.cardTitle} • ` : "";
+
+      switch (pid) {
+        case "sprint":
+          return spec === "SPD" ? `${title}Top sprint speed engine (+${tb}%) • Caps 1200 top speed in short races`
+               : spec === "WIS" ? `${title}Wisdom facility engine (+${tb}%) • Recovers energy while building early positioning`
+               : `${title}High training bonus (+${tb}%) for sprint burst`;
+        case "mile":
+          return spec === "SPD" ? `${title}Speed multiplier (+${tb}%) • Essential speed backbone for mile pace`
+               : spec === "POW" ? `${title}Power powerhouse (+${tb}%) • Powers final-turn burst and lane overtaking`
+               : spec === "WIS" ? `${title}Wisdom multiplier (+${tb}%) • Ensures high skill trigger rates for mile skills`
+               : `${title}Universal training boost (+${tb}%)`;
+        case "medium":
+          return spec === "STA" ? `${title}Medium distance endurance anchor (+${tb}%) • Reaches 750+ Stamina threshold`
+               : spec === "SPD" ? `${title}Reliable speed growth (+${tb}%) • Keeps pace with Derby leaders`
+               : spec === "POW" ? `${title}Power climb engine (+${tb}%) • Overcomes final stretch uphill slopes`
+               : `${title}Balanced stat engine (+${tb}%)`;
+        case "long":
+          return spec === "STA" ? `${title}Long distance stamina pillar (+${tb}%) • Sustains 2500m-3600m marathon endurance`
+               : spec === "SPD" ? `${title}Crucial speed engine (+${tb}%) • Secures 1200 Speed cap while focusing Stamina turns`
+               : spec === "PAL" ? `${title}Friend/Pal dating events (+${tb}%) • Stamina recovery & motivation cures`
+               : `${title}High training bonus (+${tb}%) for long distance`;
+        case "dirt":
+          return spec === "POW" ? `${title}Power powerhouse (+${tb}%) • Plows through heavy dirt track friction`
+               : spec === "SPD" ? `${title}Speed engine (+${tb}%) • Fast dirt breakaway acceleration`
+               : `${title}Dirt track booster (+${tb}%)`;
+        case "runner":
+        case "front_runner":
+          return ["Mihono Bourbon", "Silence Suzuka", "Twin Turbo", "Smart Falcon"].includes(card.charaName)
+               ? `${title}Core Front-Runner card (+${tb}%) • Groundwork & runaway lead synergy`
+               : spec === "SPD" ? `${title}Front-runner speed engine (+${tb}%) • Takes and defends the inside rail lead`
+               : `${title}Front-runner wisdom engine (+${tb}%) • Prevents mid-race pace drop`;
+        case "leader":
+        case "pace_setter":
+          return ["Tokai Teio", "Fine Motion", "Nishino Flower", "Taiki Shuttle"].includes(card.charaName)
+               ? `${title}Signature Pace Setter card (+${tb}%) • Direct attack & mid-pack position control`
+               : `${title}High training multiplier (+${tb}%) to shadow front runners`;
+        case "betwixt":
+        case "late_bloomer":
+          return spec === "POW" ? `${title}Heavy power engine (+${tb}%) • Powers devastating mid-pack overtake surges`
+               : spec === "SPD" ? `${title}Outside lane charge engine (+${tb}%) • Late spurt speed`
+               : `${title}Late bloomer stat multiplier (+${tb}%)`;
+        case "chaser":
+          return ["Tamamo Cross", "Gold Ship", "Shinko Windy", "Mr. C.B."].includes(card.charaName)
+               ? `${title}Core Chaser engine (+${tb}%) • Devastating late-race rear overtake power`
+               : spec === "POW" ? `${title}Maximum power yields (+${tb}%) • Crucial for final straightaway spurt`
+               : `${title}Endurance & speed anchor (+${tb}%) for late charge`;
+        case "guts_meta":
+          return spec === "GUT" ? `${title}Root training anchor (+${tb}%) • Multi-stat yields across Speed, Power & Guts`
+               : spec === "SPD" ? `${title}Speed complement (+${tb}%) • Balances high guts training`
+               : `${title}Guts meta synergy card (+${tb}%)`;
+        case "factor_farm":
+          return `${title}Universal training bonus (+${tb}%) • Pushes all stats toward 600/1100 for 3★ Blue factors`;
+        case "wisdom_engine":
+        case "wisdom_sp":
+          return spec === "WIS" ? `${title}Wisdom training engine (+${tb}%) • Energy recovery & massive SP gains`
+               : `${title}Turn-saving stat multiplier (+${tb}%)`;
+        case "sp":
+        case "sp_pow":
+          return `${title}Focused 2-stat engine (+${tb}%) • Raw speed & overpowering burst`;
+        case "ss":
+        case "sp_sta":
+          return `${title}Focused 2-stat engine (+${tb}%) • Top speed & classic endurance`;
+        case "sw":
+        case "sp_wis":
+          return `${title}Focused 2-stat engine (+${tb}%) • Zero-energy wisdom training synergy`;
+        default:
+          return `${title}Training multiplier (+${tb}%) • Specialty Rate +${card.specialtyRate ? card.specialtyRate[0] : 0}`;
+      }
+    };
+
+    const getTailoredInspirationReason = (presetId, card, hintLv, discount) => {
+      const pid = (presetId || "").toLowerCase();
+      const title = card.cardTitle ? `${card.cardTitle} • ` : "";
+
+      switch (pid) {
+        case "sprint": return `${title}Sprint acceleration & corner tricks at -${discount}% SP discount`;
+        case "mile": return `${title}Tail Held High & mile burst skills at -${discount}% SP discount`;
+        case "medium": return `${title}Middle distance recovery & mid-leg acceleration at -${discount}% SP discount`;
+        case "long": return `${title}Long distance stamina recovery & pacing skills at -${discount}% SP discount`;
+        case "dirt": return `${title}Dirt track passives & sand overtaking skills at -${discount}% SP discount`;
+        case "runner":
+        case "front_runner":
+          return ["Mihono Bourbon", "Silence Suzuka", "Twin Turbo"].includes(card.charaName)
+            ? `${title}Essential Groundwork (地固め) & escape skills at -${discount}% SP discount`
+            : `${title}Front-runner positioning & early lead tricks at -${discount}% SP discount`;
+        case "leader":
+        case "pace_setter": return `${title}Speed Star & Senkou corner hints at -${discount}% SP discount`;
+        case "betwixt":
+        case "late_bloomer": return `${title}Tail Held High, Ramp Up & Sashi overtake hints at -${discount}% SP discount`;
+        case "chaser": return `${title}Straightaway Spurt, Oikomi Corner & late charge hints at -${discount}% SP discount`;
+        case "guts_meta": return `${title}Guts stamina conservation & position fight hints at -${discount}% SP discount`;
+        case "factor_farm": return `${title}High-frequency hint battery to unlock maximum White Factor skill sparks`;
+        case "wisdom_engine":
+        case "wisdom_sp": return `${title}Massive skill point discounts (-${discount}% off) across key skills`;
+        default: return `${title}Hint battery granting -${discount}% skill point discount`;
+      }
+    };
+
+    const getTargetSlotSequence = (presetId) => {
+      const pid = (presetId || "").toLowerCase();
+      switch (pid) {
+        case "sprint": return ["SPD", "SPD", "SPD", "WIS"];
+        case "mile": return ["SPD", "SPD", "WIS", "POW"];
+        case "medium": return ["SPD", "STA", "SPD", "STA"];
+        case "long": return ["STA", "STA", "SPD", "SPD"];
+        case "dirt": return ["POW", "POW", "SPD", "SPD"];
+        case "runner":
+        case "front_runner": return ["SPD", "SPD", "WIS", "WIS"];
+        case "leader":
+        case "pace_setter": return ["SPD", "SPD", "POW", "WIS"];
+        case "betwixt":
+        case "late_bloomer": return ["POW", "SPD", "STA", "POW"];
+        case "chaser": return ["POW", "POW", "SPD", "STA"];
+        case "guts_meta": return ["GUT", "GUT", "SPD", "WIS"];
+        case "factor_farm": return ["SPD", "STA", "POW", "WIS"];
+        case "wisdom_engine":
+        case "wisdom_sp": return ["WIS", "WIS", "SPD", "SPD"];
+        case "sp":
+        case "sp_pow": return ["SPD", "SPD", "POW", "POW"];
+        case "ss":
+        case "sp_sta": return ["SPD", "SPD", "STA", "STA"];
+        case "sw":
+        case "sp_wis": return ["SPD", "SPD", "WIS", "WIS"];
+        default: return ["SPD", "WIS", "POW", "STA"];
+      }
+    };
+
     // Evaluate Training Bonus
     const trainingCandidates = [];
     // Evaluate Inspiration Bonus
@@ -858,9 +1012,10 @@ class UmacalcApp {
 
       const rarityBonus = card.rarity === "SSR" ? 120 : card.rarity === "SR" ? 60 : 10;
       const ownershipBadge = lb === 4 ? `MLB Lv ${owned.lvl}` : `${lb}LB Lv ${owned.lvl}`;
+      const affinity = hasAffinity(preset.id, card.charaName);
 
       if (tb > 0) {
-        const score = (tb * 1500) + (specRate * 12) + rarityBonus + (lb * 25) + owned.lvl;
+        const score = (tb * 1500) + (affinity ? 400 : 0) + (specRate * 12) + rarityBonus + (lb * 25) + owned.lvl;
         trainingCandidates.push({
           card,
           owned,
@@ -872,7 +1027,7 @@ class UmacalcApp {
       }
 
       if (hintLv >= 2 || hintRate >= 20) {
-        const inspScore = (hintLv * 250) + (hintRate * 8) + (card.rarity === "SSR" ? 50 : 25) + (lb * 15);
+        const inspScore = (hintLv * 250) + (hintRate * 8) + (affinity ? 500 : 0) + (card.rarity === "SSR" ? 50 : card.rarity === "SR" ? 30 : 10) + (lb * 15);
         inspirationCandidates.push({
           card,
           owned,
@@ -884,25 +1039,48 @@ class UmacalcApp {
       }
     });
 
-    // Select top 4 training cards
-    trainingCandidates.sort((a, b) => b.score - a.score);
+    // Select top training cards tailored to slot targets
+    const targetSlots = getTargetSlotSequence(preset.id);
     const chosenTraining = [];
     const usedCharaIds = new Set();
 
-    trainingCandidates.forEach(c => {
+    targetSlots.forEach(targetSpec => {
       if (chosenTraining.length >= 4) return;
-      if (usedCharaIds.has(c.card.charaId)) return;
-      usedCharaIds.add(c.card.charaId);
+      const match = trainingCandidates
+        .filter(c => c.card.speciality.toUpperCase() === targetSpec && !usedCharaIds.has(c.card.charaId))
+        .sort((a, b) => b.score - a.score)[0];
 
-      chosenTraining.push({
-        name: `${c.card.charaName} (${c.card.rarity})`,
-        spec: c.card.speciality,
-        color: c.card.colorHex,
-        bonus: `+${c.tb}% Training Effect`,
-        ownershipBadge: c.ownershipBadge,
-        reason: c.card.cardTitle ? `${c.card.cardTitle} • Specialty Rate +${c.specRate}` : `Training multiplier from your collection`
-      });
+      if (match) {
+        chosenTraining.push({
+          name: `${match.card.charaName} (${match.card.rarity})`,
+          spec: match.card.speciality,
+          color: match.card.colorHex,
+          bonus: `+${match.tb}% Training Effect`,
+          ownershipBadge: match.ownershipBadge,
+          reason: getTailoredTrainingReason(preset.id, match.card, match.tb)
+        });
+        usedCharaIds.add(match.card.charaId);
+      }
     });
+
+    // Fill remaining if any
+    if (chosenTraining.length < 4) {
+      trainingCandidates
+        .filter(c => !usedCharaIds.has(c.card.charaId))
+        .sort((a, b) => b.score - a.score)
+        .forEach(c => {
+          if (chosenTraining.length >= 4) return;
+          chosenTraining.push({
+            name: `${c.card.charaName} (${c.card.rarity})`,
+            spec: c.card.speciality,
+            color: c.card.colorHex,
+            bonus: `+${c.tb}% Training Effect`,
+            ownershipBadge: c.ownershipBadge,
+            reason: getTailoredTrainingReason(preset.id, c.card, c.tb)
+          });
+          usedCharaIds.add(c.card.charaId);
+        });
+    }
 
     // Select top 3 inspiration cards
     inspirationCandidates.sort((a, b) => b.inspScore - a.inspScore);
@@ -921,7 +1099,7 @@ class UmacalcApp {
         color: c.card.colorHex,
         bonus: `Hint Lv ${c.hintLv}${rateStr}`,
         ownershipBadge: c.ownershipBadge,
-        reason: c.card.cardTitle ? `${c.card.cardTitle} • -${c.hintLv * 10}% SP hint discount` : `Hint battery from your collection`
+        reason: getTailoredInspirationReason(preset.id, c.card, c.hintLv, c.hintLv * 10)
       });
     });
 

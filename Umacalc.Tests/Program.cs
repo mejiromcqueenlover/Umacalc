@@ -274,6 +274,7 @@ class Program
                 Assert(card.IsPlayerOwned, $"Card '{card.CardName}' is marked as player owned");
                 Assert(!string.IsNullOrEmpty(card.OwnershipBadge), $"Card '{card.CardName}' has ownership badge: {card.OwnershipBadge}");
                 Assert(card.BonusStat.Contains("% Training Effect"), $"Card '{card.CardName}' has training bonus stat: {card.BonusStat}");
+                Assert(card.SkillOrReason.Contains("mile", StringComparison.OrdinalIgnoreCase) || card.SkillOrReason.Contains("speed", StringComparison.OrdinalIgnoreCase) || card.SkillOrReason.Contains("power", StringComparison.OrdinalIgnoreCase), $"Mile card '{card.CardName}' has mile-tailored reason: {card.SkillOrReason}");
             }
 
             var ownedInspiration = inv.EvaluateBestInspirationCards(milePreset, 3);
@@ -284,6 +285,33 @@ class Program
                 Assert(!string.IsNullOrEmpty(card.OwnershipBadge), $"Card '{card.CardName}' has ownership badge: {card.OwnershipBadge}");
                 Assert(card.BonusStat.Contains("Hint Lv"), $"Card '{card.CardName}' has hint bonus stat: {card.BonusStat}");
             }
+
+            // Test Long preset tailored cards
+            var longPreset = presets.First(p => p.Id == "long");
+            var longTraining = inv.EvaluateBestTrainingCards(longPreset, 4);
+            Assert(longTraining.Any(c => c.Speciality == "STA"), "Long distance preset recommends Stamina (STA) cards from player inventory");
+            Assert(longTraining.Any(c => c.Speciality == "SPD"), "Long distance preset recommends Speed (SPD) cards from player inventory");
+            Assert(longTraining.All(c => c.Speciality is "STA" or "SPD" or "PAL" or "POW"), "Long distance cards only use long-compatible specialities");
+            Assert(longTraining.First(c => c.Speciality == "STA").SkillOrReason.Contains("Long distance", StringComparison.OrdinalIgnoreCase) || longTraining.First(c => c.Speciality == "STA").SkillOrReason.Contains("marathon", StringComparison.OrdinalIgnoreCase), "Long training card has long-distance tailored reason");
+
+            // Test Sprint preset tailored cards
+            var sprintPreset = presets.First(p => p.Id == "sprint");
+            var sprintTraining = inv.EvaluateBestTrainingCards(sprintPreset, 4);
+            Assert(sprintTraining.All(c => c.Speciality != "STA"), "Sprint preset strictly excludes Stamina cards");
+            Assert(sprintTraining.Any(c => c.Speciality == "SPD"), "Sprint preset prioritizes Speed cards");
+            Assert(sprintTraining.First(c => c.Speciality == "SPD").SkillOrReason.Contains("sprint", StringComparison.OrdinalIgnoreCase), "Sprint training card has sprint-tailored reason");
+
+            // Test Front-Runner preset tailored cards
+            var frontRunnerPreset = presets.First(p => p.Id is "runner" or "front_runner");
+            var frontTraining = inv.EvaluateBestTrainingCards(frontRunnerPreset, 4);
+            Assert(frontTraining.Any(c => c.Speciality is "SPD" or "WIS"), "Front runner recommends Speed & Wisdom");
+            Assert(frontTraining.Any(c => c.SkillOrReason.Contains("Front-Runner", StringComparison.OrdinalIgnoreCase) || c.SkillOrReason.Contains("rail", StringComparison.OrdinalIgnoreCase)), "Front runner training cards have front-runner tailored reasons");
+
+            // Test Chaser preset tailored cards
+            var chaserPreset = presets.First(p => p.Id is "chaser");
+            var chaserTraining = inv.EvaluateBestTrainingCards(chaserPreset, 4);
+            Assert(chaserTraining.Any(c => c.Speciality == "POW"), "Chaser recommends Power cards");
+            Assert(chaserTraining.Any(c => c.SkillOrReason.Contains("Chaser", StringComparison.OrdinalIgnoreCase) || c.SkillOrReason.Contains("overtake", StringComparison.OrdinalIgnoreCase) || c.SkillOrReason.Contains("spurt", StringComparison.OrdinalIgnoreCase)), "Chaser training cards have chaser-tailored reasons");
 
             // 4. MainViewModel Integration Test
             var vm = new MainViewModel();
