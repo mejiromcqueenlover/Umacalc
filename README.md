@@ -47,6 +47,7 @@ A clean, responsive C# WPF desktop companion application designed for *Umamusume
      - *Speed + Wisdom Duo*: `Deck: 3 SPD • 3 WIS`
     
 4. **Compact HUD and Floating HUD for use during gameplay**
+
    The PC version of Umacalc features a **Compact HUD**, while the mobile version even features a **Floating HUD** which can be easily used during gameplay.
 
 ---
