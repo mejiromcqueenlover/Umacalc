@@ -1,6 +1,6 @@
 # Umacalc - Umamusume Stat Gain Calculator
 
-A clean, responsive C# WPF desktop companion application designed for *Umamusume: Pretty Derby* players to plan, optimize, and track **trainable turn budgets** across their career runs.
+A clean, responsive *Umamusume: Pretty Derby* companion designed to plan, optimize, and track **trainable turn budgets** across career runs.
 
 ---
 
