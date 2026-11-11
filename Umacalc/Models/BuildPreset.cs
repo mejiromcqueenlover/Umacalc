@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace Umacalc.Models;
 
 public class DeckSlot
@@ -16,9 +19,14 @@ public class SupportCardTier
     public string ColorHex { get; set; } = "#3B82F6";
     public string BonusStat { get; set; } = string.Empty; // e.g. "+20% Training Effect"
     public string SkillOrReason { get; set; } = string.Empty;
+
+    // Player ownership attributes from umadump
+    public bool IsPlayerOwned { get; set; } = false;
+    public string OwnershipBadge { get; set; } = string.Empty; // e.g. "MLB Lv 50", "3LB Lv 45"
+    public string OwnershipColor { get; set; } = "#10B981";
 }
 
-public class BuildPreset
+public class BuildPreset : INotifyPropertyChanged
 {
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
@@ -31,8 +39,63 @@ public class BuildPreset
     public Dictionary<StatType, int> Weights { get; set; } = new();
     public List<DeckSlot> DeckComposition { get; set; } = new();
 
-    public List<SupportCardTier> TrainingBonusCards { get; set; } = new();
-    public List<SupportCardTier> InspirationBonusCards { get; set; } = new();
+    private List<SupportCardTier> _trainingBonusCards = new();
+    public List<SupportCardTier> TrainingBonusCards
+    {
+        get => _trainingBonusCards;
+        set
+        {
+            _trainingBonusCards = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private List<SupportCardTier> _inspirationBonusCards = new();
+    public List<SupportCardTier> InspirationBonusCards
+    {
+        get => _inspirationBonusCards;
+        set
+        {
+            _inspirationBonusCards = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public List<SupportCardTier> DefaultTrainingBonusCards { get; set; } = new();
+    public List<SupportCardTier> DefaultInspirationBonusCards { get; set; } = new();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public void ApplyPlayerInventory(PlayerInventory inventory)
+    {
+        if (DefaultTrainingBonusCards.Count == 0 && TrainingBonusCards.Count > 0)
+        {
+            DefaultTrainingBonusCards = new List<SupportCardTier>(TrainingBonusCards);
+        }
+        if (DefaultInspirationBonusCards.Count == 0 && InspirationBonusCards.Count > 0)
+        {
+            DefaultInspirationBonusCards = new List<SupportCardTier>(InspirationBonusCards);
+        }
+
+        TrainingBonusCards = inventory.EvaluateBestTrainingCards(this, 4);
+        InspirationBonusCards = inventory.EvaluateBestInspirationCards(this, 3);
+    }
+
+    public void RevertToDefaultCards()
+    {
+        if (DefaultTrainingBonusCards.Count > 0)
+        {
+            TrainingBonusCards = new List<SupportCardTier>(DefaultTrainingBonusCards);
+        }
+        if (DefaultInspirationBonusCards.Count > 0)
+        {
+            InspirationBonusCards = new List<SupportCardTier>(DefaultInspirationBonusCards);
+        }
+    }
 
     public static List<BuildPreset> GetDefaultPresets()
     {

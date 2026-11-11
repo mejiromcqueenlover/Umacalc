@@ -602,6 +602,51 @@ body {
   margin-right: 4px;
 }
 
+.card-ownership-badge {
+  background-color: #064e3b;
+  border: 1px solid #10b981;
+  color: #34d399;
+  font-size: 0.58rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.card-ownership-badge.sub {
+  background-color: #1e293b;
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.umadump-sync-bar {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.umadump-sync-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: #f8fafc;
+}
+
+.umadump-sync-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .card-name {
   font-size: 0.75rem;
   font-weight: bold;

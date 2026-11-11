@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 using Umacalc.Models;
 
@@ -12,6 +13,12 @@ public class MainViewModel : ViewModelBase
     private bool _isCompactMode = false;
     private BuildPreset? _activePreset;
 
+    private PlayerInventory? _playerInventory;
+    private bool _isPlayerInventoryLoaded = false;
+    private bool _showOnlyOwnedCards = true;
+    private string _inventoryStatusText = "No umadump file loaded (showing meta defaults)";
+    private string _inventoryLoadedFileName = string.Empty;
+
     public ObservableCollection<ScenarioData> Scenarios { get; }
     public ObservableCollection<StatGoal> StatGoals { get; }
     public ObservableCollection<TurnRecord> TurnHistory { get; }
@@ -23,6 +30,36 @@ public class MainViewModel : ViewModelBase
         set => SetProperty(ref _activePreset, value);
     }
 
+    public bool IsPlayerInventoryLoaded
+    {
+        get => _isPlayerInventoryLoaded;
+        set => SetProperty(ref _isPlayerInventoryLoaded, value);
+    }
+
+    public bool ShowOnlyOwnedCards
+    {
+        get => _showOnlyOwnedCards;
+        set
+        {
+            if (SetProperty(ref _showOnlyOwnedCards, value))
+            {
+                RefreshPresetCards();
+            }
+        }
+    }
+
+    public string InventoryStatusText
+    {
+        get => _inventoryStatusText;
+        set => SetProperty(ref _inventoryStatusText, value);
+    }
+
+    public string InventoryLoadedFileName
+    {
+        get => _inventoryLoadedFileName;
+        set => SetProperty(ref _inventoryLoadedFileName, value);
+    }
+
     public ICommand TrainStatCommand { get; }
     public ICommand UndoCommand { get; }
     public ICommand ResetRunCommand { get; }
@@ -32,6 +69,10 @@ public class MainViewModel : ViewModelBase
     public ICommand AdjustTrainableTurnsCommand { get; }
     public ICommand AddQuickTurnsCommand { get; }
     public ICommand ToggleAlwaysOnTopCommand { get; }
+
+    public ICommand LoadUmadumpFileCommand { get; }
+    public ICommand ToggleOwnedOnlyCommand { get; }
+    public ICommand ClearPlayerInventoryCommand { get; }
 
     public MainViewModel()
     {
@@ -123,6 +164,11 @@ public class MainViewModel : ViewModelBase
 
         TurnHistory = new ObservableCollection<TurnRecord>();
         Presets = new ObservableCollection<BuildPreset>(BuildPreset.GetDefaultPresets());
+        foreach (var p in Presets)
+        {
+            p.DefaultTrainingBonusCards = new List<SupportCardTier>(p.TrainingBonusCards);
+            p.DefaultInspirationBonusCards = new List<SupportCardTier>(p.InspirationBonusCards);
+        }
         _activePreset = Presets.FirstOrDefault(p => p.Id == "mile") ?? Presets.FirstOrDefault();
 
         TrainStatCommand = new RelayCommand(param =>
@@ -183,6 +229,9 @@ public class MainViewModel : ViewModelBase
         });
 
         ToggleAlwaysOnTopCommand = new RelayCommand(_ => IsAlwaysOnTop = !IsAlwaysOnTop);
+        LoadUmadumpFileCommand = new RelayCommand(_ => LoadUmadumpFile());
+        ToggleOwnedOnlyCommand = new RelayCommand(_ => ShowOnlyOwnedCards = !ShowOnlyOwnedCards);
+        ClearPlayerInventoryCommand = new RelayCommand(_ => ClearPlayerInventory());
 
         DistributeTurns();
     }
@@ -390,6 +439,15 @@ public class MainViewModel : ViewModelBase
     {
         ActivePreset = preset;
 
+        if (_playerInventory != null && ShowOnlyOwnedCards)
+        {
+            preset.ApplyPlayerInventory(_playerInventory);
+        }
+        else
+        {
+            preset.RevertToDefaultCards();
+        }
+
         foreach (var g in StatGoals)
         {
             if (preset.Weights.TryGetValue(g.Type, out int weight))
@@ -405,6 +463,82 @@ public class MainViewModel : ViewModelBase
         }
 
         DistributeTurns();
+    }
+
+    public void LoadUmadumpFile(string? path = null)
+    {
+        string? selectedFile = path;
+        if (string.IsNullOrEmpty(selectedFile))
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Select support_card_data.json from umadump",
+                Filter = "Umadump JSON (*support_card_data*.json;*.json)|*support_card_data*.json;*.json|All Files (*.*)|*.*",
+                FileName = "support_card_data.json"
+            };
+
+            string downloads = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+            if (Directory.Exists(downloads))
+            {
+                dialog.InitialDirectory = downloads;
+            }
+
+            if (dialog.ShowDialog() == true)
+            {
+                selectedFile = dialog.FileName;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(selectedFile) && File.Exists(selectedFile))
+        {
+            var inv = PlayerInventory.LoadFromFile(selectedFile);
+            if (inv != null && inv.TotalCards > 0)
+            {
+                _playerInventory = inv;
+                IsPlayerInventoryLoaded = true;
+                ShowOnlyOwnedCards = true;
+                InventoryLoadedFileName = inv.FileName;
+                InventoryStatusText = $"{inv.FileName}: {inv.SummaryText}";
+                RefreshPresetCards();
+            }
+        }
+    }
+
+    public void ClearPlayerInventory()
+    {
+        _playerInventory = null;
+        IsPlayerInventoryLoaded = false;
+        InventoryLoadedFileName = string.Empty;
+        InventoryStatusText = "No umadump file loaded (showing meta defaults)";
+        RefreshPresetCards();
+    }
+
+    public void RefreshPresetCards()
+    {
+        foreach (var p in Presets)
+        {
+            if (_playerInventory != null && ShowOnlyOwnedCards)
+            {
+                p.ApplyPlayerInventory(_playerInventory);
+            }
+            else
+            {
+                p.RevertToDefaultCards();
+            }
+        }
+
+        if (ActivePreset != null)
+        {
+            if (_playerInventory != null && ShowOnlyOwnedCards)
+            {
+                ActivePreset.ApplyPlayerInventory(_playerInventory);
+            }
+            else
+            {
+                ActivePreset.RevertToDefaultCards();
+            }
+            OnPropertyChanged(nameof(ActivePreset));
+        }
     }
 
     private void ApplyPreset(string? presetId)

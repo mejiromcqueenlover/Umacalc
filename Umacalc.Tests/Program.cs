@@ -11,8 +11,14 @@ class Program
     static int _failed = 0;
 
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
+        if (args.Length > 0 && args[0] == "dump_master_schema")
+        {
+            DumpMasterDb();
+            return;
+        }
+
         Console.WriteLine("========================================");
         Console.WriteLine("      UMACALC TRAINABLE TURN TESTS     ");
         Console.WriteLine("========================================\n");
@@ -30,6 +36,7 @@ class Program
         TestReset();
         TestBudgetAdjustment();
         TestOverTrainingAndQuickAdd();
+        TestUmadumpSupportCards();
 
         Console.WriteLine("\n========================================");
         Console.WriteLine($"RESULTS: {_passed} Passed, {_failed} Failed");
@@ -225,5 +232,275 @@ class Program
         int beforeQuick = vm.TrainableTurns;
         vm.AddQuickTurnsCommand.Execute("5");
         Assert(vm.TrainableTurns == beforeQuick + 5, "Quick add +5 turns expanded budget immediately");
+    }
+
+    static void TestUmadumpSupportCards()
+    {
+        Console.WriteLine("\n--> Testing Umadump Support Card Integration");
+
+        // 1. Catalog Test
+        var catalog = SupportCardCatalog.Instance;
+        Assert(catalog.AllCards.Count >= 200, $"SupportCardCatalog loaded {catalog.AllCards.Count} cards (>= 200)");
+        
+        var kitasan = catalog.GetCard(30028);
+        Assert(kitasan != null, "Catalog found Kitasan Black SSR (ID 30028)");
+        Assert(kitasan?.Speciality == "SPD", "Kitasan Black speciality is SPD");
+        Assert(kitasan?.GetTrainingBonus(0) == 10, "Kitasan Black 0LB has +10% Training Bonus");
+        Assert(kitasan?.GetTrainingBonus(4) == 15, "Kitasan Black 4LB has +15% Training Bonus");
+
+        var biko = catalog.GetCard(30020);
+        Assert(biko != null, "Catalog found Biko Pegasus SSR (ID 30020)");
+        Assert(biko?.GetTrainingBonus(4) == 20, "Biko Pegasus 4LB has +20% Training Bonus");
+
+        // 2. Player Inventory Load Test
+        string dumpPath = @"C:\Users\mejiromcqueenlover\Downloads\support_card_data.json";
+        if (File.Exists(dumpPath))
+        {
+            var inv = PlayerInventory.LoadFromFile(dumpPath);
+            Assert(inv != null, "PlayerInventory.LoadFromFile parsed support_card_data.json successfully");
+            Assert(inv?.TotalCards == 166, $"Player inventory has 166 cards (actual: {inv?.TotalCards})");
+            Assert(inv?.SsrCount == 37, $"Player inventory has 37 SSR cards (actual: {inv?.SsrCount})");
+            Assert(inv?.SrCount == 45, $"Player inventory has 45 SR cards (actual: {inv?.SrCount})");
+            Assert(inv?.RCount == 84, $"Player inventory has 84 R cards (actual: {inv?.RCount})");
+
+            // 3. Preset Evaluation Test
+            var presets = BuildPreset.GetDefaultPresets();
+            var milePreset = presets.First(p => p.Id == "mile");
+            
+            var ownedTraining = inv!.EvaluateBestTrainingCards(milePreset, 4);
+            Assert(ownedTraining.Count == 4, $"Evaluated {ownedTraining.Count} training cards for Mile from player inventory");
+            foreach (var card in ownedTraining)
+            {
+                Assert(card.IsPlayerOwned, $"Card '{card.CardName}' is marked as player owned");
+                Assert(!string.IsNullOrEmpty(card.OwnershipBadge), $"Card '{card.CardName}' has ownership badge: {card.OwnershipBadge}");
+                Assert(card.BonusStat.Contains("% Training Effect"), $"Card '{card.CardName}' has training bonus stat: {card.BonusStat}");
+            }
+
+            var ownedInspiration = inv.EvaluateBestInspirationCards(milePreset, 3);
+            Assert(ownedInspiration.Count == 3, $"Evaluated {ownedInspiration.Count} inspiration cards for Mile from player inventory");
+            foreach (var card in ownedInspiration)
+            {
+                Assert(card.IsPlayerOwned, $"Card '{card.CardName}' is marked as player owned");
+                Assert(!string.IsNullOrEmpty(card.OwnershipBadge), $"Card '{card.CardName}' has ownership badge: {card.OwnershipBadge}");
+                Assert(card.BonusStat.Contains("Hint Lv"), $"Card '{card.CardName}' has hint bonus stat: {card.BonusStat}");
+            }
+
+            // 4. MainViewModel Integration Test
+            var vm = new MainViewModel();
+            Assert(!vm.IsPlayerInventoryLoaded, "VM starts with IsPlayerInventoryLoaded = false");
+            
+            vm.LoadUmadumpFile(dumpPath);
+            Assert(vm.IsPlayerInventoryLoaded, "VM has IsPlayerInventoryLoaded = true after loading");
+            Assert(vm.InventoryLoadedFileName == "support_card_data.json", $"VM loaded file name is {vm.InventoryLoadedFileName}");
+            Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == true, "ActivePreset training cards are now from player inventory");
+            Assert(!string.IsNullOrEmpty(vm.ActivePreset?.TrainingBonusCards.First().OwnershipBadge), "ActivePreset card shows player LB badge");
+
+            // Toggle back to meta
+            vm.ToggleOwnedOnlyCommand.Execute(null);
+            Assert(!vm.ShowOnlyOwnedCards, "ShowOnlyOwnedCards toggled to false");
+            Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == false, "ActivePreset reverted to meta default cards");
+
+            // Toggle back to owned
+            vm.ToggleOwnedOnlyCommand.Execute(null);
+            Assert(vm.ShowOnlyOwnedCards, "ShowOnlyOwnedCards toggled back to true");
+            Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == true, "ActivePreset restored player cards");
+
+            // Clear inventory
+            vm.ClearPlayerInventoryCommand.Execute(null);
+            Assert(!vm.IsPlayerInventoryLoaded, "IsPlayerInventoryLoaded cleared");
+            Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == false, "ActivePreset reverted to meta after clear");
+        }
+    }
+
+    static void DumpMasterDb()
+    {
+        string dbPath = @"C:\Program Files (x86)\Steam\steamapps\common\UmamusumePrettyDerby\UmamusumePrettyDerby_Data\Persistent\master\master.mdb";
+        if (!File.Exists(dbPath))
+        {
+            Console.WriteLine($"DB not found: {dbPath}");
+            return;
+        }
+
+        using var conn = new Microsoft.Data.Sqlite.SqliteConnection($"Data Source={dbPath};Mode=ReadOnly");
+        conn.Open();
+
+        // 1. Load Unique Effects
+        var uniqueEffects = new Dictionary<int, (int type0, int val0, int type1, int val1, int unlockLv)>();
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = "SELECT id, type_0, value_0, type_1, value_1, lv FROM support_card_unique_effect";
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                int id = r.GetInt32(0);
+                int t0 = r.IsDBNull(1) ? 0 : r.GetInt32(1);
+                int v0 = r.IsDBNull(2) ? 0 : r.GetInt32(2);
+                int t1 = r.IsDBNull(3) ? 0 : r.GetInt32(3);
+                int v1 = r.IsDBNull(4) ? 0 : r.GetInt32(4);
+                int lv = r.IsDBNull(5) ? 0 : r.GetInt32(5);
+                uniqueEffects[id] = (t0, v0, t1, v1, lv);
+            }
+        }
+
+        // 2. Load Effect Tables (key: (table_id, type) -> array of values for init, limit_lv5..50)
+        // Levels: 0=init, 1=lv5, 2=lv10, 3=lv15, 4=lv20, 5=lv25, 6=lv30, 7=lv35, 8=lv40, 9=lv45, 10=lv50
+        var effectTables = new Dictionary<(int tableId, int type), int[]>();
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = "SELECT id, type, init, limit_lv5, limit_lv10, limit_lv15, limit_lv20, limit_lv25, limit_lv30, limit_lv35, limit_lv40, limit_lv45, limit_lv50 FROM support_card_effect_table";
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                int tableId = r.GetInt32(0);
+                int type = r.GetInt32(1);
+                int[] vals = new int[11];
+                int lastVal = 0;
+                for (int i = 0; i < 11; i++)
+                {
+                    int v = r.GetInt32(i + 2);
+                    if (v != -1) lastVal = v;
+                    vals[i] = lastVal;
+                }
+                effectTables[(tableId, type)] = vals;
+            }
+        }
+
+        // Helper to get effect value at specific level
+        int GetEffectVal(int tableId, int effectType, int level)
+        {
+            if (!effectTables.TryGetValue((tableId, effectType), out var vals)) return 0;
+            // Map level to index (0=init, 1=lv5, 2=lv10, 3=lv15, 4=lv20, 5=lv25, 6=lv30, 7=lv35, 8=lv40, 9=lv45, 10=lv50)
+            int idx = Math.Clamp(level / 5, 0, 10);
+            return vals[idx];
+        }
+
+        // 3. Query all support cards
+        var cards = new List<object>();
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = @"
+                SELECT c.id, c.chara_id, c.rarity, c.command_id, c.effect_table_id, c.unique_effect_id,
+                       tCard.text as card_title, tChara.text as chara_name
+                FROM support_card_data c
+                LEFT JOIN text_data tCard ON tCard.category = 75 AND tCard.[index] = c.id
+                LEFT JOIN text_data tChara ON tChara.category = 6 AND tChara.[index] = c.chara_id
+                ORDER BY c.id ASC";
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                int id = r.GetInt32(0);
+                int charaId = r.GetInt32(1);
+                int rarity = r.GetInt32(2);
+                int cmdId = r.GetInt32(3);
+                int tableId = r.GetInt32(4);
+                int uniqueId = r.IsDBNull(5) ? 0 : r.GetInt32(5);
+                string title = r.IsDBNull(6) ? "" : r.GetString(6);
+                string chara = r.IsDBNull(7) ? "" : r.GetString(7);
+
+                string rarityStr = rarity switch { 3 => "SSR", 2 => "SR", _ => "R" };
+                string spec = cmdId switch
+                {
+                    101 => "SPD",
+                    102 => "STA",
+                    103 => "POW",
+                    105 => "GUT",
+                    106 => "WIS",
+                    _ => "PAL"
+                };
+                string colorHex = spec switch
+                {
+                    "SPD" => "#2563EB",
+                    "STA" => "#EA580C",
+                    "POW" => "#D97706",
+                    "GUT" => "#DB2777",
+                    "WIS" => "#059669",
+                    _ => "#F59E0B"
+                };
+
+                // Max levels for each LB [0LB, 1LB, 2LB, 3LB, 4LB]
+                int[] maxLevels = rarity switch
+                {
+                    3 => new[] { 30, 35, 40, 45, 50 },
+                    2 => new[] { 25, 30, 35, 40, 45 },
+                    _ => new[] { 20, 25, 30, 35, 40 }
+                };
+
+                int[] tbVals = new int[5];
+                int[] hintLvVals = new int[5];
+                int[] hintRateVals = new int[5];
+                int[] specRateVals = new int[5];
+
+                for (int lb = 0; lb < 5; lb++)
+                {
+                    int lvl = maxLevels[lb];
+                    int tb = GetEffectVal(tableId, 8, lvl); // type 8 = Training Effect
+                    int hintLv = GetEffectVal(tableId, 17, lvl); // type 17 = Hint Lv Up
+                    int hintRate = GetEffectVal(tableId, 18, lvl); // type 18 = Hint Rate Up
+                    int specRate = GetEffectVal(tableId, 19, lvl); // type 19 = Specialty Priority
+
+                    if (uniqueEffects.TryGetValue(uniqueId, out var u) && lvl >= u.unlockLv)
+                    {
+                        if (u.type0 == 8) tb += u.val0;
+                        if (u.type1 == 8) tb += u.val1;
+
+                        if (u.type0 == 17) hintLv += u.val0;
+                        if (u.type1 == 17) hintLv += u.val1;
+
+                        if (u.type0 == 18) hintRate += u.val0;
+                        if (u.type1 == 18) hintRate += u.val1;
+
+                        if (u.type0 == 19) specRate += u.val0;
+                        if (u.type1 == 19) specRate += u.val1;
+                    }
+
+                    tbVals[lb] = tb;
+                    hintLvVals[lb] = hintLv > 0 ? hintLv + 1 : 1; // 1-based hint level
+                    hintRateVals[lb] = hintRate;
+                    specRateVals[lb] = specRate;
+                }
+
+                cards.Add(new
+                {
+                    id,
+                    charaId,
+                    charaName = chara,
+                    cardTitle = title,
+                    displayName = $"{chara} ({rarityStr})",
+                    rarity = rarityStr,
+                    speciality = spec,
+                    colorHex,
+                    trainingBonus = tbVals,
+                    hintLevel = hintLvVals,
+                    hintRate = hintRateVals,
+                    specialtyRate = specRateVals
+                });
+            }
+        }
+
+        string jsonOutput = System.Text.Json.JsonSerializer.Serialize(cards, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        
+        // Write to Umacalc Assets
+        string destPath1 = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Umacalc\Assets\support_card_catalog.json"));
+        File.WriteAllText(destPath1, jsonOutput);
+        Console.WriteLine($"[PASS] Wrote {cards.Count} support cards to: {destPath1}");
+
+        // Write to Mobile Assets
+        string destPath2 = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Umacalc-Mobile\support_card_catalog.json"));
+        File.WriteAllText(destPath2, jsonOutput);
+        Console.WriteLine($"[PASS] Wrote {cards.Count} support cards to: {destPath2}");
+
+        string destPath2Js = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Umacalc-Mobile\cards_catalog.js"));
+        File.WriteAllText(destPath2Js, "window.SUPPORT_CARD_CATALOG = " + jsonOutput + ";");
+        Console.WriteLine($"[PASS] Wrote {cards.Count} support cards to: {destPath2Js}");
+
+        // Also write to Android assets
+        string destPath3 = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Umacalc-Android\app\src\main\assets\support_card_catalog.json"));
+        Directory.CreateDirectory(Path.GetDirectoryName(destPath3)!);
+        File.WriteAllText(destPath3, jsonOutput);
+        Console.WriteLine($"[PASS] Wrote {cards.Count} support cards to: {destPath3}");
+
+        string destPath3Js = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Umacalc-Android\app\src\main\assets\cards_catalog.js"));
+        File.WriteAllText(destPath3Js, "window.SUPPORT_CARD_CATALOG = " + jsonOutput + ";");
+        Console.WriteLine($"[PASS] Wrote {cards.Count} support cards to: {destPath3Js}");
     }
 }

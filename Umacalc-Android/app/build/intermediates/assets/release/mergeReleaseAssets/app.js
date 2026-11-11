@@ -387,6 +387,10 @@ class UmacalcApp {
     this.activePresetId = "mile";
     this.history = [];
 
+    this.playerInventory = null;
+    this.showOnlyOwnedCards = true;
+    this.inventoryFileName = "";
+
     this.stats = {
       Speed: { selected: true, assigned: 24, used: 0, weight: 3 },
       Stamina: { selected: false, assigned: 0, used: 0, weight: 0 },
@@ -420,6 +424,12 @@ class UmacalcApp {
         if (data.activePresetId) this.activePresetId = data.activePresetId;
         if (data.stats) this.stats = data.stats;
         if (Array.isArray(data.history)) this.history = data.history;
+      }
+
+      const savedInv = localStorage.getItem("umacalc_player_inventory");
+      if (savedInv) {
+        this.playerInventory = JSON.parse(savedInv);
+        this.inventoryFileName = localStorage.getItem("umacalc_player_inventory_name") || "support_card_data.json";
       }
     } catch (e) {
       console.warn("Could not load from storage:", e);
@@ -744,10 +754,190 @@ class UmacalcApp {
     container.innerHTML = html;
   }
 
+  openUmadumpFilePicker() {
+    const input = document.getElementById("umadumpFileInput");
+    if (input) input.click();
+  }
+
+  handleUmadumpFileSelect(input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (Array.isArray(data)) {
+          const map = {};
+          data.forEach(item => {
+            const id = item.support_card_id || item.card_id;
+            if (!id) return;
+            const lb = item.limit_break_count != null ? item.limit_break_count : 0;
+            const lvl = item.extra_data && item.extra_data.level ? item.extra_data.level : (lb === 4 ? 50 : 30 + lb * 5);
+            if (!map[id] || lb > map[id].lb || (lb === map[id].lb && lvl > map[id].lvl)) {
+              map[id] = { id, lb, lvl };
+            }
+          });
+          this.playerInventory = map;
+          this.inventoryFileName = file.name;
+          this.showOnlyOwnedCards = true;
+          try {
+            localStorage.setItem("umacalc_player_inventory", JSON.stringify(map));
+            localStorage.setItem("umacalc_player_inventory_name", file.name);
+          } catch (_) {}
+          this.renderActiveBlueprint();
+        } else {
+          alert("Invalid JSON format: Expected an array of support cards from umadump.");
+        }
+      } catch (err) {
+        alert("Failed to parse JSON: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    input.value = "";
+  }
+
+  clearPlayerInventory() {
+    this.playerInventory = null;
+    this.inventoryFileName = "";
+    try {
+      localStorage.removeItem("umacalc_player_inventory");
+      localStorage.removeItem("umacalc_player_inventory_name");
+    } catch (_) {}
+    this.renderActiveBlueprint();
+  }
+
+  toggleOwnedOnly() {
+    this.showOnlyOwnedCards = !this.showOnlyOwnedCards;
+    this.renderActiveBlueprint();
+  }
+
+  evaluateBestCards(preset) {
+    if (!this.playerInventory || !this.showOnlyOwnedCards || !window.SUPPORT_CARD_CATALOG) {
+      return {
+        training: preset.trainingCards,
+        inspiration: preset.inspirationCards,
+        isCustom: false
+      };
+    }
+
+    const relevantSpecs = new Set();
+    preset.composition.forEach(c => {
+      const parts = c.label.split(" ");
+      if (parts.length > 1) relevantSpecs.add(parts[1].toUpperCase());
+    });
+    // Add weights
+    Object.keys(preset.weights).forEach(k => {
+      if (preset.weights[k] > 0) {
+        const spec = k === "Speed" ? "SPD" : k === "Stamina" ? "STA" : k === "Power" ? "POW" : k === "Guts" ? "GUT" : "WIS";
+        relevantSpecs.add(spec);
+      }
+    });
+    relevantSpecs.add("PAL");
+
+    const catalog = window.SUPPORT_CARD_CATALOG;
+    const ownedMap = this.playerInventory;
+
+    // Evaluate Training Bonus
+    const trainingCandidates = [];
+    // Evaluate Inspiration Bonus
+    const inspirationCandidates = [];
+
+    Object.keys(ownedMap).forEach(idStr => {
+      const id = parseInt(idStr, 10);
+      const owned = ownedMap[id];
+      const card = catalog.find(c => c.id === id);
+      if (!card) return;
+      if (!relevantSpecs.has(card.speciality.toUpperCase())) return;
+
+      const lb = Math.min(4, Math.max(0, owned.lb));
+      const tb = (card.trainingBonus && card.trainingBonus[lb]) || 0;
+      const hintLv = (card.hintLevel && card.hintLevel[lb]) || 1;
+      const hintRate = (card.hintRate && card.hintRate[lb]) || 0;
+      const specRate = (card.specialtyRate && card.specialtyRate[lb]) || 0;
+
+      const rarityBonus = card.rarity === "SSR" ? 120 : card.rarity === "SR" ? 60 : 10;
+      const ownershipBadge = lb === 4 ? `MLB Lv ${owned.lvl}` : `${lb}LB Lv ${owned.lvl}`;
+
+      if (tb > 0) {
+        const score = (tb * 1500) + (specRate * 12) + rarityBonus + (lb * 25) + owned.lvl;
+        trainingCandidates.push({
+          card,
+          owned,
+          tb,
+          specRate,
+          score,
+          ownershipBadge
+        });
+      }
+
+      if (hintLv >= 2 || hintRate >= 20) {
+        const inspScore = (hintLv * 250) + (hintRate * 8) + (card.rarity === "SSR" ? 50 : 25) + (lb * 15);
+        inspirationCandidates.push({
+          card,
+          owned,
+          hintLv,
+          hintRate,
+          inspScore,
+          ownershipBadge
+        });
+      }
+    });
+
+    // Select top 4 training cards
+    trainingCandidates.sort((a, b) => b.score - a.score);
+    const chosenTraining = [];
+    const usedCharaIds = new Set();
+
+    trainingCandidates.forEach(c => {
+      if (chosenTraining.length >= 4) return;
+      if (usedCharaIds.has(c.card.charaId)) return;
+      usedCharaIds.add(c.card.charaId);
+
+      chosenTraining.push({
+        name: `${c.card.charaName} (${c.card.rarity})`,
+        spec: c.card.speciality,
+        color: c.card.colorHex,
+        bonus: `+${c.tb}% Training Effect`,
+        ownershipBadge: c.ownershipBadge,
+        reason: c.card.cardTitle ? `${c.card.cardTitle} • Specialty Rate +${c.specRate}` : `Training multiplier from your collection`
+      });
+    });
+
+    // Select top 3 inspiration cards
+    inspirationCandidates.sort((a, b) => b.inspScore - a.inspScore);
+    const chosenInspiration = [];
+    const usedInspCharaIds = new Set();
+
+    inspirationCandidates.forEach(c => {
+      if (chosenInspiration.length >= 3) return;
+      if (usedInspCharaIds.has(c.card.charaId)) return;
+      usedInspCharaIds.add(c.card.charaId);
+
+      const rateStr = c.hintRate > 0 ? ` (+${c.hintRate}% Rate)` : "";
+      chosenInspiration.push({
+        name: `${c.card.charaName} (${c.card.rarity})`,
+        spec: c.card.speciality,
+        color: c.card.colorHex,
+        bonus: `Hint Lv ${c.hintLv}${rateStr}`,
+        ownershipBadge: c.ownershipBadge,
+        reason: c.card.cardTitle ? `${c.card.cardTitle} • -${c.hintLv * 10}% SP hint discount` : `Hint battery from your collection`
+      });
+    });
+
+    return {
+      training: chosenTraining.length > 0 ? chosenTraining : preset.trainingCards,
+      inspiration: chosenInspiration.length > 0 ? chosenInspiration : preset.inspirationCards,
+      isCustom: true
+    };
+  }
+
   renderActiveBlueprint() {
     const preset = this.getPreset();
     const container = document.getElementById("activeBlueprintContainer");
     if (!container) return;
+
+    const evaluated = this.evaluateBestCards(preset);
 
     let slotsHtml = "";
     preset.composition.forEach(c => {
@@ -755,13 +945,15 @@ class UmacalcApp {
     });
 
     let trainingCardsHtml = "";
-    preset.trainingCards.forEach(c => {
+    evaluated.training.forEach(c => {
+      const badgeHtml = c.ownershipBadge ? `<span class="card-ownership-badge">${c.ownershipBadge}</span>` : "";
       trainingCardsHtml += `
         <div class="tier-card-item">
           <div class="tier-card-top">
             <div>
               <span class="card-spec-badge" style="background-color: ${c.color}">${c.spec}</span>
               <span class="card-name">${c.name}</span>
+              ${badgeHtml}
             </div>
             <span class="bonus-stat-pill training">${c.bonus}</span>
           </div>
@@ -771,13 +963,15 @@ class UmacalcApp {
     });
 
     let inspirationCardsHtml = "";
-    preset.inspirationCards.forEach(c => {
+    evaluated.inspiration.forEach(c => {
+      const badgeHtml = c.ownershipBadge ? `<span class="card-ownership-badge sub">${c.ownershipBadge}</span>` : "";
       inspirationCardsHtml += `
         <div class="tier-card-item">
           <div class="tier-card-top">
             <div>
               <span class="card-spec-badge" style="background-color: ${c.color}">${c.spec}</span>
               <span class="card-name">${c.name}</span>
+              ${badgeHtml}
             </div>
             <span class="bonus-stat-pill inspiration">${c.bonus}</span>
           </div>
@@ -785,6 +979,32 @@ class UmacalcApp {
         </div>
       `;
     });
+
+    // Umadump status
+    const isLoaded = !!this.playerInventory;
+    const count = isLoaded ? Object.keys(this.playerInventory).length : 0;
+    const filterBtnText = this.showOnlyOwnedCards ? "✓ Showing My Cards" : "Show All Meta";
+    const statusTxt = isLoaded
+      ? `${this.inventoryFileName || "support_card_data.json"}: ${count} Cards Active`
+      : "Load support_card_data.json from umadump to show cards you own";
+
+    const syncBarHtml = `
+      <div class="umadump-sync-bar">
+        <div class="umadump-sync-left">
+          <span class="badge" style="background: #064e3b; color: #34d399; font-weight: 800;">UMADUMP</span>
+          <span>${statusTxt}</span>
+        </div>
+        <div class="umadump-sync-right">
+          ${isLoaded ? `
+            <button class="btn btn-sm" style="background: #1e293b; border-color: #38bdf8; color: #38bdf8; font-size: 0.68rem;" onclick="window.UmacalcApp.toggleOwnedOnly()">${filterBtnText}</button>
+          ` : ""}
+          <button class="btn btn-sm btn-primary" style="font-size: 0.68rem;" onclick="window.UmacalcApp.openUmadumpFilePicker()">📂 Select support_card_data.json</button>
+          ${isLoaded ? `
+            <button class="btn btn-sm btn-danger" style="font-size: 0.68rem;" onclick="window.UmacalcApp.clearPlayerInventory()">✕ Clear</button>
+          ` : ""}
+        </div>
+      </div>
+    `;
 
     container.innerHTML = `
       <div class="deck-blueprint">
@@ -796,9 +1016,11 @@ class UmacalcApp {
           <div class="deck-slots">${slotsHtml}</div>
         </div>
 
-        <div class="blueprint-slots-text">
+        <div class="blueprint-slots-text" style="margin-bottom: 8px;">
           <strong>Slot Allocation:</strong> ${preset.deck}
         </div>
+
+        ${syncBarHtml}
 
         <!-- 2-Column Best Cards -->
         <div class="cards-comparison-grid">
