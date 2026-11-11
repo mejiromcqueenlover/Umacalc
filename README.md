@@ -49,16 +49,3 @@ A clean, responsive *Umamusume: Pretty Derby* companion designed to plan, optimi
 4. **Compact HUD and Floating HUD for use during gameplay**
 
    The PC version of Umacalc features a **Compact HUD**, while the mobile version even features a **Floating HUD**, which can be easily used during gameplay.
-
----
-
-## 🚀 How to Run
-
-```powershell
-dotnet run --project Umacalc\Umacalc.csproj
-```
-
-### Run Tests
-```powershell
-.\Umacalc.Tests\bin\Debug\net10.0-windows\Umacalc.Tests.exe
-```
