@@ -117,7 +117,7 @@ class Program
         vm.SelectPresetCommand.Execute("factor_farm");
         Assert(vm.StatGoals.All(g => g.IsSelected), "Factor Farm checks all 5 stats for 3-star Blue Factors");
 
-        // Test Support Card Speciality Recommendations
+        // Test Support Card Speciality Recommendations & Bonus Tiers
         foreach (var p in presets)
         {
             Assert(!string.IsNullOrEmpty(p.DeckRecommendation), $"Preset {p.Name} has DeckRecommendation");
@@ -125,12 +125,19 @@ class Program
             Assert(!string.IsNullOrEmpty(p.InheritanceTip), $"Preset {p.Name} has InheritanceTip");
             int totalDeckCards = p.DeckComposition.Sum(s => s.Count);
             Assert(totalDeckCards == 6, $"Preset {p.Name} deck composition totals 6 cards ({totalDeckCards}/6)");
+
+            // Validate Training Bonus and Inspiration Bonus support card lists
+            Assert(p.InspirationBonusCards.Count >= 2, $"Preset {p.Name} has {p.InspirationBonusCards.Count} Inspiration Bonus cards (>=2)");
+            Assert(p.TrainingBonusCards.All(c => !string.IsNullOrEmpty(c.CardName) && !string.IsNullOrEmpty(c.BonusStat) && !string.IsNullOrEmpty(c.SkillOrReason)), $"Preset {p.Name} Training Bonus cards have valid details");
+            Assert(p.InspirationBonusCards.All(c => !string.IsNullOrEmpty(c.CardName) && !string.IsNullOrEmpty(c.BonusStat) && !string.IsNullOrEmpty(c.SkillOrReason)), $"Preset {p.Name} Inspiration Bonus cards have valid details");
         }
 
         // Test ActivePreset updates on preset execution
         vm.SelectPresetCommand.Execute("sprint");
         Assert(vm.ActivePreset != null && vm.ActivePreset.Id == "sprint", "ActivePreset updated to Sprint");
         Assert(vm.ActivePreset!.DeckRecommendation.Contains("4 Speed"), "ActivePreset contains 4 Speed recommendation");
+        Assert(vm.ActivePreset.TrainingBonusCards.Any(c => c.CardName.Contains("Biko Pegasus")), "Sprint preset includes Biko Pegasus (+20% Training Effect)");
+        Assert(vm.ActivePreset.InspirationBonusCards.Any(c => c.CardName.Contains("Taiki Shuttle")), "Sprint preset includes Taiki Shuttle (Hint Lv 3)");
     }
 
     static void TestStatClickTraining()
