@@ -1,0 +1,54 @@
+name: Build & Release Android APK / AAB
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    tags: [ "v*" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Make Gradlew Executable
+      run: chmod +x Umacalc-Android/gradlew || true
+
+    - name: Build Android Release APK & AAB
+      working-directory: Umacalc-Android
+      run: |
+        ./gradlew assembleRelease bundleRelease --stacktrace
+
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: Umacalc-Release-APK
+        path: Umacalc-Android/app/build/outputs/apk/release/app-release-unsigned.apk
+
+    - name: Upload Release AAB (Google Play)
+      uses: actions/upload-artifact@v4
+      with:
+        name: Umacalc-GooglePlay-AAB
+        path: Umacalc-Android/app/build/outputs/bundle/release/app-release.aab
+
+    - name: Publish GitHub Release (On Tag)
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          Umacalc-Android/app/build/outputs/apk/release/*.apk
+          Umacalc-Android/app/build/outputs/bundle/release/*.aab
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

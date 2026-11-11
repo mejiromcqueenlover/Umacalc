@@ -1,0 +1,7 @@
+com.umacalc.app-pngs-0 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\build\generated\res\pngs\release
+com.umacalc.app-resValues-1 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\build\generated\res\resValues\release
+com.umacalc.app-packageReleaseResources-2 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.umacalc.app-packageReleaseResources-3 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.umacalc.app-release-4 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\build\intermediates\merged_res\release\mergeReleaseResources
+com.umacalc.app-main-5 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\src\main\res
+com.umacalc.app-release-6 C:\Users\mejiromcqueenlover\source\repos\Umacalc\Umacalc-Android\app\src\release\res

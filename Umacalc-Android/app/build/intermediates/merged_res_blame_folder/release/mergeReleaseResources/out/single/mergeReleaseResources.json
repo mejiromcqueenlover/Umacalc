@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "com.umacalc.app-release-4:/layout_activity_main.xml.flat",
+        "source": "com.umacalc.app-main-5:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.umacalc.app-main-5:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/xml_data_extraction_rules.xml.flat",
+        "source": "com.umacalc.app-main-5:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.umacalc.app-main-5:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/drawable-nodpi_ic_horse_logo.png.flat",
+        "source": "com.umacalc.app-main-5:/drawable-nodpi/ic_horse_logo.png"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/layout_layout_floating_hud.xml.flat",
+        "source": "com.umacalc.app-main-5:/layout/layout_floating_hud.xml"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/xml_backup_rules.xml.flat",
+        "source": "com.umacalc.app-main-5:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.umacalc.app-release-4:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.umacalc.app-main-5:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    }
+]

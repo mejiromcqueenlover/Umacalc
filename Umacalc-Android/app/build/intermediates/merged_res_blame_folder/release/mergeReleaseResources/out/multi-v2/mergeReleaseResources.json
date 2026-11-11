@@ -1,0 +1,62 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.umacalc.app-release-4:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\mejiromcqueenlover\\source\\repos\\Umacalc\\Umacalc-Android\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "5,6,3,1,2,16,4,11,10,8,9,12,14,15",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "192,238,103,16,58,609,145,422,377,285,330,466,513,560",
+                        "endColumns": "45,45,41,41,44,45,46,43,44,44,46,45,46,48",
+                        "endOffsets": "233,279,140,53,98,650,187,461,417,325,372,507,555,604"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,101,147,189,231,276,322,369,413,458,503,550,596,643",
+                        "endColumns": "45,45,41,41,44,45,46,43,44,44,46,45,46,48",
+                        "endOffsets": "96,142,184,226,271,317,364,408,453,498,545,591,638,687"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\mejiromcqueenlover\\source\\repos\\Umacalc\\Umacalc-Android\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "2,1,5,4,6,3",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "61,16,282,219,362,144",
+                        "endColumns": "82,44,79,62,145,74",
+                        "endOffsets": "139,56,357,277,503,214"
+                    },
+                    "to": {
+                        "startLines": "16,17,18,19,20,21",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "692,775,820,900,963,1109",
+                        "endColumns": "82,44,79,62,145,74",
+                        "endOffsets": "770,815,895,958,1104,1179"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\mejiromcqueenlover\\source\\repos\\Umacalc\\Umacalc-Android\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "63",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "364"
+                    },
+                    "to": {
+                        "startLines": "22",
+                        "startColumns": "4",
+                        "startOffsets": "1184",
+                        "endLines": "26",
+                        "endColumns": "12",
+                        "endOffsets": "1485"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent_cyan">#38BDF8</color>
+    <color name="accent_gold">#F59E0B</color>
+    <color name="bg_card">#1E293B</color>
+    <color name="bg_main">#0B1120</color>
+    <color name="bg_surface">#161F30</color>
+    <color name="border_dark">#334155</color>
+    <color name="primary_blue">#2563EB</color>
+    <color name="stat_guts">#DB2777</color>
+    <color name="stat_power">#D97706</color>
+    <color name="stat_speed">#3B82F6</color>
+    <color name="stat_stamina">#EA580C</color>
+    <color name="stat_wisdom">#059669</color>
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#94A3B8</color>
+    <string name="app_full_name">Umacalc - Umamusume Stat Gain Calculator</string>
+    <string name="app_name">Umacalc</string>
+    <string name="overlay_desc">Floating overlay active over Umamusume</string>
+    <string name="overlay_title">Umacalc Floating HUD</string>
+    <string name="permission_overlay_prompt">Please allow "Display over other apps" so Umacalc can float over Umamusume during training.</string>
+    <string name="tagline">Umamusume Stat Gain &amp; Turn Planner</string>
+    <style name="Theme.Umacalc" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:statusBarColor">@color/bg_main</item>
+        <item name="android:windowBackground">@color/bg_main</item>
+        <item name="android:navigationBarColor">@color/bg_main</item>
+    </style>
+</resources>

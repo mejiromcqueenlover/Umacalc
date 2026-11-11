@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.3.2" type="incidents">
+
+    <incident
+        id="HardcodedDebugMode"
+        severity="fatal"
+        message="Avoid hardcoding the debug mode; leaving it out allows debug and release builds to automatically assign one">
+        <location
+            file="${:app*release*MAIN*sourceProvider*0*manifest*0}"
+            line="19"
+            column="9"
+            startOffset="602"
+            endLine="19"
+            endColumn="34"
+            endOffset="627"/>
+    </incident>
+
+</incidents>

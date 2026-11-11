@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hudRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#DD111827"
+    android:padding="8dp">
+
+    <!-- Top Drag Bar -->
+    <LinearLayout
+        android:id="@+id/hudDragBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/txtHudTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UMACALC HUD"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="#60A5FA" />
+
+        <TextView
+            android:id="@+id/txtHudTurnsRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="51 Left"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="#34D399" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnCollapseHud"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/arrow_down_float"
+            android:contentDescription="Minimize" />
+
+        <ImageButton
+            android:id="@+id/btnCloseHud"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="Close HUD" />
+    </LinearLayout>
+
+    <!-- Stat Buttons Row -->
+    <LinearLayout
+        android:id="@+id/hudStatsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Speed -->
+        <Button
+            android:id="@+id/btnHudSpeed"
+            android:layout_width="56dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="3dp"
+            android:backgroundTint="#2563EB"
+            android:text="SPD\n24"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="0dp" />
+
+        <!-- Stamina -->
+        <Button
+            android:id="@+id/btnHudStamina"
+            android:layout_width="56dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="3dp"
+            android:backgroundTint="#EA580C"
+            android:text="STA\n0"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="0dp" />
+
+        <!-- Power -->
+        <Button
+            android:id="@+id/btnHudPower"
+            android:layout_width="56dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="3dp"
+            android:backgroundTint="#D97706"
+            android:text="POW\n9"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="0dp" />
+
+        <!-- Guts -->
+        <Button
+            android:id="@+id/btnHudGuts"
+            android:layout_width="56dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="3dp"
+            android:backgroundTint="#DB2777"
+            android:text="GUT\n0"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="0dp" />
+
+        <!-- Wisdom -->
+        <Button
+            android:id="@+id/btnHudWisdom"
+            android:layout_width="56dp"
+            android:layout_height="44dp"
+            android:backgroundTint="#059669"
+            android:text="WIS\n23"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:padding="0dp" />
+    </LinearLayout>
+
+</LinearLayout>
