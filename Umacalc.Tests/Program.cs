@@ -127,6 +127,7 @@ class Program
             Assert(totalDeckCards == 6, $"Preset {p.Name} deck composition totals 6 cards ({totalDeckCards}/6)");
 
             // Validate Training Bonus and Inspiration Bonus support card lists
+            Assert(p.TrainingBonusCards.Count >= 3, $"Preset {p.Name} has {p.TrainingBonusCards.Count} Training Bonus cards (>=3)");
             Assert(p.InspirationBonusCards.Count >= 2, $"Preset {p.Name} has {p.InspirationBonusCards.Count} Inspiration Bonus cards (>=2)");
             Assert(p.TrainingBonusCards.All(c => !string.IsNullOrEmpty(c.CardName) && !string.IsNullOrEmpty(c.BonusStat) && !string.IsNullOrEmpty(c.SkillOrReason)), $"Preset {p.Name} Training Bonus cards have valid details");
             Assert(p.InspirationBonusCards.All(c => !string.IsNullOrEmpty(c.CardName) && !string.IsNullOrEmpty(c.BonusStat) && !string.IsNullOrEmpty(c.SkillOrReason)), $"Preset {p.Name} Inspiration Bonus cards have valid details");
