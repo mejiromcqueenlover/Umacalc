@@ -51,5 +51,6 @@ A clean, responsive *Umamusume: Pretty Derby* companion designed to plan, optimi
    The PC version of Umacalc features a **Compact HUD**, while the mobile version even features a **Floating HUD**, which can be easily used during gameplay.
 
 5.  **Umadump support card import**
+
    Use [umadump](https://github.com/Werseter/umadump/) to create JSON files of your account's data, import the `support_card_data.json` into Umacalc and get **custom
    deck recommendations** with cards you own based on **card level** and **MLB**.
