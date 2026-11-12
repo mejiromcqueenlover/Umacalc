@@ -42,10 +42,21 @@ public class LegacyCatalog
 
             if (string.IsNullOrEmpty(json))
             {
-                string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "legacy_catalog.json");
-                if (File.Exists(localPath))
+                string[] possiblePaths = new[]
                 {
-                    json = File.ReadAllText(localPath);
+                    Path.Combine(AppContext.BaseDirectory, "Assets", "legacy_catalog.json"),
+                    Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Assets", "legacy_catalog.json"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "legacy_catalog.json"),
+                    Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Umacalc\Assets\legacy_catalog.json"))
+                };
+
+                foreach (var path in possiblePaths)
+                {
+                    if (File.Exists(path))
+                    {
+                        json = File.ReadAllText(path);
+                        break;
+                    }
                 }
             }
 

@@ -616,6 +616,8 @@
                                                 <RowDefinition Height="Auto" />
                                                 <!-- Row 4: Inheritance / Spark Guide -->
                                                 <RowDefinition Height="Auto" />
+                                                <!-- Row 5: Career Point Prediction & Skill Hint Engine -->
+                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
                                             <!-- Row 0: Header & 6-Slot Visual Badges -->
@@ -923,6 +925,101 @@
                                                             </ItemsControl>
                                                         </StackPanel>
                                                     </Border>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Row 5: Career Point Prediction & Skill Hint Engine -->
+                                            <Border Grid.Row="5" Background="#1E1B4B" BorderBrush="#6366F1" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,8,0,0">
+                                                <StackPanel>
+                                                    <!-- Section Header & Predicted Rank Score Hero -->
+                                                    <Grid Margin="0,0,0,6">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <Border Background="#4338CA" CornerRadius="3" Padding="5,2" Margin="0,0,6,0">
+                                                                <TextBlock Text="CAREER POINT PREDICTION" FontSize="9" FontWeight="Black" Foreground="#FFFFFF" />
+                                                            </Border>
+                                                            <TextBlock Text="Projected Final Rank &amp; Skill Hint Economy:" FontSize="11" FontWeight="Bold" Foreground="#A5B4FC" VerticalAlignment="Center" />
+                                                        </StackPanel>
+
+                                                        <!-- Rank Hero Badge & Points Score -->
+                                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <Border Background="#312E81" BorderBrush="{Binding CareerPrediction.RankBadgeColor, Converter={StaticResource HexToBrushConverter}}" BorderThickness="1.5" CornerRadius="4" Padding="6,2" Margin="0,0,6,0">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="PREDICTED RANK: " FontSize="9" FontWeight="Bold" Foreground="#C7D2FE" VerticalAlignment="Center" />
+                                                                    <TextBlock Text="{Binding CareerPrediction.PredictedRank}" FontSize="12" FontWeight="Black" Foreground="{Binding CareerPrediction.RankBadgeColor, Converter={StaticResource HexToBrushConverter}}" Margin="4,0,0,0" VerticalAlignment="Center" />
+                                                                </StackPanel>
+                                                            </Border>
+                                                            <Border Background="#0F172A" BorderBrush="#6366F1" BorderThickness="1" CornerRadius="4" Padding="6,2">
+                                                                <TextBlock Text="{Binding CareerPrediction.EstimatedTotalScore, StringFormat='{}{0:N0} pts'}" FontSize="11" FontWeight="Black" Foreground="#38BDF8" VerticalAlignment="Center" />
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </Grid>
+
+                                                    <!-- Stat vs Skill Points Summary Bar -->
+                                                    <Border Background="#0F172A" CornerRadius="4" Padding="8,4" Margin="0,0,0,6">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" FontSize="10" Foreground="#94A3B8">
+                                                                Stat Evaluation: <Run Text="{Binding CareerPrediction.EstimatedStatScore, StringFormat='{}{0:N0} pts'}" FontWeight="Bold" Foreground="#38BDF8" />
+                                                            </TextBlock>
+                                                            <TextBlock Grid.Column="1" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center">
+                                                                Skill Evaluation: <Run Text="{Binding CareerPrediction.EstimatedSkillScore, StringFormat='{}{0:N0} pts'}" FontWeight="Bold" Foreground="#34D399" /> (~<Run Text="{Binding CareerPrediction.TotalEstimatedSkillsAcquired}" FontWeight="Bold" Foreground="#FFFFFF" /> skills)
+                                                            </TextBlock>
+                                                            <TextBlock Grid.Column="2" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Right">
+                                                                Hint SP Discount: <Run Text="{Binding CareerPrediction.TotalDiscountedSpSaved, StringFormat='-{0:N0} SP Saved'}" FontWeight="Bold" Foreground="#F59E0B" />
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <!-- Recommended Skill Hints List based on Cards & Legacies -->
+                                                    <TextBlock Text="Optimal Skill Hints Available from your Active Cards &amp; Legacies:" FontSize="10" FontWeight="SemiBold" Foreground="#C7D2FE" Margin="0,0,0,4" />
+                                                    <ItemsControl ItemsSource="{Binding CareerPrediction.RecommendedSkillHints}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="#131131" BorderBrush="#3730A3" BorderThickness="1" CornerRadius="4" Padding="8,5" Margin="0,0,0,4">
+                                                                    <Grid>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="Auto" />
+                                                                            <RowDefinition Height="Auto" />
+                                                                        </Grid.RowDefinitions>
+                                                                        <Grid Grid.Row="0">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="*" />
+                                                                                <ColumnDefinition Width="Auto" />
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                                <Border Background="#4338CA" CornerRadius="3" Padding="4,1" Margin="0,0,6,0">
+                                                                                    <TextBlock Text="{Binding EstimatedHintLv, StringFormat='HINT LV {0}'}" FontSize="8" FontWeight="Black" Foreground="#FFFFFF" />
+                                                                                </Border>
+                                                                                <TextBlock Text="{Binding SkillName}" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF" />
+                                                                                <!-- Source pill -->
+                                                                                <Border Background="#0F172A" BorderBrush="{Binding SourceColor, Converter={StaticResource HexToBrushConverter}}" BorderThickness="1" CornerRadius="3" Padding="4,1" Margin="6,0,0,0">
+                                                                                    <TextBlock Text="{Binding SourceName}" FontSize="9" FontWeight="SemiBold" Foreground="{Binding SourceColor, Converter={StaticResource HexToBrushConverter}}" />
+                                                                                </Border>
+                                                                                <!-- SP Discount Pill -->
+                                                                                <Border Background="#78350F" BorderBrush="#D97706" BorderThickness="1" CornerRadius="3" Padding="4,1" Margin="6,0,0,0">
+                                                                                    <TextBlock Text="{Binding SpDiscountPct, StringFormat='-{0}% SP Cost'}" FontSize="9" FontWeight="Black" Foreground="#FDE047" />
+                                                                                </Border>
+                                                                            </StackPanel>
+                                                                            <!-- Evaluation Points Pill -->
+                                                                            <Border Grid.Column="1" Background="#064E3B" BorderBrush="#059669" BorderThickness="1" CornerRadius="3" Padding="6,1">
+                                                                                <TextBlock Text="{Binding EvaluationPoints, StringFormat='+{0} Pts'}" FontSize="9" FontWeight="Black" Foreground="#34D399" />
+                                                                            </Border>
+                                                                        </Grid>
+                                                                        <!-- Reason -->
+                                                                        <TextBlock Grid.Row="1" Text="{Binding SynergyReason}" FontSize="10" Foreground="#A5B4FC" Margin="0,2,0,0" TextWrapping="Wrap" />
+                                                                    </Grid>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
                                             </Border>
                                         </Grid>

@@ -83,6 +83,13 @@ public class MainViewModel : ViewModelBase
         set => SetProperty(ref _charaLoadedFileName, value);
     }
 
+    private CareerPointPrediction? _careerPrediction;
+    public CareerPointPrediction? CareerPrediction
+    {
+        get => _careerPrediction;
+        set => SetProperty(ref _careerPrediction, value);
+    }
+
     public ICommand TrainStatCommand { get; }
     public ICommand UndoCommand { get; }
     public ICommand ResetRunCommand { get; }
@@ -263,6 +270,7 @@ public class MainViewModel : ViewModelBase
         ClearTrainedCharaCommand = new RelayCommand(_ => ClearTrainedChara());
 
         DistributeTurns();
+        RefreshPresetCards();
     }
 
     public ScenarioData SelectedScenario
@@ -501,6 +509,13 @@ public class MainViewModel : ViewModelBase
         }
 
         DistributeTurns();
+
+        CareerPrediction = CareerPointPrediction.Calculate(
+            preset,
+            SelectedScenario,
+            preset.TrainingBonusCards.Concat(preset.InspirationBonusCards),
+            preset.RecommendedLegacies);
+        OnPropertyChanged(nameof(CareerPrediction));
     }
 
     public void LoadUmadumpFile(string? path = null)
@@ -584,7 +599,16 @@ public class MainViewModel : ViewModelBase
             {
                 ActivePreset.RevertToDefaultLegacies();
             }
+
+            // Recalculate Career Prediction
+            CareerPrediction = CareerPointPrediction.Calculate(
+                ActivePreset,
+                SelectedScenario,
+                ActivePreset.TrainingBonusCards.Concat(ActivePreset.InspirationBonusCards),
+                ActivePreset.RecommendedLegacies);
+
             OnPropertyChanged(nameof(ActivePreset));
+            OnPropertyChanged(nameof(CareerPrediction));
         }
     }
 

@@ -37,6 +37,7 @@ class Program
         TestBudgetAdjustment();
         TestOverTrainingAndQuickAdd();
         TestUmadumpSupportCards();
+        TestCareerPointPrediction();
 
         Console.WriteLine("\n========================================");
         Console.WriteLine($"RESULTS: {_passed} Passed, {_failed} Failed");
@@ -377,6 +378,92 @@ class Program
                 Assert(!vm.IsTrainedCharaLoaded, "IsTrainedCharaLoaded false after clear");
                 Assert(vm.ActivePreset?.RecommendedLegacies.Count == 0, "RecommendedLegacies cleared after clear command");
             }
+        }
+    }
+
+    static void TestCareerPointPrediction()
+    {
+        Console.WriteLine("\n--> Testing Career Point Prediction & Skill Hint Engine");
+        
+        // 1. SkillCatalog validation
+        var catalog = SkillCatalog.Instance;
+        Assert(catalog.Skills.Count >= 750, $"SkillCatalog loaded {catalog.Skills.Count} skills (>= 750)");
+        Assert(catalog.CardSkills.Count >= 250, $"SkillCatalog loaded {catalog.CardSkills.Count} card skill sets (>= 250)");
+
+        // 2. Skill query verification
+        var tailSkill = catalog.Skills.Values.FirstOrDefault(s => s.Name.Equals("Tail Held High", StringComparison.OrdinalIgnoreCase));
+        Assert(tailSkill != null, "Skill 'Tail Held High' exists in catalog");
+        if (tailSkill != null)
+        {
+            Assert(tailSkill.Grade == 217, $"Skill 'Tail Held High' grade is 217 (actual: {tailSkill.Grade})");
+        }
+
+        // 3. Card-to-skill mapping verification (Kitasan Black = 30028)
+        var kitasanSkills = catalog.GetSkillsForCard(30028);
+        Assert(kitasanSkills.Count >= 5, $"Kitasan Black has {kitasanSkills.Count} hint skills (>= 5)");
+        Assert(kitasanSkills.Any(s => s.Name.Contains("Tail Held High")), "Kitasan Black skills include 'Tail Held High'");
+        Assert(kitasanSkills.Any(s => s.Name.Contains("Preferred Position")), "Kitasan Black skills include 'Preferred Position'");
+
+        // 4. Rank mapping utility tests
+        Assert(CareerPointPrediction.GetRankFromScore(19600) == "UG", "19600 pts = UG rank");
+        Assert(CareerPointPrediction.GetRankFromScore(17600) == "SS+", "17600 pts = SS+ rank");
+        Assert(CareerPointPrediction.GetRankFromScore(16000) == "SS", "16000 pts = SS rank");
+        Assert(CareerPointPrediction.GetRankFromScore(14600) == "S+", "14600 pts = S+ rank");
+        Assert(CareerPointPrediction.GetRankFromScore(13600) == "S", "13600 pts = S rank");
+        Assert(CareerPointPrediction.GetRankFromScore(12200) == "A+", "12200 pts = A+ rank");
+        Assert(CareerPointPrediction.GetRankFromScore(10600) == "A", "10600 pts = A rank");
+        Assert(CareerPointPrediction.GetRankFromScore(9100) == "B+", "9100 pts = B+ rank");
+
+        // 5. CareerPointPrediction.Calculate for default Mile Meta preset
+        var presets = BuildPreset.GetDefaultPresets();
+        var milePreset = presets.First(p => p.Id == "mile");
+        var uraScenario = ScenarioData.GetGlobalScenarios().First(s => s.Id == "ura");
+
+        var metaCards = milePreset.TrainingBonusCards.Concat(milePreset.InspirationBonusCards);
+        var prediction = CareerPointPrediction.Calculate(milePreset, uraScenario, metaCards, milePreset.RecommendedLegacies);
+
+        Assert(prediction.EstimatedStatScore > 8000, $"EstimatedStatScore is {prediction.EstimatedStatScore} (> 8000)");
+        Assert(prediction.EstimatedSkillScore > 3000, $"EstimatedSkillScore is {prediction.EstimatedSkillScore} (> 3000)");
+        Assert(prediction.EstimatedTotalScore >= 12000, $"EstimatedTotalScore is {prediction.EstimatedTotalScore} (>= 12000)");
+        Assert(!string.IsNullOrEmpty(prediction.PredictedRank), $"PredictedRank is '{prediction.PredictedRank}'");
+        Assert(!string.IsNullOrEmpty(prediction.RankBadgeColor), $"RankBadgeColor is '{prediction.RankBadgeColor}'");
+        Assert(prediction.RecommendedSkillHints.Count > 0, $"Generated {prediction.RecommendedSkillHints.Count} recommended skill hints");
+        Assert(prediction.TotalDiscountedSpSaved > 0, $"Estimated SP discount saved: {prediction.TotalDiscountedSpSaved} SP (> 0)");
+
+        foreach (var hint in prediction.RecommendedSkillHints)
+        {
+            Assert(!string.IsNullOrEmpty(hint.SkillName), "SkillHint has valid SkillName");
+            Assert(!string.IsNullOrEmpty(hint.SourceName), "SkillHint has valid SourceName");
+            Assert(hint.EstimatedHintLv >= 2, $"SkillHint has Hint Lv >= 2 (actual: {hint.EstimatedHintLv})");
+            Assert(hint.SpDiscountPct >= 20, $"SkillHint has SP discount >= 20% (actual: {hint.SpDiscountPct}%)");
+            Assert(hint.EvaluationPoints > 0, $"SkillHint has evaluation points > 0 (actual: {hint.EvaluationPoints})");
+            Assert(!string.IsNullOrEmpty(hint.SynergyReason), "SkillHint has synergy reason");
+        }
+
+        // 6. MainViewModel integration: loading both cards and legacies updates CareerPrediction
+        var vm = new MainViewModel();
+        string dumpPath = @"C:\Users\mejiromcqueenlover\Downloads\support_card_data.json";
+        string charaDumpPath = @"C:\Users\mejiromcqueenlover\Downloads\trained_chara_data.json";
+
+        if (File.Exists(dumpPath) && File.Exists(charaDumpPath))
+        {
+            vm.LoadUmadumpFile(dumpPath);
+            vm.LoadTrainedCharaFile(charaDumpPath);
+
+            Assert(vm.CareerPrediction != null, "ViewModel CareerPrediction is populated");
+            if (vm.CareerPrediction != null)
+            {
+                Assert(vm.CareerPrediction.EstimatedTotalScore >= 12000, $"Player CareerPrediction total: {vm.CareerPrediction.EstimatedTotalScore}");
+                Assert(vm.CareerPrediction.RecommendedSkillHints.Count > 0, "Player CareerPrediction has recommended skill hints");
+                Assert(vm.CareerPrediction.RecommendedSkillHints.Any(h => h.SourceType == "Legacy Spark"), "CareerPrediction includes Legacy Spark hints from player legacies");
+                Assert(vm.CareerPrediction.RecommendedSkillHints.Any(h => h.SourceType == "Support Card"), "CareerPrediction includes Support Card hints from player deck");
+            }
+
+            // Switching presets re-evaluates CareerPrediction
+            var sprintPreset = vm.Presets.First(p => p.Id == "sprint");
+            vm.SelectPresetCommand.Execute(sprintPreset);
+            Assert(vm.CareerPrediction != null, "CareerPrediction recalculated on preset switch to Sprint");
+            Assert(vm.ActivePreset?.Id == "sprint", "ActivePreset is sprint");
         }
     }
 

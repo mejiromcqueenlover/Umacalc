@@ -1,0 +1,7031 @@
+window.SKILL_CATALOG = {
+  "skills": {
+    "10071": {
+      "name": "Warning Shot!",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10081": {
+      "name": "Xceleration",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10091": {
+      "name": "Red Ace",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10111": {
+      "name": "Focused Mind",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10141": {
+      "name": "Coraz\u00F3n \u2606 Ardiente",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10181": {
+      "name": "Empress\u0027s Pride",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10241": {
+      "name": "1st Place Kiss\u2606",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10271": {
+      "name": "Feel the Burn!",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20043
+    },
+    "10321": {
+      "name": "Introduction to Physiology",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20023
+    },
+    "10351": {
+      "name": "V Is for Victory!",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10411": {
+      "name": "Class Rep \u002B Speed = Bakushin",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10451": {
+      "name": "Clear Heart",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20023
+    },
+    "10521": {
+      "name": "Super-Duper Stoked",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20023
+    },
+    "10561": {
+      "name": "Luck Be with Me!",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10601": {
+      "name": "I Can Win Sometimes, Right?",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10611": {
+      "name": "Call Me King",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20013
+    },
+    "10621": {
+      "name": "Ready, Go!",
+      "grade": 240,
+      "rarity": 3,
+      "icon": 20023
+    },
+    "100011": {
+      "name": "Shooting Star",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100021": {
+      "name": "The View from the Lead Is Mine!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100031": {
+      "name": "Sky-High Teio Step",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100041": {
+      "name": "Red Shift/LP1211-M",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100051": {
+      "name": "Lights of Vaudeville",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100061": {
+      "name": "Triumphant Pulse",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100071": {
+      "name": "Anchors Aweigh!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100081": {
+      "name": "Cut and Drive!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100091": {
+      "name": "Resplendent Red Ace",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100101": {
+      "name": "Shooting for Victory!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100111": {
+      "name": "Where There\u0027s a Will, There\u0027s a Way",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100121": {
+      "name": "You and Me! One-on-One!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100131": {
+      "name": "The Duty of Dignity Calls",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100141": {
+      "name": "Victoria por plancha \u2606",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100151": {
+      "name": "This Dance Is for Vittoria!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100161": {
+      "name": "Shadow Break",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100171": {
+      "name": "Behold Thine Emperor\u0027s Divine Might",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100181": {
+      "name": "Blazing Pride",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100191": {
+      "name": "OMG! (\uFF9F\u2200\uFF9F)  The Final Sprint! \u2606",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100201": {
+      "name": "Angling and Scheming",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100211": {
+      "name": "White Lightning Comin\u0027 Through!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100221": {
+      "name": "Fairy Tale",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100231": {
+      "name": "\u2234win Q.E.D.",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100241": {
+      "name": "Flashy\u2606Landing",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100251": {
+      "name": "Chasing After You",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100261": {
+      "name": "G00 1st. F\u221E;",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100271": {
+      "name": "Let\u0027s Pump Some Iron!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20043
+    },
+    "100281": {
+      "name": "YUMMY\u2606SPEED!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100291": {
+      "name": "Snow Bright, Snow Flight",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100301": {
+      "name": "Blue Rose Closer",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100311": {
+      "name": "All Charged! It\u0027s Go Time!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100321": {
+      "name": "U=ma2",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20023
+    },
+    "100331": {
+      "name": "Shooting Star of Dioskouroi",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100341": {
+      "name": "Now We\u0027re Cruisin\u0027!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100351": {
+      "name": "Our Ticket to Win!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100361": {
+      "name": "trigger:BEAT",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100371": {
+      "name": "Schwarzes Schwert",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100381": {
+      "name": "#LookatCurren",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100391": {
+      "name": "A Princess Must Seize Victory!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100401": {
+      "name": "KEEP IT REAL.",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100411": {
+      "name": "Genius x Bakushin = Victory",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100421": {
+      "name": "I\u0027m Possible!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100441": {
+      "name": "Victory belongs to me\u2014Strelitzia! \u2606",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100451": {
+      "name": "Pure Heart",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20023
+    },
+    "100461": {
+      "name": "SPARKLY\u2606STARDOM",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100471": {
+      "name": "Raise My Soul\u0027s Blade!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100481": {
+      "name": "Pop \u0026 Polish",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100491": {
+      "name": "Laugh at the Odds",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100501": {
+      "name": "Nemesis",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100511": {
+      "name": "Budding Blossom",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100521": {
+      "name": "Super-Duper Climax",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20023
+    },
+    "100531": {
+      "name": "Red-Hot Discipline!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100561": {
+      "name": "I See Victory in My Future!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100581": {
+      "name": "I Never Goof Up!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100591": {
+      "name": "Moving Past, and Beyond",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100601": {
+      "name": "Just a Little Farther!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100611": {
+      "name": "Prideful King",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20013
+    },
+    "100621": {
+      "name": "Go, Go, Mun!",
+      "grade": 340,
+      "rarity": 4,
+      "icon": 20023
+    },
+    "100641": {
+      "name": "Keep Pushing Ahead",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20023
+    },
+    "100651": {
+      "name": "Hands in the Air Like Ya Don\u0027t Care!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100671": {
+      "name": "Eternal Encompassing Shine",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100681": {
+      "name": "Victory Cheer!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100691": {
+      "name": "Ambition to Surpass the Sakura",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100711": {
+      "name": "A Lifelong Dream, A Moment\u0027s Flight",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100721": {
+      "name": "Peerless Dance of Flowering Flames",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100741": {
+      "name": "Lovely Spring Breeze",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100781": {
+      "name": "Sunny Breeze",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "100871": {
+      "name": "Silent Letter",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100981": {
+      "name": "Luck Runs My Way",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "100991": {
+      "name": "Shine On, Tomakomai! \u2606",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "101001": {
+      "name": "Never Say Never",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110011": {
+      "name": "Dazzl\u0027n \u266A Diver",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20023
+    },
+    "110031": {
+      "name": "Certain Victory",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110041": {
+      "name": "A Kiss for Courage",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110051": {
+      "name": "Ravissant",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110061": {
+      "name": "Festive Miracle",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110071": {
+      "name": "564 Escapades",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110081": {
+      "name": "Into High Gear!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110091": {
+      "name": "Queen\u0027s Lumination",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110101": {
+      "name": "Joyful Voyage!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110111": {
+      "name": "Superior Heal",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20023
+    },
+    "110131": {
+      "name": "Legacy of the Strong",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110141": {
+      "name": "Condor\u0027s Fury",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "110151": {
+      "name": "Barcarole of Blessings",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110161": {
+      "name": "Free from the Ashes",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110171": {
+      "name": "Arrows Whistle, Shadows Disperse",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110181": {
+      "name": "Eternal Moments",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110191": {
+      "name": "THE MOE AAAA Thanks for My Life",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110201": {
+      "name": "Break It Down!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110211": {
+      "name": "Lightning Flare",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110221": {
+      "name": "Best Day Ever",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110231": {
+      "name": "Presents from X",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110241": {
+      "name": "Flowery\u2606Maneuver",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110261": {
+      "name": "Operation Cacao",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110271": {
+      "name": "A Warm Cup for You",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110301": {
+      "name": "Every Rose Has Its Fangs",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20023
+    },
+    "110311": {
+      "name": "Fresh\u2606Parlor",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110341": {
+      "name": "Firelight",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110351": {
+      "name": "Ticket to Your Dreams!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110371": {
+      "name": "Guten Appetit \u266A",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110381": {
+      "name": "One True Color",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110401": {
+      "name": "Dancing in the Leaves",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110451": {
+      "name": "Give Mummy a Hug \u2661",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110461": {
+      "name": "\u03B1-star*",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110501": {
+      "name": "Hephaestus",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110521": {
+      "name": "114th Time\u0027s the Charm",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110561": {
+      "name": "Bountiful Harvest",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110581": {
+      "name": "Spooky, Scary, Happy",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110591": {
+      "name": "Wherever This Wonder Leads",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110601": {
+      "name": "Go\u2606Go\u2606Goal!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110611": {
+      "name": "Louder! Tracen Cheer!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20043
+    },
+    "110671": {
+      "name": "Rain Cloud Bolt",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "110681": {
+      "name": "Bring on the Banquet!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "120011": {
+      "name": "Dreams Donned with Pride!",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "120131": {
+      "name": "Your Smile Sparkles as the Waves",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "200011": {
+      "name": "Right-Handed \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200012": {
+      "name": "Right-Handed \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200013": {
+      "name": "Right-Handed \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200014": {
+      "name": "Right-Handed Demon",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "200021": {
+      "name": "Left-Handed \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200022": {
+      "name": "Left-Handed \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200023": {
+      "name": "Left-Handed \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200031": {
+      "name": "Tokyo Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200032": {
+      "name": "Tokyo Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200033": {
+      "name": "Tokyo Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200041": {
+      "name": "Nakayama Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200042": {
+      "name": "Nakayama Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200043": {
+      "name": "Nakayama Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200051": {
+      "name": "Hanshin Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200052": {
+      "name": "Hanshin Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200053": {
+      "name": "Hanshin Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200061": {
+      "name": "Kyoto Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200062": {
+      "name": "Kyoto Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200063": {
+      "name": "Kyoto Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200064": {
+      "name": "Yodo Invicta",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10022
+    },
+    "200071": {
+      "name": "Chukyo Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200072": {
+      "name": "Chukyo Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200073": {
+      "name": "Chukyo Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200081": {
+      "name": "Sapporo Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200082": {
+      "name": "Sapporo Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200083": {
+      "name": "Sapporo Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200091": {
+      "name": "Hakodate Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200092": {
+      "name": "Hakodate Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200093": {
+      "name": "Hakodate Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200101": {
+      "name": "Fukushima Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200102": {
+      "name": "Fukushima Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200103": {
+      "name": "Fukushima Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200111": {
+      "name": "Niigata Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200112": {
+      "name": "Niigata Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200113": {
+      "name": "Niigata Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200121": {
+      "name": "Kokura Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200122": {
+      "name": "Kokura Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200123": {
+      "name": "Kokura Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200131": {
+      "name": "Standard Distance \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200132": {
+      "name": "Standard Distance \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200133": {
+      "name": "Standard Distance \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200141": {
+      "name": "Non-Standard Distance \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200142": {
+      "name": "Non-Standard Distance \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200143": {
+      "name": "Non-Standard Distance \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200151": {
+      "name": "Firm Conditions \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "200152": {
+      "name": "Firm Conditions \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "200153": {
+      "name": "Firm Conditions \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10034
+    },
+    "200154": {
+      "name": "Firm Course Menace",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10032
+    },
+    "200161": {
+      "name": "Wet Conditions \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "200162": {
+      "name": "Wet Conditions \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "200163": {
+      "name": "Wet Conditions \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10034
+    },
+    "200171": {
+      "name": "Spring Runner \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200172": {
+      "name": "Spring Runner \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200173": {
+      "name": "Spring Runner \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200174": {
+      "name": "Spring Spectacle",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "200181": {
+      "name": "Summer Runner \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200182": {
+      "name": "Summer Runner \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200183": {
+      "name": "Summer Runner \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200191": {
+      "name": "Fall Runner \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200192": {
+      "name": "Fall Runner \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200193": {
+      "name": "Fall Runner \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200194": {
+      "name": "Fall Frenzy",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "200201": {
+      "name": "Winter Runner \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200202": {
+      "name": "Winter Runner \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200203": {
+      "name": "Winter Runner \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200211": {
+      "name": "Sunny Days \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200212": {
+      "name": "Sunny Days \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200221": {
+      "name": "Cloudy Days \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200222": {
+      "name": "Cloudy Days \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200231": {
+      "name": "Rainy Days \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200232": {
+      "name": "Rainy Days \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200233": {
+      "name": "Rainy Days \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10044
+    },
+    "200241": {
+      "name": "Snowy Days \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200242": {
+      "name": "Snowy Days \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200251": {
+      "name": "Inner Post Proficiency \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "200252": {
+      "name": "Inner Post Proficiency \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "200253": {
+      "name": "Inner Post Averseness",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10054
+    },
+    "200261": {
+      "name": "Outer Post Proficiency \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200262": {
+      "name": "Outer Post Proficiency \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200263": {
+      "name": "Outer Post Averseness",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200271": {
+      "name": "Maverick \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200272": {
+      "name": "Maverick \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200281": {
+      "name": "Competitive Spirit \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "200282": {
+      "name": "Competitive Spirit \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "200283": {
+      "name": "Wallflower",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10034
+    },
+    "200291": {
+      "name": "Target in Sight \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200292": {
+      "name": "Target in Sight \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10041
+    },
+    "200301": {
+      "name": "Long Shot \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200302": {
+      "name": "Long Shot \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "200311": {
+      "name": "G1 Averseness",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "200321": {
+      "name": "Paddock Fright",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200331": {
+      "name": "Professor of Curvature",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200332": {
+      "name": "Corner Adept \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200333": {
+      "name": "Corner Adept \u00D7",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20014
+    },
+    "200341": {
+      "name": "Corner Connoisseur",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200342": {
+      "name": "Corner Acceleration \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200343": {
+      "name": "Corner Acceleration \u00D7",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20044
+    },
+    "200351": {
+      "name": "Swinging Maestro",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200352": {
+      "name": "Corner Recovery \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200353": {
+      "name": "Corner Recovery \u00D7",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20024
+    },
+    "200361": {
+      "name": "Beeline Burst",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200362": {
+      "name": "Straightaway Adept",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200371": {
+      "name": "Rushing Gale!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200372": {
+      "name": "Straightaway Acceleration",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200381": {
+      "name": "Breath of Fresh Air",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200382": {
+      "name": "Straightaway Recovery",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200391": {
+      "name": "Ramp Revulsion",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20024
+    },
+    "200401": {
+      "name": "Packphobia",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20024
+    },
+    "200411": {
+      "name": "Defeatist",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20014
+    },
+    "200421": {
+      "name": "Reckless",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20014
+    },
+    "200431": {
+      "name": "Concentration",
+      "grade": 394,
+      "rarity": 2,
+      "icon": 20062
+    },
+    "200432": {
+      "name": "Focus",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 20061
+    },
+    "200433": {
+      "name": "Gatekept",
+      "grade": -174,
+      "rarity": 1,
+      "icon": 20064
+    },
+    "200441": {
+      "name": "Iron Will",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200442": {
+      "name": "Lay Low",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200451": {
+      "name": "Center Stage",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20052
+    },
+    "200452": {
+      "name": "Prudent Positioning",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 20051
+    },
+    "200461": {
+      "name": "It\u0027s On!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200462": {
+      "name": "Ramp Up",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200471": {
+      "name": "Indomitable",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200472": {
+      "name": "Pace Strategy",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200481": {
+      "name": "Unruffled",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200482": {
+      "name": "Calm in a Crowd",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200491": {
+      "name": "No Stopping Me!",
+      "grade": 394,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200492": {
+      "name": "Nimble Navigator",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200501": {
+      "name": "Lane Legerdemain",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20052
+    },
+    "200502": {
+      "name": "Go with the Flow",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 20051
+    },
+    "200511": {
+      "name": "In Body and Mind",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200512": {
+      "name": "Homestretch Haste",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200521": {
+      "name": "Running Idle",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20024
+    },
+    "200531": {
+      "name": "Taking the Lead",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200532": {
+      "name": "Early Lead",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200541": {
+      "name": "Escape Artist",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200542": {
+      "name": "Fast-Paced",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200551": {
+      "name": "Unrestrained",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200552": {
+      "name": "Final Push",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200561": {
+      "name": "Calm and Collected",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200562": {
+      "name": "Stamina to Spare",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200571": {
+      "name": "Race Planner",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200572": {
+      "name": "Preferred Position",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200581": {
+      "name": "Speed Star",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200582": {
+      "name": "Prepared to Pass",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200591": {
+      "name": "Fast \u0026 Furious",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200592": {
+      "name": "Position Pilfer",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200601": {
+      "name": "On Your Left!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200602": {
+      "name": "Slick Surge",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200611": {
+      "name": "Rising Dragon",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200612": {
+      "name": "Outer Swell",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200621": {
+      "name": "Sleeping Lion",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200622": {
+      "name": "Standing By",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200631": {
+      "name": "Sturm und Drang",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200632": {
+      "name": "Masterful Gambit",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200641": {
+      "name": "Encroaching Shadow",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200642": {
+      "name": "Straightaway Spurt",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200651": {
+      "name": "Turbo Sprint",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200652": {
+      "name": "Sprinting Gear",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200662": {
+      "name": "Wait-and-See",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200671": {
+      "name": "Blinding Flash",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200672": {
+      "name": "Gap Closer",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200681": {
+      "name": "Mile Maven",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200682": {
+      "name": "Productive Plan",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200691": {
+      "name": "Keen Eye",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200692": {
+      "name": "Watchful Eye",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200701": {
+      "name": "Furious Feat",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200702": {
+      "name": "Updrafters",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "200711": {
+      "name": "Trackblazer",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200712": {
+      "name": "Rosy Outlook",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200721": {
+      "name": "Killer Tunes",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200722": {
+      "name": "Up-Tempo",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200731": {
+      "name": "Unyielding",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200732": {
+      "name": "Steadfast",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200741": {
+      "name": "Cooldown",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200742": {
+      "name": "Deep Breaths",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200751": {
+      "name": "Innate Experience",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200752": {
+      "name": "Inside Scoop",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200761": {
+      "name": "Adrenaline Rush",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "200762": {
+      "name": "Extra Tank",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "200771": {
+      "name": "Trick (Front)",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200772": {
+      "name": "Tantalizing Trick",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30052
+    },
+    "200781": {
+      "name": "Trick (Rear)",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200791": {
+      "name": "Frenzied Front Runners",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 30041
+    },
+    "200801": {
+      "name": "Frenzied Pace Chasers",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 30041
+    },
+    "200811": {
+      "name": "Frenzied Late Surgers",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 30041
+    },
+    "200821": {
+      "name": "Frenzied End Closers",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 30041
+    },
+    "200831": {
+      "name": "Subdued Front Runners",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200841": {
+      "name": "Flustered Front Runners",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200851": {
+      "name": "Hesitant Front Runners",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "200861": {
+      "name": "Subdued Pace Chasers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200871": {
+      "name": "Flustered Pace Chasers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200881": {
+      "name": "Hesitant Pace Chasers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "200891": {
+      "name": "Subdued Late Surgers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200901": {
+      "name": "Flustered Late Surgers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200911": {
+      "name": "Hesitant Late Surgers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "200921": {
+      "name": "Subdued End Closers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200931": {
+      "name": "Flustered End Closers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "200941": {
+      "name": "Hesitant End Closers",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "200951": {
+      "name": "Oi Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200952": {
+      "name": "Oi Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "200953": {
+      "name": "Oi Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "200961": {
+      "name": "Sprint Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200962": {
+      "name": "Sprint Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200963": {
+      "name": "Shocking Flash",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200971": {
+      "name": "Sprint Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200972": {
+      "name": "Sprint Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200981": {
+      "name": "Staggering Lead",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "200982": {
+      "name": "Huge Lead",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "200991": {
+      "name": "Plan X",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "200992": {
+      "name": "Countermeasure",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201001": {
+      "name": "Perfect Prep!",
+      "grade": 394,
+      "rarity": 2,
+      "icon": 20052
+    },
+    "201002": {
+      "name": "Meticulous Measures",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20051
+    },
+    "201011": {
+      "name": "Adored by All",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30012
+    },
+    "201012": {
+      "name": "Intimidate",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "201021": {
+      "name": "You\u0027ve Got No Shot",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30052
+    },
+    "201022": {
+      "name": "Stop Right There!",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "201031": {
+      "name": "Mile Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201032": {
+      "name": "Mile Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201041": {
+      "name": "Mile Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201042": {
+      "name": "Mile Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201051": {
+      "name": "Changing Gears",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201052": {
+      "name": "Shifting Gears",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201061": {
+      "name": "Step on the Gas!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201062": {
+      "name": "Acceleration",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201071": {
+      "name": "Big-Sisterly",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201072": {
+      "name": "Unyielding Spirit",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201081": {
+      "name": "Greed for Speed",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 30012
+    },
+    "201082": {
+      "name": "Speed Eater",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "201091": {
+      "name": "Battle Formation",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30022
+    },
+    "201092": {
+      "name": "Opening Gambit",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30021
+    },
+    "201101": {
+      "name": "Medium Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201102": {
+      "name": "Medium Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201103": {
+      "name": "Flash Forward",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201111": {
+      "name": "Medium Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201112": {
+      "name": "Medium Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201113": {
+      "name": "Refraction Arc",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201121": {
+      "name": "Clairvoyance",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20092
+    },
+    "201122": {
+      "name": "Hawkeye",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 20091
+    },
+    "201131": {
+      "name": "Lightning Step",
+      "grade": 394,
+      "rarity": 2,
+      "icon": 20052
+    },
+    "201132": {
+      "name": "Thunderbolt Step",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20051
+    },
+    "201141": {
+      "name": "Miraculous Step",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201142": {
+      "name": "Soft Step",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201151": {
+      "name": "Dominator",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30012
+    },
+    "201152": {
+      "name": "Tether",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "201161": {
+      "name": "Mystifying Murmur",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30052
+    },
+    "201162": {
+      "name": "Murmur",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "201171": {
+      "name": "Long Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201172": {
+      "name": "Long Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201173": {
+      "name": "Blast Forward",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201181": {
+      "name": "Long Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201182": {
+      "name": "Long Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201191": {
+      "name": "Vanguard Spirit",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201192": {
+      "name": "Keeping the Lead",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201201": {
+      "name": "VIP Pass",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201202": {
+      "name": "Passing Pro",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201211": {
+      "name": "Overwhelming Pressure",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201212": {
+      "name": "Pressure",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201221": {
+      "name": "Stamina Siphon",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 30052
+    },
+    "201222": {
+      "name": "Stamina Eater",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "201231": {
+      "name": "Illusionist",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 30072
+    },
+    "201232": {
+      "name": "Smoke Screen",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 30071
+    },
+    "201241": {
+      "name": "Front Runner Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201242": {
+      "name": "Front Runner Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201251": {
+      "name": "Front Runner Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201252": {
+      "name": "Front Runner Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201253": {
+      "name": "Crescent Gale",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201261": {
+      "name": "Sixth Sense",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20052
+    },
+    "201262": {
+      "name": "Dodging Danger",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 20051
+    },
+    "201271": {
+      "name": "Top Runner",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201272": {
+      "name": "Leader\u0027s Pride",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201281": {
+      "name": "Restless",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201282": {
+      "name": "Moxie",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201291": {
+      "name": "Reignition",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201292": {
+      "name": "Second Wind",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201302": {
+      "name": "Restart",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30021
+    },
+    "201311": {
+      "name": "Pace Chaser Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201312": {
+      "name": "Pace Chaser Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201321": {
+      "name": "Pace Chaser Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201322": {
+      "name": "Pace Chaser Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201331": {
+      "name": "Technician",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201332": {
+      "name": "Shrewd Step",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201341": {
+      "name": "Determined Descent",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201342": {
+      "name": "Straight Descent",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201351": {
+      "name": "Gourmand",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201352": {
+      "name": "Hydrate",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201361": {
+      "name": "Shatterproof",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201362": {
+      "name": "Tactical Tweak",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201371": {
+      "name": "Dazzling Disorientation",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 30072
+    },
+    "201372": {
+      "name": "Disorient",
+      "grade": 85,
+      "rarity": 1,
+      "icon": 30071
+    },
+    "201381": {
+      "name": "Late Surger Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201382": {
+      "name": "Late Surger Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201383": {
+      "name": "Sharp Streak",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201391": {
+      "name": "Late Surger Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201392": {
+      "name": "Late Surger Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201393": {
+      "name": "Sharp Arc",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201401": {
+      "name": "Hard Worker",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201402": {
+      "name": "Fighter",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201411": {
+      "name": "15,000,000 CC",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201412": {
+      "name": "1,500,000 CC",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201421": {
+      "name": "Relax",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201422": {
+      "name": "A Small Breather",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201431": {
+      "name": "The Bigger Picture",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20092
+    },
+    "201432": {
+      "name": "Studious",
+      "grade": 85,
+      "rarity": 1,
+      "icon": 20091
+    },
+    "201441": {
+      "name": "All-Seeing Eyes",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30052
+    },
+    "201442": {
+      "name": "Sharp Gaze",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30051
+    },
+    "201451": {
+      "name": "End Closer Straightaways \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201452": {
+      "name": "End Closer Straightaways \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201453": {
+      "name": "Moonlit Flash",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201461": {
+      "name": "End Closer Corners \u25CE",
+      "grade": 262,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201462": {
+      "name": "End Closer Corners \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201471": {
+      "name": "The Coast Is Clear!",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20092
+    },
+    "201472": {
+      "name": "I Can See Right Through You",
+      "grade": 85,
+      "rarity": 1,
+      "icon": 20091
+    },
+    "201481": {
+      "name": "Go-Home Specialist",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201482": {
+      "name": "After-School Stroll",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201491": {
+      "name": "Serenity",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201492": {
+      "name": "Levelheaded",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201501": {
+      "name": "Crusader",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20092
+    },
+    "201502": {
+      "name": "Strategist",
+      "grade": 85,
+      "rarity": 1,
+      "icon": 20091
+    },
+    "201511": {
+      "name": "Petrifying Gaze",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30012
+    },
+    "201512": {
+      "name": "Intense Gaze",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "201521": {
+      "name": "Front Runner Savvy \u25CE",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201522": {
+      "name": "Front Runner Savvy \u25CB",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201531": {
+      "name": "Pace Chaser Savvy \u25CE",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201532": {
+      "name": "Pace Chaser Savvy \u25CB",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201541": {
+      "name": "Late Surger Savvy \u25CE",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201542": {
+      "name": "Late Surger Savvy \u25CB",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201551": {
+      "name": "End Closer Savvy \u25CE",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201552": {
+      "name": "End Closer Savvy \u25CB",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "201561": {
+      "name": "Super Lucky Seven",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 10062
+    },
+    "201562": {
+      "name": "Lucky Seven",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10061
+    },
+    "201571": {
+      "name": "Triple 7s",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201581": {
+      "name": "Highlander",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201591": {
+      "name": "Uma Stan",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201592": {
+      "name": "Superstan",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201601": {
+      "name": "Groundwork",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "201611": {
+      "name": "Tail Held High",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201612": {
+      "name": "Tail Nine",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201621": {
+      "name": "Shake It Out",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201631": {
+      "name": "Sympathy",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "201641": {
+      "name": "Lone Wolf",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "201651": {
+      "name": "Slipstream",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201652": {
+      "name": "Perfect Spot!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201661": {
+      "name": "Playtime\u0027s Over!",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201662": {
+      "name": "See Ya Later!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201671": {
+      "name": "Trending in the Charts!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201672": {
+      "name": "Top Pick",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201681": {
+      "name": "Lead the Charge!",
+      "grade": 394,
+      "rarity": 2,
+      "icon": 20052
+    },
+    "201682": {
+      "name": "Forward, March!",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20051
+    },
+    "201691": {
+      "name": "Lie in Wait",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "201692": {
+      "name": "Be Still",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "201701": {
+      "name": "Come What May",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "201702": {
+      "name": "All I\u0027ve Got",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "201801": {
+      "name": "\u2661 3D Nail Art",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "201901": {
+      "name": "Neck and Neck",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "201902": {
+      "name": "Head-On",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202001": {
+      "name": "Master of the Sands",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "202002": {
+      "name": "Familiar Ground",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "202011": {
+      "name": "Headliner",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202012": {
+      "name": "Feature Act",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202021": {
+      "name": "Daring Strike",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202022": {
+      "name": "Early Start",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202031": {
+      "name": "Nothing Ventured",
+      "grade": 334,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202032": {
+      "name": "Risky Business",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202041": {
+      "name": "In High Spirits",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202042": {
+      "name": "Light as a Feather",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202051": {
+      "name": "Runaway",
+      "grade": 370,
+      "rarity": 2,
+      "icon": 40012
+    },
+    "202061": {
+      "name": "Best in Japan",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 2010010
+    },
+    "202071": {
+      "name": "Of Calm Mind",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "202072": {
+      "name": "Free-Spirited",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "202081": {
+      "name": "From the Brink",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202082": {
+      "name": "Take the Chance",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202091": {
+      "name": "Burning Soul",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202092": {
+      "name": "Fighting Spirit",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202101": {
+      "name": "Elated",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202102": {
+      "name": "Eager",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202111": {
+      "name": "Full of Vigor",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202112": {
+      "name": "Pumped",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202121": {
+      "name": "Dauntless",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202122": {
+      "name": "Fearless",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202131": {
+      "name": "Wild Wind",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202132": {
+      "name": "With All My Soul",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202141": {
+      "name": "You\u0027re Not the Boss of Me!",
+      "grade": -174,
+      "rarity": 1,
+      "icon": 20064
+    },
+    "202151": {
+      "name": "Keep Going!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202152": {
+      "name": "Full Throttle",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202161": {
+      "name": "Restraint",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "202171": {
+      "name": "Master of Declines",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202172": {
+      "name": "Downhill Speedster",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202181": {
+      "name": "99 Problems",
+      "grade": -174,
+      "rarity": 1,
+      "icon": 10044
+    },
+    "202191": {
+      "name": "Heart All Set",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "202192": {
+      "name": "All Set",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "202201": {
+      "name": "Kawasaki Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "202202": {
+      "name": "Kawasaki Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "202203": {
+      "name": "Kawasaki Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "202211": {
+      "name": "Funabashi Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "202212": {
+      "name": "Funabashi Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "202213": {
+      "name": "Funabashi Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "202221": {
+      "name": "Morioka Racecourse \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "202222": {
+      "name": "Morioka Racecourse \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "202223": {
+      "name": "Morioka Racecourse \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10024
+    },
+    "202231": {
+      "name": "Night Races \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "202232": {
+      "name": "Night Races \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "202233": {
+      "name": "Night Races \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10054
+    },
+    "202241": {
+      "name": "Sharp Turns \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "202242": {
+      "name": "Sharp Turns \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "202243": {
+      "name": "Sharp Turns \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10054
+    },
+    "202251": {
+      "name": "Collaborative Graded Races \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "202252": {
+      "name": "Collaborative Graded Races \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "202253": {
+      "name": "Collaborative Graded Races \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "202261": {
+      "name": "Chance of Victory",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202262": {
+      "name": "Sunny Sign",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202271": {
+      "name": "Can\u0027t Keep Me Down",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202272": {
+      "name": "Comeback",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202281": {
+      "name": "Full Speed!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202282": {
+      "name": "Full Tilt",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202291": {
+      "name": "Crystal Clear",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202292": {
+      "name": "Rational",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202301": {
+      "name": "Dancer in the Dirt",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202302": {
+      "name": "Down in the Dirt \u25CB",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202303": {
+      "name": "Down in the Dirt \u00D7",
+      "grade": -262,
+      "rarity": 1,
+      "icon": 20014
+    },
+    "202311": {
+      "name": "Be the Center!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202312": {
+      "name": "Got the Spirit!",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202321": {
+      "name": "Run Like Crazy!",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202322": {
+      "name": "Rapid Gain",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202331": {
+      "name": "Strong Steps",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "202332": {
+      "name": "Solid Steps",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "202341": {
+      "name": "Maestro of the Mud",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "202342": {
+      "name": "Muddy \u25CE",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "202343": {
+      "name": "Muddy \u25CB",
+      "grade": 129,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "202344": {
+      "name": "Muddy \u00D7",
+      "grade": -129,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "202351": {
+      "name": "Dust Cloud Idol",
+      "grade": 461,
+      "rarity": 2,
+      "icon": 30012
+    },
+    "202352": {
+      "name": "Dust Cloud",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "202361": {
+      "name": "Catch \u0027Em Off Guard",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 30012
+    },
+    "202362": {
+      "name": "Oppression",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 30011
+    },
+    "202371": {
+      "name": "Unstoppable",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202372": {
+      "name": "On the Attack",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202381": {
+      "name": "Breakin\u0027 Ahead",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202382": {
+      "name": "Breakin\u0027 Out",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202391": {
+      "name": "Givin\u0027 It 1000%",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202392": {
+      "name": "Mad Dash",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202401": {
+      "name": "Lightning Surge",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202402": {
+      "name": "Leap Forward",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202411": {
+      "name": "Ambitious Breeze",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202412": {
+      "name": "Aspire",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202421": {
+      "name": "Claw Forward",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202422": {
+      "name": "Scramble",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202431": {
+      "name": "Solid Strike",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202432": {
+      "name": "Steady Gait",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202441": {
+      "name": "Risk-Maker",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "202442": {
+      "name": "Risk-Taker",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "202451": {
+      "name": "Top Gear",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202452": {
+      "name": "Pedal to the Metal",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202461": {
+      "name": "Can\u0027t Even Catch My Shadow",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202462": {
+      "name": "Firm Resolve",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202471": {
+      "name": "Hot Pursuit",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202472": {
+      "name": "Latch On",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202481": {
+      "name": "Beast Mode",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202482": {
+      "name": "My True Strength",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202491": {
+      "name": "Razor-Sharp Steps",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20042
+    },
+    "202492": {
+      "name": "Sharp Steps",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "202501": {
+      "name": "Reckless Charge",
+      "grade": 508,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "202502": {
+      "name": "No Looking Back",
+      "grade": 217,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "202511": {
+      "name": "Gonna Be Ur #1 FRFR",
+      "grade": -174,
+      "rarity": 1,
+      "icon": 10054
+    },
+    "210011": {
+      "name": "Burning Spirit SPD",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20102
+    },
+    "210012": {
+      "name": "Ignited Spirit SPD",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20101
+    },
+    "210021": {
+      "name": "Burning Spirit STA",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20112
+    },
+    "210022": {
+      "name": "Ignited Spirit STA",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20111
+    },
+    "210031": {
+      "name": "Burning Spirit PWR",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20122
+    },
+    "210032": {
+      "name": "Ignited Spirit PWR",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20121
+    },
+    "210041": {
+      "name": "Burning Spirit GUTS",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20102
+    },
+    "210042": {
+      "name": "Ignited Spirit GUTS",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20101
+    },
+    "210051": {
+      "name": "Burning Spirit WIT",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20132
+    },
+    "210052": {
+      "name": "Ignited Spirit WIT",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20131
+    },
+    "210061": {
+      "name": "Radiant Star",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20142
+    },
+    "210062": {
+      "name": "Glittering Star",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20141
+    },
+    "210071": {
+      "name": "I Wanna Win with You",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20152
+    },
+    "210072": {
+      "name": "On the Way to Our Dream",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20151
+    },
+    "210081": {
+      "name": "Past My Limits",
+      "grade": 633,
+      "rarity": 2,
+      "icon": 20162
+    },
+    "210082": {
+      "name": "Eyes on the Goal",
+      "grade": 263,
+      "rarity": 1,
+      "icon": 20161
+    },
+    "210091": {
+      "name": "Racing Spirit: Speed",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20161
+    },
+    "210101": {
+      "name": "Racing Spirit: Stamina",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20161
+    },
+    "210111": {
+      "name": "Racing Spirit: Power",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20161
+    },
+    "210121": {
+      "name": "Racing Spirit: Guts",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20171
+    },
+    "210131": {
+      "name": "Racing Spirit: Wit",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20161
+    },
+    "210141": {
+      "name": "Racing Spirit: Mood",
+      "grade": 174,
+      "rarity": 1,
+      "icon": 20181
+    },
+    "300011": {
+      "name": "Unquenched Thirst",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "300021": {
+      "name": "Unchanging",
+      "grade": 0,
+      "rarity": 2,
+      "icon": 10012
+    },
+    "300031": {
+      "name": "Towards the Scenery I Seek",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "300041": {
+      "name": "Creeping Anxiety",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10014
+    },
+    "300051": {
+      "name": "Blatant Fear",
+      "grade": 0,
+      "rarity": 2,
+      "icon": 20015
+    },
+    "300061": {
+      "name": "Dream Run",
+      "grade": 0,
+      "rarity": 2,
+      "icon": 20012
+    },
+    "300071": {
+      "name": "Show Me What Lies Beyond!",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "300081": {
+      "name": "Hoiya! Have a Good Run!",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "300091": {
+      "name": "As a Friend and Rival",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "300101": {
+      "name": "Cheers of a Fellow Dreamer",
+      "grade": 0,
+      "rarity": 2,
+      "icon": 20022
+    },
+    "300111": {
+      "name": "Chin Up, Derby Umamusume!",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "300121": {
+      "name": "For the Team",
+      "grade": 0,
+      "rarity": 2,
+      "icon": 10022
+    },
+    "300131": {
+      "name": "Ruler of Japan",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "300141": {
+      "name": "Indomitable",
+      "grade": 340,
+      "rarity": 5,
+      "icon": 20013
+    },
+    "900011": {
+      "name": "Shooting Star",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900021": {
+      "name": "The View from the Lead Is Mine!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900031": {
+      "name": "Sky-High Teio Step",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900041": {
+      "name": "Red Shift/LP1211-M",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900051": {
+      "name": "Lights of Vaudeville",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900061": {
+      "name": "Triumphant Pulse",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900071": {
+      "name": "Anchors Aweigh!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900081": {
+      "name": "Cut and Drive!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900091": {
+      "name": "Resplendent Red Ace",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900101": {
+      "name": "Shooting for Victory!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900111": {
+      "name": "Where There\u0027s a Will, There\u0027s a Way",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900121": {
+      "name": "You and Me! One-on-One!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900131": {
+      "name": "The Duty of Dignity Calls",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900141": {
+      "name": "Victoria por plancha \u2606",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900151": {
+      "name": "This Dance Is for Vittoria!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900161": {
+      "name": "Shadow Break",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900171": {
+      "name": "Behold Thine Emperor\u0027s Divine Might",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900181": {
+      "name": "Blazing Pride",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900191": {
+      "name": "OMG! (\uFF9F\u2200\uFF9F)  The Final Sprint! \u2606",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900201": {
+      "name": "Angling and Scheming",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900211": {
+      "name": "White Lightning Comin\u0027 Through!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900221": {
+      "name": "Fairy Tale",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900231": {
+      "name": "\u2234win Q.E.D.",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900241": {
+      "name": "Flashy\u2606Landing",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900251": {
+      "name": "Chasing After You",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900261": {
+      "name": "G00 1st. F\u221E;",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900271": {
+      "name": "Let\u0027s Pump Some Iron!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900281": {
+      "name": "YUMMY\u2606SPEED!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900291": {
+      "name": "Snow Bright, Snow Flight",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900301": {
+      "name": "Blue Rose Closer",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900311": {
+      "name": "All Charged! It\u0027s Go Time!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900321": {
+      "name": "U=ma2",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "900331": {
+      "name": "Shooting Star of Dioskouroi",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900341": {
+      "name": "Now We\u0027re Cruisin\u0027!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900351": {
+      "name": "Our Ticket to Win!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900361": {
+      "name": "trigger:BEAT",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900371": {
+      "name": "Schwarzes Schwert",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900381": {
+      "name": "#LookatCurren",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900391": {
+      "name": "A Princess Must Seize Victory!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900401": {
+      "name": "KEEP IT REAL.",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900411": {
+      "name": "Genius x Bakushin = Victory",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900421": {
+      "name": "I\u0027m Possible!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900441": {
+      "name": "Victory belongs to me\u2014Strelitzia! \u2606",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900451": {
+      "name": "Pure Heart",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "900461": {
+      "name": "SPARKLY\u2606STARDOM",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900471": {
+      "name": "Raise My Soul\u0027s Blade!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900481": {
+      "name": "Pop \u0026 Polish",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900491": {
+      "name": "Laugh at the Odds",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900501": {
+      "name": "Nemesis",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900511": {
+      "name": "Budding Blossom",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900521": {
+      "name": "Super-Duper Climax",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "900531": {
+      "name": "Red-Hot Discipline!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900561": {
+      "name": "I See Victory in My Future!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900581": {
+      "name": "I Never Goof Up!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900591": {
+      "name": "Moving Past, and Beyond",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900601": {
+      "name": "Just a Little Farther!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900611": {
+      "name": "Prideful King",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900621": {
+      "name": "Go, Go, Mun!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "900641": {
+      "name": "Keep Pushing Ahead",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "900651": {
+      "name": "Hands in the Air Like Ya Don\u0027t Care!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900671": {
+      "name": "Eternal Encompassing Shine",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900681": {
+      "name": "Victory Cheer!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900691": {
+      "name": "Ambition to Surpass the Sakura",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900711": {
+      "name": "A Lifelong Dream, A Moment\u0027s Flight",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900721": {
+      "name": "Peerless Dance of Flowering Flames",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900741": {
+      "name": "Lovely Spring Breeze",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900781": {
+      "name": "Sunny Breeze",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "900871": {
+      "name": "Silent Letter",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900981": {
+      "name": "Luck Runs My Way",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "900991": {
+      "name": "Shine On, Tomakomai! \u2606",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "901001": {
+      "name": "Never Say Never",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910011": {
+      "name": "Dazzl\u0027n \u266A Diver",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "910031": {
+      "name": "Certain Victory",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910041": {
+      "name": "A Kiss for Courage",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910051": {
+      "name": "Ravissant",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910061": {
+      "name": "Festive Miracle",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910071": {
+      "name": "564 Escapades",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910081": {
+      "name": "Into High Gear!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910091": {
+      "name": "Queen\u0027s Lumination",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910101": {
+      "name": "Joyful Voyage!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910111": {
+      "name": "Superior Heal",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "910131": {
+      "name": "Legacy of the Strong",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910141": {
+      "name": "Condor\u0027s Fury",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "910151": {
+      "name": "Barcarole of Blessings",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910161": {
+      "name": "Free from the Ashes",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910171": {
+      "name": "Arrows Whistle, Shadows Disperse",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910181": {
+      "name": "Eternal Moments",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910191": {
+      "name": "THE MOE AAAA Thanks for My Life",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910201": {
+      "name": "Break It Down!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910211": {
+      "name": "Lightning Flare",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910221": {
+      "name": "Best day ever",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910231": {
+      "name": "Presents from X",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910241": {
+      "name": "Flowery\u2606Maneuver",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910261": {
+      "name": "Operation Cacao",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910271": {
+      "name": "A Warm Cup for You",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910301": {
+      "name": "Every Rose Has Its Fangs",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20021
+    },
+    "910311": {
+      "name": "Fresh\u2606Parlor",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910341": {
+      "name": "Firelight",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910351": {
+      "name": "Ticket to Your Dreams!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910371": {
+      "name": "Guten Appetit \u266A",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910381": {
+      "name": "One True Color",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910401": {
+      "name": "Dancing in the Leaves",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910451": {
+      "name": "Give Mummy a Hug \u2661",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910461": {
+      "name": "\u03B1-star*",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910501": {
+      "name": "Hephaestus",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910521": {
+      "name": "114th Time\u0027s the Charm",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910561": {
+      "name": "Bountiful Harvest",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910581": {
+      "name": "Spooky, Scary, Happy",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910591": {
+      "name": "Wherever This Wonder Leads",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910601": {
+      "name": "Go\u2606Go\u2606Goal!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910611": {
+      "name": "Louder! Tracen Cheer!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20041
+    },
+    "910671": {
+      "name": "Rain Cloud Bolt",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "910681": {
+      "name": "Bring on the Banquet!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "920011": {
+      "name": "Dreams Donned with Pride!",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "920131": {
+      "name": "Your Smile Sparkles as the Waves",
+      "grade": 180,
+      "rarity": 1,
+      "icon": 20011
+    },
+    "1000011": {
+      "name": "Carnival Bonus",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 1010011
+    },
+    "1000012": {
+      "name": "Carnival Bonus",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 1010011
+    },
+    "1000013": {
+      "name": "Carnival Bonus",
+      "grade": 0,
+      "rarity": 1,
+      "icon": 1010011
+    },
+    "1100011": {
+      "name": "Feelin\u0027 a Bit Silly",
+      "grade": -500,
+      "rarity": 1,
+      "icon": 20064
+    },
+    "1200011": {
+      "name": "Medium Race Enthusiast",
+      "grade": 508,
+      "rarity": 1,
+      "icon": 10051
+    },
+    "1200021": {
+      "name": "Long Race Enthusiast",
+      "grade": 508,
+      "rarity": 1,
+      "icon": 10021
+    },
+    "1200031": {
+      "name": "Mile Race Enthusiast",
+      "grade": 508,
+      "rarity": 1,
+      "icon": 10031
+    },
+    "1200041": {
+      "name": "Sprint Race Enthusiast",
+      "grade": 508,
+      "rarity": 1,
+      "icon": 10011
+    },
+    "1200051": {
+      "name": "Dirt Race Enthusiast",
+      "grade": 508,
+      "rarity": 1,
+      "icon": 10041
+    }
+  },
+  "cardSkills": {
+    "10001": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "10002": [
+      200342,
+      200432,
+      200452,
+      201262,
+      210012
+    ],
+    "10003": [
+      200192,
+      200382,
+      200552,
+      200352,
+      200372,
+      200492,
+      200572,
+      202031,
+      210041
+    ],
+    "10004": [
+      200042,
+      200542,
+      200472,
+      200602,
+      200702,
+      202152,
+      210042
+    ],
+    "10005": [
+      200352,
+      200462,
+      200652,
+      200381,
+      201361,
+      200582,
+      200722,
+      200371,
+      200732,
+      201902,
+      210031
+    ],
+    "10006": [
+      200022,
+      200572,
+      200352,
+      200612,
+      201112,
+      210032
+    ],
+    "10007": [
+      200362,
+      200562,
+      200032,
+      200582,
+      200722,
+      210032
+    ],
+    "10008": [
+      200302,
+      200622,
+      200642,
+      201482,
+      210022
+    ],
+    "10009": [
+      200012,
+      200592,
+      200352,
+      200552,
+      200742,
+      201242,
+      210022
+    ],
+    "10010": [
+      200032,
+      200612,
+      200012,
+      200372,
+      200582,
+      202312,
+      210052
+    ],
+    "10011": [
+      200372,
+      200032,
+      200572,
+      201682,
+      202282,
+      210052
+    ],
+    "10012": [
+      200211,
+      200301,
+      200572,
+      201002,
+      201352,
+      202041
+    ],
+    "10013": [
+      200332,
+      200452,
+      200642,
+      200301,
+      200512,
+      200701,
+      201591
+    ],
+    "10014": [
+      200301,
+      200492,
+      200601,
+      201102
+    ],
+    "10015": [
+      200512,
+      200642,
+      200701,
+      201032,
+      201591
+    ],
+    "10016": [
+      200433,
+      201291,
+      201302,
+      202312
+    ],
+    "10017": [
+      201182,
+      201322,
+      201332,
+      202011,
+      202372
+    ],
+    "10018": [
+      200332,
+      200542,
+      200732,
+      200582,
+      200742,
+      201172,
+      201212,
+      201322
+    ],
+    "10019": [
+      200572,
+      201042,
+      201071,
+      201532,
+      201902
+    ],
+    "10020": [
+      200433,
+      200592,
+      200342,
+      200581,
+      201322,
+      201332,
+      201532
+    ],
+    "10021": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "10022": [
+      200042,
+      200542,
+      200472,
+      200602,
+      200702,
+      202152,
+      210042
+    ],
+    "10023": [
+      200192,
+      200582,
+      200351,
+      201441,
+      201222,
+      201232,
+      200371,
+      201392,
+      202122,
+      210021
+    ],
+    "10024": [
+      200391,
+      200352,
+      200602,
+      200662,
+      200192,
+      200562,
+      201312,
+      202261,
+      202362,
+      202372,
+      210051
+    ],
+    "10025": [
+      200162,
+      200622,
+      200301,
+      201552,
+      202112,
+      202402
+    ],
+    "10026": [
+      200442,
+      200301,
+      201102,
+      201702,
+      202032,
+      202441
+    ],
+    "10027": [
+      200382,
+      200542,
+      200682,
+      200301,
+      200742,
+      201192,
+      201652,
+      202051
+    ],
+    "10028": [
+      200042,
+      200462,
+      200301,
+      200941,
+      201422,
+      202072
+    ],
+    "10029": [
+      200342,
+      200532,
+      200301,
+      201171,
+      201222,
+      201692
+    ],
+    "10030": [
+      200232,
+      200512,
+      100981,
+      200182,
+      200152,
+      200132,
+      200301,
+      201532,
+      202261,
+      202251,
+      202332
+    ],
+    "10031": [
+      100421,
+      200542,
+      200652,
+      200963,
+      201241,
+      201272
+    ],
+    "10032": [
+      200282,
+      200562,
+      200022,
+      200682,
+      201031,
+      201322,
+      202371
+    ],
+    "10033": [
+      200032,
+      200372,
+      200582,
+      200362,
+      201072,
+      201312,
+      201321,
+      201902
+    ],
+    "10034": [
+      200321,
+      200512,
+      200301,
+      201102,
+      201382,
+      201542,
+      201702,
+      202441
+    ],
+    "10035": [
+      200262,
+      200362,
+      200592,
+      200692,
+      200433,
+      200622,
+      200642,
+      201471,
+      201482,
+      201591,
+      202032,
+      202382
+    ],
+    "10036": [
+      200052,
+      200352,
+      200202,
+      200742,
+      200762,
+      201182,
+      201222,
+      201422
+    ],
+    "10037": [
+      200302,
+      200472,
+      200622,
+      200532,
+      200981,
+      201012,
+      201242,
+      201252
+    ],
+    "10038": [
+      200362,
+      200632,
+      200172,
+      200641,
+      200701,
+      200692,
+      201452,
+      201502
+    ],
+    "10039": [
+      200372,
+      200352,
+      200492,
+      201342,
+      201042,
+      202372
+    ],
+    "10040": [
+      200351,
+      200592,
+      201172,
+      201432,
+      201442,
+      201472
+    ],
+    "10041": [
+      200262,
+      200492,
+      200602,
+      200532,
+      200541,
+      200552,
+      201242,
+      201252
+    ],
+    "10042": [
+      200022,
+      200352,
+      200612,
+      200541,
+      200552,
+      201272,
+      201522,
+      201661
+    ],
+    "10043": [
+      200332,
+      201111,
+      201461,
+      201552
+    ],
+    "10044": [
+      200342,
+      200472,
+      200622,
+      200632,
+      100131,
+      200352,
+      200562,
+      202191,
+      202482,
+      201532
+    ],
+    "10045": [
+      200391,
+      200482,
+      200642,
+      200592,
+      200611,
+      201392,
+      201542,
+      202122
+    ],
+    "10046": [
+      200252,
+      200442,
+      200342,
+      200582,
+      201011,
+      201312,
+      201651
+    ],
+    "10047": [
+      200672,
+      200962,
+      200972,
+      201022
+    ],
+    "10048": [
+      200352,
+      200552,
+      200742,
+      201041,
+      201312,
+      201351,
+      201571,
+      201902,
+      202152
+    ],
+    "10049": [
+      200062,
+      200632,
+      200702,
+      201452,
+      201552,
+      210042
+    ],
+    "10050": [
+      200382,
+      200552,
+      200831,
+      200841,
+      200851,
+      201022,
+      201542,
+      202401,
+      202452
+    ],
+    "10051": [
+      200342,
+      200202,
+      200562,
+      200752,
+      200352,
+      201322,
+      202192,
+      201532
+    ],
+    "10052": [
+      110071,
+      201021,
+      201481,
+      202281,
+      202311,
+      202431,
+      202481
+    ],
+    "10053": [
+      200401,
+      200542,
+      200762,
+      200611,
+      200791,
+      200861,
+      201412,
+      201611,
+      202082,
+      202092
+    ],
+    "10054": [
+      200282,
+      200532,
+      200352,
+      200382,
+      200472,
+      200482,
+      201142,
+      201422,
+      201541
+    ],
+    "10055": [
+      200022,
+      200572,
+      201452,
+      201611,
+      202322,
+      202002
+    ],
+    "10056": [
+      200372,
+      200582,
+      201322,
+      201591,
+      201681,
+      202282,
+      202312
+    ],
+    "10057": [
+      200052,
+      200372,
+      201381,
+      201431,
+      201442,
+      202472
+    ],
+    "10058": [
+      200022,
+      200612,
+      200752,
+      201102,
+      201112,
+      201532,
+      201902,
+      202372
+    ],
+    "10059": [
+      200032,
+      200562,
+      200582,
+      200722,
+      100321,
+      201102,
+      201112,
+      201532,
+      201702,
+      202371
+    ],
+    "10060": [
+      200352,
+      200462,
+      200652,
+      200381,
+      201361,
+      200582,
+      200722,
+      200371,
+      200732,
+      201902,
+      210031
+    ],
+    "10061": [
+      200452,
+      200521,
+      200352,
+      200572,
+      201352,
+      201902,
+      202482
+    ],
+    "10062": [
+      200462,
+      200572,
+      200772,
+      201321,
+      201532,
+      201902
+    ],
+    "10063": [
+      200311,
+      200702,
+      200722,
+      201142,
+      201312,
+      201352,
+      202432
+    ],
+    "10064": [
+      200012,
+      200492,
+      200572,
+      200271,
+      200432,
+      200531,
+      200722,
+      201102,
+      202132
+    ],
+    "10065": [
+      200362,
+      200502,
+      200064,
+      200602,
+      200702,
+      201092,
+      201422,
+      201542
+    ],
+    "10066": [
+      200012,
+      200401,
+      200532,
+      200712,
+      201532,
+      202252,
+      202261,
+      202312,
+      202332
+    ],
+    "10067": [
+      200262,
+      200382,
+      200432,
+      200532,
+      200542,
+      202172
+    ],
+    "10068": [
+      200022,
+      200612,
+      201672,
+      202262,
+      202281,
+      202302,
+      202332
+    ],
+    "10069": [
+      200142,
+      200592,
+      200602,
+      200762,
+      200031,
+      200511,
+      201702,
+      202452
+    ],
+    "10070": [
+      200462,
+      200572,
+      200352,
+      200552,
+      201252,
+      201651,
+      202132
+    ],
+    "10071": [
+      100021,
+      200031,
+      200432,
+      200551,
+      200682,
+      202051,
+      201521
+    ],
+    "10072": [
+      200022,
+      200472,
+      200502,
+      200632,
+      200301,
+      200131,
+      200542,
+      201082,
+      201662
+    ],
+    "10073": [
+      200062,
+      201531,
+      202412,
+      202432,
+      202471
+    ],
+    "10074": [
+      200062,
+      200632,
+      200702,
+      201452,
+      201552,
+      210042
+    ],
+    "10075": [
+      200411,
+      200602,
+      200012,
+      200332,
+      201182,
+      201212,
+      201692
+    ],
+    "10076": [
+      200332,
+      200482,
+      200352,
+      200612,
+      201172,
+      201221,
+      201422
+    ],
+    "10077": [
+      200332,
+      200492,
+      200632,
+      201532,
+      202252,
+      202262,
+      202312,
+      202332
+    ],
+    "10078": [
+      200012,
+      200781,
+      201182,
+      201492,
+      201552,
+      202072
+    ],
+    "10079": [
+      200352,
+      201692,
+      201631,
+      202422
+    ],
+    "10080": [
+      200382,
+      200482,
+      200602,
+      200532,
+      201172,
+      201631,
+      201661
+    ],
+    "10081": [
+      200252,
+      200512,
+      200492,
+      200622,
+      200632,
+      200642,
+      202382
+    ],
+    "10082": [
+      200022,
+      200332,
+      200612,
+      201152,
+      201631,
+      202102
+    ],
+    "10083": [
+      200362,
+      200562,
+      200032,
+      200582,
+      200722,
+      210032
+    ],
+    "10084": [
+      200282,
+      200542,
+      201172,
+      201422,
+      201631,
+      201692,
+      202421
+    ],
+    "10085": [
+      200202,
+      200362,
+      200532,
+      200542,
+      201252,
+      201522,
+      202311
+    ],
+    "10086": [
+      200012,
+      200401,
+      200202,
+      200622,
+      100611,
+      200342,
+      200602,
+      200671,
+      201382,
+      201631,
+      202402
+    ],
+    "10087": [
+      200062,
+      200232,
+      200582,
+      200682,
+      201052,
+      201631,
+      201322
+    ],
+    "20001": [
+      200062,
+      200632,
+      200702,
+      201452,
+      201552,
+      210042
+    ],
+    "20002": [
+      200192,
+      200582,
+      200351,
+      201441,
+      201222,
+      201232,
+      200371,
+      201392,
+      202122,
+      210021
+    ],
+    "20003": [
+      200391,
+      200352,
+      200602,
+      200662,
+      200192,
+      200562,
+      201312,
+      202261,
+      202362,
+      202372,
+      210051
+    ],
+    "20004": [
+      200162,
+      200622,
+      200301,
+      201552,
+      202112,
+      202402
+    ],
+    "20005": [
+      200442,
+      200301,
+      201102,
+      201702,
+      202032,
+      202441
+    ],
+    "20006": [
+      200342,
+      200532,
+      200301,
+      201171,
+      201222,
+      201692
+    ],
+    "20007": [
+      200232,
+      200512,
+      100981,
+      200182,
+      200152,
+      200132,
+      200301,
+      201532,
+      202261,
+      202251,
+      202332
+    ],
+    "20008": [
+      100421,
+      200542,
+      200652,
+      200963,
+      201241,
+      201272
+    ],
+    "20009": [
+      200282,
+      200562,
+      200022,
+      200682,
+      201031,
+      201322,
+      202371
+    ],
+    "20010": [
+      200032,
+      200372,
+      200582,
+      200362,
+      201072,
+      201312,
+      201321,
+      201902
+    ],
+    "20011": [
+      200321,
+      200512,
+      200301,
+      201102,
+      201382,
+      201542,
+      201702,
+      202441
+    ],
+    "20012": [
+      200052,
+      200352,
+      200202,
+      200742,
+      200762,
+      201182,
+      201222,
+      201422
+    ],
+    "20013": [
+      200362,
+      200632,
+      200172,
+      200641,
+      200701,
+      200692,
+      201452,
+      201502
+    ],
+    "20014": [
+      200351,
+      200592,
+      201172,
+      201432,
+      201442,
+      201472
+    ],
+    "20015": [
+      200332,
+      201111,
+      201461,
+      201552
+    ],
+    "20016": [
+      200342,
+      200472,
+      200622,
+      200632,
+      100131,
+      200352,
+      200562,
+      202191,
+      202482,
+      201532
+    ],
+    "20017": [
+      200391,
+      200482,
+      200642,
+      200592,
+      200611,
+      201392,
+      201542,
+      202122
+    ],
+    "20018": [
+      200252,
+      200442,
+      200342,
+      200582,
+      201011,
+      201312,
+      201651
+    ],
+    "20019": [
+      200672,
+      200962,
+      200972,
+      201022
+    ],
+    "20020": [
+      200352,
+      200552,
+      200742,
+      201041,
+      201312,
+      201351,
+      201571,
+      201902,
+      202152
+    ],
+    "20021": [
+      200042,
+      200542,
+      200472,
+      200602,
+      200702,
+      202152,
+      210042
+    ],
+    "20022": [
+      200382,
+      200542,
+      200682,
+      200301,
+      200742,
+      201192,
+      201652,
+      202051
+    ],
+    "20023": [
+      200382,
+      200552,
+      200831,
+      200841,
+      200851,
+      201022,
+      201542,
+      202401,
+      202452
+    ],
+    "20024": [
+      110071,
+      201021,
+      201481,
+      202281,
+      202311,
+      202431,
+      202481
+    ],
+    "20025": [
+      200401,
+      200542,
+      200762,
+      200611,
+      200791,
+      200861,
+      201412,
+      201611,
+      202082,
+      202092
+    ],
+    "20026": [
+      200672,
+      200962,
+      200972,
+      201022
+    ],
+    "20027": [
+      200262,
+      200492,
+      200602,
+      200532,
+      200541,
+      200552,
+      201242,
+      201252
+    ],
+    "20028": [
+      200032,
+      200562,
+      200582,
+      200722,
+      100321,
+      201102,
+      201112,
+      201532,
+      201702,
+      202371
+    ],
+    "20029": [
+      200452,
+      200521,
+      200352,
+      200572,
+      201352,
+      201902,
+      202482
+    ],
+    "20030": [
+      200262,
+      200362,
+      200592,
+      200692,
+      200433,
+      200622,
+      200642,
+      201471,
+      201482,
+      201591,
+      202032,
+      202382
+    ],
+    "20031": [
+      200012,
+      200401,
+      200532,
+      200712,
+      201532,
+      202252,
+      202261,
+      202312,
+      202332
+    ],
+    "20032": [
+      200022,
+      200612,
+      201672,
+      202262,
+      202281,
+      202302,
+      202332
+    ],
+    "20033": [
+      200372,
+      200032,
+      200572,
+      201682,
+      202282,
+      210052
+    ],
+    "20034": [
+      200142,
+      200592,
+      200602,
+      200762,
+      200031,
+      200511,
+      201702,
+      202452
+    ],
+    "20035": [
+      200462,
+      200572,
+      200352,
+      200552,
+      201252,
+      201651,
+      202132
+    ],
+    "20037": [
+      200042,
+      200462,
+      200301,
+      200941,
+      201422,
+      202072
+    ],
+    "20038": [
+      100021,
+      200031,
+      200432,
+      200551,
+      200682,
+      202051,
+      201521
+    ],
+    "20039": [
+      200362,
+      200562,
+      200032,
+      200582,
+      200722,
+      210032
+    ],
+    "20040": [
+      200032,
+      200372,
+      200582,
+      200362,
+      201072,
+      201312,
+      201321,
+      201902
+    ],
+    "20041": [
+      200411,
+      200602,
+      200012,
+      200332,
+      201182,
+      201212,
+      201692
+    ],
+    "20042": [
+      200332,
+      200542,
+      200732,
+      200582,
+      200742,
+      201172,
+      201212,
+      201322
+    ],
+    "20043": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "20044": [
+      200062,
+      201531,
+      202412,
+      202432,
+      202471
+    ],
+    "20045": [
+      200372,
+      200352,
+      200492,
+      201342,
+      201042,
+      202372
+    ],
+    "20046": [
+      200382,
+      200552,
+      200831,
+      200841,
+      200851,
+      201022,
+      201542,
+      202401,
+      202452
+    ],
+    "20047": [
+      200192,
+      200382,
+      200552,
+      200352,
+      200372,
+      200492,
+      200572,
+      202031,
+      210041
+    ],
+    "20048": [
+      200352,
+      200462,
+      200652,
+      200381,
+      201361,
+      200582,
+      200722,
+      200371,
+      200732,
+      201902,
+      210031
+    ],
+    "20049": [
+      201182,
+      201322,
+      201332,
+      202011,
+      202372
+    ],
+    "20050": [
+      200301,
+      200492,
+      200601,
+      201102
+    ],
+    "20051": [
+      200382,
+      200482,
+      200602,
+      200532,
+      201172,
+      201631,
+      201661
+    ],
+    "20052": [
+      200252,
+      200512,
+      200492,
+      200622,
+      200632,
+      200642,
+      202382
+    ],
+    "20053": [
+      200332,
+      200492,
+      200632,
+      201532,
+      202252,
+      202262,
+      202312,
+      202332
+    ],
+    "20054": [
+      200211,
+      200301,
+      200572,
+      201002,
+      201352,
+      202041
+    ],
+    "20055": [
+      200062,
+      200232,
+      200582,
+      200682,
+      201052,
+      201631,
+      201322
+    ],
+    "30001": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "30002": [
+      200342,
+      200432,
+      200452,
+      201262,
+      210012
+    ],
+    "30003": [
+      200192,
+      200382,
+      200552,
+      200352,
+      200372,
+      200492,
+      200572,
+      202031,
+      210041
+    ],
+    "30004": [
+      200022,
+      200572,
+      200352,
+      200612,
+      201112,
+      210032
+    ],
+    "30005": [
+      200362,
+      200562,
+      200032,
+      200582,
+      200722,
+      210032
+    ],
+    "30006": [
+      200012,
+      200592,
+      200352,
+      200552,
+      200742,
+      201242,
+      210022
+    ],
+    "30007": [
+      200372,
+      200032,
+      200572,
+      201682,
+      202282,
+      210052
+    ],
+    "30008": [
+      200301,
+      200492,
+      200601,
+      201102
+    ],
+    "30009": [
+      200382,
+      200542,
+      200682,
+      200301,
+      200742,
+      201192,
+      201652,
+      202051
+    ],
+    "30010": [
+      200042,
+      200462,
+      200301,
+      200941,
+      201422,
+      202072
+    ],
+    "30011": [
+      200262,
+      200362,
+      200592,
+      200692,
+      200433,
+      200622,
+      200642,
+      201471,
+      201482,
+      201591,
+      202032,
+      202382
+    ],
+    "30012": [
+      200433,
+      201291,
+      201302,
+      202312
+    ],
+    "30013": [
+      200302,
+      200472,
+      200622,
+      200532,
+      200981,
+      201012,
+      201242,
+      201252
+    ],
+    "30014": [
+      201182,
+      201322,
+      201332,
+      202011,
+      202372
+    ],
+    "30015": [
+      200332,
+      200542,
+      200732,
+      200582,
+      200742,
+      201172,
+      201212,
+      201322
+    ],
+    "30016": [
+      200572,
+      201042,
+      201071,
+      201532,
+      201902
+    ],
+    "30017": [
+      200372,
+      200352,
+      200492,
+      201342,
+      201042,
+      202372
+    ],
+    "30018": [
+      200262,
+      200492,
+      200602,
+      200532,
+      200541,
+      200552,
+      201242,
+      201252
+    ],
+    "30019": [
+      200433,
+      200592,
+      200342,
+      200581,
+      201322,
+      201332,
+      201532
+    ],
+    "30020": [
+      200022,
+      200352,
+      200612,
+      200541,
+      200552,
+      201272,
+      201522,
+      201661
+    ],
+    "30021": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "30022": [
+      200032,
+      200612,
+      200012,
+      200372,
+      200582,
+      202312,
+      210052
+    ],
+    "30023": [
+      200512,
+      200642,
+      200701,
+      201032,
+      201591
+    ],
+    "30024": [
+      200352,
+      200462,
+      200652,
+      200381,
+      201361,
+      200582,
+      200722,
+      200371,
+      200732,
+      201902,
+      210031
+    ],
+    "30025": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "30026": [
+      200342,
+      200202,
+      200562,
+      200752,
+      200352,
+      201322,
+      202192,
+      201532
+    ],
+    "30027": [
+      200282,
+      200532,
+      200352,
+      200382,
+      200472,
+      200482,
+      201142,
+      201422,
+      201541
+    ],
+    "30028": [
+      200022,
+      200572,
+      201452,
+      201611,
+      202322,
+      202002
+    ],
+    "30029": [
+      200372,
+      200582,
+      201322,
+      201591,
+      201681,
+      202282,
+      202312
+    ],
+    "30030": [
+      200052,
+      200372,
+      201381,
+      201431,
+      201442,
+      202472
+    ],
+    "30031": [
+      200321,
+      200512,
+      200301,
+      201102,
+      201382,
+      201542,
+      201702,
+      202441
+    ],
+    "30032": [
+      200022,
+      200612,
+      200752,
+      201102,
+      201112,
+      201532,
+      201902,
+      202372
+    ],
+    "30033": [
+      200433,
+      201291,
+      201302,
+      202312
+    ],
+    "30034": [
+      200512,
+      200642,
+      200701,
+      201032,
+      201591
+    ],
+    "30036": [
+      200352,
+      200462,
+      200652,
+      200381,
+      201361,
+      200582,
+      200722,
+      200371,
+      200732,
+      201902,
+      210031
+    ],
+    "30038": [
+      200462,
+      200572,
+      200772,
+      201321,
+      201532,
+      201902
+    ],
+    "30039": [
+      200311,
+      200702,
+      200722,
+      201142,
+      201312,
+      201352,
+      202432
+    ],
+    "30040": [
+      200012,
+      200492,
+      200572,
+      200271,
+      200432,
+      200531,
+      200722,
+      201102,
+      202132
+    ],
+    "30041": [
+      200252,
+      200442,
+      200342,
+      200582,
+      201011,
+      201312,
+      201651
+    ],
+    "30042": [
+      200362,
+      200502,
+      200064,
+      200602,
+      200702,
+      201092,
+      201422,
+      201542
+    ],
+    "30043": [
+      200262,
+      200382,
+      200432,
+      200532,
+      200542,
+      202172
+    ],
+    "30044": [
+      200022,
+      200472,
+      200502,
+      200632,
+      200301,
+      200131,
+      200542,
+      201082,
+      201662
+    ],
+    "30045": [
+      200382,
+      200552,
+      200831,
+      200841,
+      200851,
+      201022,
+      201542,
+      202401,
+      202452
+    ],
+    "30046": [
+      200433,
+      201291,
+      201302,
+      202312
+    ],
+    "30047": [
+      200192,
+      200582,
+      200351,
+      201441,
+      201222,
+      201232,
+      200371,
+      201392,
+      202122,
+      210021
+    ],
+    "30048": [
+      200032,
+      200372,
+      200582,
+      200362,
+      201072,
+      201312,
+      201321,
+      201902
+    ],
+    "30052": [
+      200362,
+      200562,
+      200032,
+      200582,
+      200722,
+      210032
+    ],
+    "30053": [
+      200302,
+      200622,
+      200642,
+      201482,
+      210022
+    ],
+    "30054": [
+      200672,
+      200962,
+      200972,
+      201022
+    ],
+    "30055": [
+      200301,
+      200492,
+      200601,
+      201102
+    ],
+    "30056": [
+      200352,
+      200552,
+      200742,
+      201041,
+      201312,
+      201351,
+      201571,
+      201902,
+      202152
+    ],
+    "30057": [
+      200022,
+      200572,
+      200352,
+      200612,
+      201112,
+      210032
+    ],
+    "30058": [
+      200192,
+      200382,
+      200552,
+      200352,
+      200372,
+      200492,
+      200572,
+      202031,
+      210041
+    ],
+    "30059": [
+      200282,
+      200562,
+      200022,
+      200682,
+      201031,
+      201322,
+      202371
+    ],
+    "30060": [
+      200342,
+      200202,
+      200562,
+      200752,
+      200352,
+      201322,
+      202192,
+      201532
+    ],
+    "30061": [
+      200342,
+      200532,
+      200301,
+      201171,
+      201222,
+      201692
+    ],
+    "30062": [
+      200342,
+      200432,
+      200452,
+      201262,
+      210012
+    ],
+    "30063": [
+      200401,
+      200542,
+      200762,
+      200611,
+      200791,
+      200861,
+      201412,
+      201611,
+      202082,
+      202092
+    ],
+    "30064": [
+      200382,
+      200542,
+      200682,
+      200301,
+      200742,
+      201192,
+      201652,
+      202051
+    ],
+    "30065": [
+      200032,
+      200562,
+      200582,
+      200722,
+      100321,
+      201102,
+      201112,
+      201532,
+      201702,
+      202371
+    ],
+    "30066": [
+      200282,
+      200562,
+      200022,
+      200682,
+      201031,
+      201322,
+      202371
+    ],
+    "30067": [
+      200332,
+      200452,
+      200642,
+      200301,
+      200512,
+      200701,
+      201591
+    ],
+    "30068": [
+      200062,
+      201531,
+      202412,
+      202432,
+      202471
+    ],
+    "30069": [
+      200022,
+      200472,
+      200502,
+      200632,
+      200301,
+      200131,
+      200542,
+      201082,
+      201662
+    ],
+    "30070": [
+      200321,
+      200512,
+      200301,
+      201102,
+      201382,
+      201542,
+      201702,
+      202441
+    ],
+    "30071": [
+      110071,
+      201021,
+      201481,
+      202281,
+      202311,
+      202431,
+      202481
+    ],
+    "30072": [
+      200232,
+      200512,
+      100981,
+      200182,
+      200152,
+      200132,
+      200301,
+      201532,
+      202261,
+      202251,
+      202332
+    ],
+    "30073": [
+      200351,
+      200592,
+      201172,
+      201432,
+      201442,
+      201472
+    ],
+    "30074": [
+      200332,
+      201111,
+      201461,
+      201552
+    ],
+    "30075": [
+      100421,
+      200542,
+      200652,
+      200963,
+      201241,
+      201272
+    ],
+    "30076": [
+      200342,
+      200432,
+      200452,
+      201262,
+      210012
+    ],
+    "30077": [
+      200411,
+      200602,
+      200012,
+      200332,
+      201182,
+      201212,
+      201692
+    ],
+    "30078": [
+      200342,
+      200472,
+      200622,
+      200632,
+      100131,
+      200352,
+      200562,
+      202191,
+      202482,
+      201532
+    ],
+    "30079": [
+      200391,
+      200482,
+      200642,
+      200592,
+      200611,
+      201392,
+      201542,
+      202122
+    ],
+    "30080": [
+      200062,
+      200632,
+      200702,
+      201452,
+      201552,
+      210042
+    ],
+    "30081": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "30082": [
+      200262,
+      200492,
+      200602,
+      200532,
+      200541,
+      200552,
+      201242,
+      201252
+    ],
+    "30083": [
+      200332,
+      200542,
+      200732,
+      200582,
+      200742,
+      201172,
+      201212,
+      201322
+    ],
+    "30084": [
+      200462,
+      200572,
+      200352,
+      200552,
+      201252,
+      201651,
+      202132
+    ],
+    "30085": [
+      200442,
+      200301,
+      201102,
+      201702,
+      202032,
+      202441
+    ],
+    "30086": [
+      200332,
+      200492,
+      200632,
+      201532,
+      202252,
+      202262,
+      202312,
+      202332
+    ],
+    "30087": [
+      200332,
+      200482,
+      200352,
+      200612,
+      201172,
+      201221,
+      201422
+    ],
+    "30088": [
+      200372,
+      200582,
+      201322,
+      201591,
+      201681,
+      202282,
+      202312
+    ],
+    "30089": [
+      200332,
+      201111,
+      201461,
+      201552
+    ],
+    "30090": [
+      200332,
+      200452,
+      200642,
+      200301,
+      200512,
+      200701,
+      201591
+    ],
+    "30091": [
+      100021,
+      200031,
+      200432,
+      200551,
+      200682,
+      202051,
+      201521
+    ],
+    "30092": [
+      200302,
+      200472,
+      200622,
+      200532,
+      200981,
+      201012,
+      201242,
+      201252
+    ],
+    "30093": [
+      200192,
+      200582,
+      200351,
+      201441,
+      201222,
+      201232,
+      200371,
+      201392,
+      202122,
+      210021
+    ],
+    "30094": [
+      200362,
+      200502,
+      200064,
+      200602,
+      200702,
+      201092,
+      201422,
+      201542
+    ],
+    "30095": [
+      200452,
+      200521,
+      200352,
+      200572,
+      201352,
+      201902,
+      202482
+    ],
+    "30096": [
+      200311,
+      200702,
+      200722,
+      201142,
+      201312,
+      201352,
+      202432
+    ],
+    "30097": [
+      200012,
+      200781,
+      201182,
+      201492,
+      201552,
+      202072
+    ],
+    "30098": [
+      200433,
+      200592,
+      200342,
+      200581,
+      201322,
+      201332,
+      201532
+    ],
+    "30099": [
+      200401,
+      200542,
+      200762,
+      200611,
+      200791,
+      200861,
+      201412,
+      201611,
+      202082,
+      202092
+    ],
+    "30100": [
+      200512,
+      200642,
+      200701,
+      201032,
+      201591
+    ],
+    "30101": [
+      200052,
+      200352,
+      200202,
+      200742,
+      200762,
+      201182,
+      201222,
+      201422
+    ],
+    "30102": [
+      200372,
+      200032,
+      200572,
+      201682,
+      202282,
+      210052
+    ],
+    "30103": [
+      200052,
+      200372,
+      201381,
+      201431,
+      201442,
+      202472
+    ],
+    "30104": [
+      200032,
+      200562,
+      200582,
+      200722,
+      100321,
+      201102,
+      201112,
+      201532,
+      201702,
+      202371
+    ],
+    "30105": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "30106": [
+      200162,
+      200622,
+      200301,
+      201552,
+      202112,
+      202402
+    ],
+    "30107": [
+      200042,
+      200542,
+      200472,
+      200602,
+      200702,
+      202152,
+      210042
+    ],
+    "30108": [
+      200262,
+      200382,
+      200432,
+      200532,
+      200542,
+      202172
+    ],
+    "30109": [
+      200462,
+      200572,
+      200772,
+      201321,
+      201532,
+      201902
+    ],
+    "30110": [
+      100421,
+      200542,
+      200652,
+      200963,
+      201241,
+      201272
+    ],
+    "30111": [
+      200192,
+      200382,
+      200552,
+      200352,
+      200372,
+      200492,
+      200572,
+      202031,
+      210041
+    ],
+    "30112": [
+      200342,
+      200202,
+      200562,
+      200752,
+      200352,
+      201322,
+      202192,
+      201532
+    ],
+    "30113": [
+      200342,
+      200532,
+      200301,
+      201171,
+      201222,
+      201692
+    ],
+    "30114": [
+      200352,
+      201692,
+      201631,
+      202422
+    ],
+    "30115": [
+      200282,
+      200532,
+      200352,
+      200382,
+      200472,
+      200482,
+      201142,
+      201422,
+      201541
+    ],
+    "30116": [
+      110071,
+      201021,
+      201481,
+      202281,
+      202311,
+      202431,
+      202481
+    ],
+    "30117": [
+      200012,
+      200401,
+      200532,
+      200712,
+      201532,
+      202252,
+      202261,
+      202312,
+      202332
+    ],
+    "30118": [
+      200022,
+      200332,
+      200612,
+      201152,
+      201631,
+      202102
+    ],
+    "30119": [
+      200142,
+      200592,
+      200602,
+      200762,
+      200031,
+      200511,
+      201702,
+      202452
+    ],
+    "30120": [
+      200022,
+      200612,
+      200752,
+      201102,
+      201112,
+      201532,
+      201902,
+      202372
+    ],
+    "30121": [
+      200282,
+      200562,
+      200022,
+      200682,
+      201031,
+      201322,
+      202371
+    ],
+    "30122": [
+      200362,
+      200632,
+      200172,
+      200641,
+      200701,
+      200692,
+      201452,
+      201502
+    ],
+    "30123": [
+      200022,
+      200472,
+      200502,
+      200632,
+      200301,
+      200131,
+      200542,
+      201082,
+      201662
+    ],
+    "30124": [
+      200162,
+      200622,
+      200301,
+      201552,
+      202112,
+      202402
+    ],
+    "30125": [
+      200202,
+      200362,
+      200532,
+      200542,
+      201252,
+      201522,
+      202311
+    ],
+    "30126": [
+      200012,
+      200401,
+      200202,
+      200622,
+      100611,
+      200342,
+      200602,
+      200671,
+      201382,
+      201631,
+      202402
+    ],
+    "30127": [
+      200012,
+      200433,
+      200532,
+      200332,
+      200452,
+      200642,
+      201462,
+      210012
+    ],
+    "30128": [
+      200382,
+      200552,
+      200831,
+      200841,
+      200851,
+      201022,
+      201542,
+      202401,
+      202452
+    ],
+    "30129": [
+      200012,
+      200592,
+      200352,
+      200552,
+      200742,
+      201242,
+      210022
+    ],
+    "30130": [
+      200382,
+      200482,
+      200602,
+      200532,
+      201172,
+      201631,
+      201661
+    ],
+    "30131": [
+      200332,
+      201111,
+      201461,
+      201552
+    ],
+    "30132": [
+      200022,
+      200352,
+      200612,
+      200541,
+      200552,
+      201272,
+      201522,
+      201661
+    ],
+    "30133": [
+      200012,
+      200492,
+      200572,
+      200271,
+      200432,
+      200531,
+      200722,
+      201102,
+      202132
+    ],
+    "30145": [
+      200282,
+      200542,
+      201172,
+      201422,
+      201631,
+      201692,
+      202421
+    ],
+    "30146": [
+      200352,
+      200462,
+      200652,
+      200381,
+      201361,
+      200582,
+      200722,
+      200371,
+      200732,
+      201902,
+      210031
+    ]
+  }
+};

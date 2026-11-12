@@ -939,6 +939,118 @@ class UmacalcApp {
     return scoredList.slice(0, 3);
   }
 
+  evaluateCareerPrediction(preset, trainingCards, inspirationCards, legacies) {
+    const scen = this.getScenario();
+    const cap = scen ? scen.statCap : 1200;
+
+    let estimatedSpeed = (preset.weights && preset.weights.Speed > 0) ? Math.min(cap, 1050) : 650;
+    let estimatedStamina = (preset.weights && preset.weights.Stamina > 0) ? Math.min(cap, 950) : 550;
+    let estimatedPower = (preset.weights && preset.weights.Power > 0) ? Math.min(cap, 950) : 600;
+    let estimatedGuts = (preset.weights && preset.weights.Guts > 0) ? Math.min(cap, 850) : 450;
+    let estimatedWisdom = (preset.weights && preset.weights.Wisdom > 0) ? Math.min(cap, 900) : 550;
+
+    const totalStats = estimatedSpeed + estimatedStamina + estimatedPower + estimatedGuts + estimatedWisdom;
+    const statScore = Math.floor(totalStats * 2.65);
+
+    const availableSkills = [];
+    const seenNames = new Set();
+    const skillCatalog = window.SKILL_CATALOG || { skills: {}, cardSkills: {} };
+    const allCards = window.SUPPORT_CARD_CATALOG || [];
+
+    const getReason = (pid, skillName) => {
+      const name = skillName || "";
+      if (name.includes("Tail Held High")) return "Essential mid-race speed trigger when activating 3+ skills.";
+      if (name.includes("Preferred Position")) return "Crucial positioning skill ensuring ideal pacing in the middle leg.";
+      if (name.includes("Left-Handed") || name.includes("Right-Handed")) return "Passive speed boost matching core championship racecourse turns.";
+      if (name.includes("Straightaways")) return "Velocity multiplier along the homestretch straightaway.";
+      if (name.includes("Corners")) return "Prevents deceleration and stabilizes acceleration when banking corners.";
+      return `Strong skill point economy hint tailored for ${preset.name} build requirements.`;
+    };
+
+    const scoreSkill = (pid, name, pts, isLegacy) => {
+      let score = pts;
+      if (isLegacy) score += 400; // Inherited parent unique spark factor is highest priority
+      const lower = name.toLowerCase();
+      if (lower.includes("tail held high") || lower.includes("preferred position")) score += 200;
+      if (pid.includes("sprint") && (lower.includes("sprint") || lower.includes("corner"))) score += 300;
+      if (pid.includes("mile") && (lower.includes("mile") || lower.includes("overtake"))) score += 300;
+      if (pid.includes("long") && (lower.includes("long") || lower.includes("stamina"))) score += 300;
+      if (pid.includes("runner") && (lower.includes("runner") || lower.includes("groundwork"))) score += 300;
+      if (pid.includes("leader") && (lower.includes("leader") || lower.includes("pace"))) score += 300;
+      if (pid.includes("chaser") && (lower.includes("chaser") || lower.includes("spurt"))) score += 300;
+      return score;
+    };
+
+    // Cards
+    (trainingCards || []).concat(inspirationCards || []).forEach(sc => {
+      const card = allCards.find(c => c.displayName === sc.name || c.charaName === sc.name);
+      if (card && skillCatalog.cardSkills && skillCatalog.cardSkills[card.id]) {
+        skillCatalog.cardSkills[card.id].forEach(sid => {
+          const sk = skillCatalog.skills[sid];
+          if (sk && !seenNames.has(sk.name)) {
+            seenNames.add(sk.name);
+            availableSkills.push({
+              name: sk.name,
+              source: `${card.charaName} (${sc.ownershipBadge || "Meta"})`,
+              sourceColor: sc.color,
+              hintLv: 3,
+              discount: 30,
+              points: sk.grade || 217,
+              reason: getReason(preset.id, sk.name)
+            });
+          }
+        });
+      }
+    });
+
+    // Legacies
+    (legacies || []).forEach(leg => {
+      if (leg.highlightFactor && !leg.highlightFactor.includes("Standard") && !seenNames.has(leg.highlightFactor)) {
+        seenNames.add(leg.highlightFactor);
+        availableSkills.push({
+          name: leg.highlightFactor,
+          source: `Legacy: ${leg.charaName}`,
+          sourceColor: "#0d9488",
+          hintLv: 2,
+          discount: 20,
+          points: 170,
+          reason: "Unique inherited skill factor granting massive mid-race acceleration."
+        });
+      }
+    });
+
+    availableSkills.sort((a, b) => scoreSkill(preset.id, b.name, b.points, b.source && b.source.startsWith("Legacy:")) - scoreSkill(preset.id, a.name, a.points, a.source && a.source.startsWith("Legacy:")));
+    const chosenHints = availableSkills.slice(0, 6);
+
+    const skillScore = 3200 + chosenHints.reduce((sum, h) => sum + h.points, 0);
+    const totalScore = statScore + skillScore;
+    const spSaved = chosenHints.reduce((sum, h) => sum + h.discount * 10, 0);
+
+    const getRank = (score) => {
+      if (score >= 19500) return { rank: "UG", color: "#ec4899" };
+      if (score >= 17500) return { rank: "SS+", color: "#f59e0b" };
+      if (score >= 15900) return { rank: "SS", color: "#eab308" };
+      if (score >= 14500) return { rank: "S+", color: "#10b981" };
+      if (score >= 13500) return { rank: "S", color: "#06b6d4" };
+      if (score >= 12100) return { rank: "A+", color: "#3b82f6" };
+      if (score >= 10500) return { rank: "A", color: "#6366f1" };
+      return { rank: "B+", color: "#94a3b8" };
+    };
+
+    const rankInfo = getRank(totalScore);
+
+    return {
+      statScore,
+      skillScore,
+      totalScore,
+      rank: rankInfo.rank,
+      rankColor: rankInfo.color,
+      hints: chosenHints,
+      totalSkills: 10 + chosenHints.length,
+      spSaved
+    };
+  }
+
   handleUmadumpFileSelect(input) {
     const file = input.files && input.files[0];
     if (!file) return;
@@ -1447,6 +1559,55 @@ class UmacalcApp {
             return lHtml;
           })()}
         </div>
+
+        <!-- Row 4: Career Point Prediction & Skill Hint Engine -->
+        ${(() => {
+          const legacies = this.evaluateBestLegacies(preset);
+          const pred = this.evaluateCareerPrediction(preset, evaluated.training, evaluated.inspiration, legacies);
+          if (!pred) return "";
+
+          let hintsHtml = "";
+          pred.hints.forEach(h => {
+            hintsHtml += `
+              <div style="background: #131131; border: 1px solid #3730a3; border-radius: 4px; padding: 6px; margin-bottom: 4px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 3px;">
+                  <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                    <span style="background: #4338ca; color: #ffffff; font-size: 0.62rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">HINT LV 3</span>
+                    <strong style="color: #ffffff; font-size: 0.75rem;">${h.name}</strong>
+                    <span style="background: #0f172a; border: 1px solid ${h.sourceColor}; color: ${h.sourceColor}; font-size: 0.62rem; font-weight: 600; padding: 1px 4px; border-radius: 3px;">${h.source}</span>
+                    <span style="background: #78350f; border: 1px solid #d97706; color: #fde047; font-size: 0.62rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">-${h.discount}% SP Cost</span>
+                  </div>
+                  <span style="background: #064e3b; border: 1px solid #059669; color: #34d399; font-size: 0.62rem; font-weight: 800; padding: 1px 4px; border-radius: 3px;">+${h.points} Pts</span>
+                </div>
+                <div style="font-size: 0.68rem; color: #a5b4fc; line-height: 1.3;">${h.reason}</div>
+              </div>
+            `;
+          });
+
+          return `
+            <div style="background: #1e1b4b; border: 1px solid #6366f1; border-radius: 6px; padding: 8px; margin-top: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="badge" style="background: #4338ca; color: #ffffff; font-size: 0.65rem; padding: 2px 5px; border-radius: 3px; font-weight: 800;">CAREER PREDICTION</span>
+                  <strong style="color: #a5b4fc; font-size: 0.78rem;">Predicted Final Rank &amp; Hint Economy:</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <span style="background: #312e81; border: 1.5px solid ${pred.rankColor}; color: ${pred.rankColor}; font-size: 0.75rem; font-weight: 900; padding: 2px 6px; border-radius: 4px;">RANK: ${pred.rank}</span>
+                  <span style="background: #0f172a; border: 1px solid #6366f1; color: #38bdf8; font-size: 0.75rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;">${pred.totalScore.toLocaleString()} pts</span>
+                </div>
+              </div>
+
+              <div style="background: #0f172a; border-radius: 4px; padding: 5px 8px; font-size: 0.7rem; color: #94a3b8; display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
+                <span>Stat Eval: <strong style="color: #38bdf8;">${pred.statScore.toLocaleString()} pts</strong></span>
+                <span>Skill Eval: <strong style="color: #34d399;">${pred.skillScore.toLocaleString()} pts</strong> (~${pred.totalSkills} skills)</span>
+                <span>Hint Savings: <strong style="color: #f59e0b;">-${pred.spSaved} SP Saved</strong></span>
+              </div>
+
+              <div style="font-size: 0.7rem; font-weight: 600; color: #c7d2fe; margin-bottom: 4px;">Optimal Skill Hints from Cards &amp; Legacies:</div>
+              ${hintsHtml}
+            </div>
+          `;
+        })()}
       </div>
     `;
   }
