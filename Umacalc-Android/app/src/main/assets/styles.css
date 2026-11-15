@@ -522,15 +522,15 @@ body {
   color: #38bdf8;
 }
 
-/* 2-Column Best Cards */
+/* 3-Column Best Cards */
 .cards-comparison-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
   margin-bottom: 8px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .cards-comparison-grid {
     grid-template-columns: 1fr;
   }
@@ -543,6 +543,7 @@ body {
 }
 
 .card-tier-column.training { border: 1px solid #0284c7; }
+.card-tier-column.friendship { border: 1px solid #8b5cf6; }
 .card-tier-column.inspiration { border: 1px solid #d97706; }
 
 .column-header {
@@ -561,6 +562,7 @@ body {
 }
 
 .column-header .badge.training { background-color: #0369a1; }
+.column-header .badge.friendship { background-color: #7c3aed; }
 .column-header .badge.inspiration { background-color: #b45309; }
 
 .column-header h4 {
@@ -569,6 +571,7 @@ body {
 }
 
 .column-header.training h4 { color: #38bdf8; }
+.column-header.friendship h4 { color: #c4b5fd; }
 .column-header.inspiration h4 { color: #fbbf24; }
 
 .column-sub {
@@ -618,6 +621,12 @@ body {
   background-color: #1e293b;
   border-color: #38bdf8;
   color: #38bdf8;
+}
+
+.card-ownership-badge.friendship {
+  background-color: #3b0764;
+  border-color: #8b5cf6;
+  color: #ddd6fe;
 }
 
 .umadump-sync-bar {
@@ -671,6 +680,12 @@ body {
   background: #78350f;
   border: 1px solid #d97706;
   color: #fde047;
+}
+
+.bonus-stat-pill.friendship {
+  background: #3b0764;
+  border: 1px solid #8b5cf6;
+  color: #ddd6fe;
 }
 
 .card-reason {

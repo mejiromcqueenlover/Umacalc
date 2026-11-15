@@ -725,11 +725,13 @@
                                                 </Grid>
                                             </Border>
 
-                                            <!-- Row 3: 2 Columns for Best Support Cards -->
+                                            <!-- Row 3: 3 Columns for Best Support Cards (Training, Friendship, Inspiration) -->
                                             <Grid Grid.Row="3" Margin="0,0,0,10">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="8" />
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
@@ -772,9 +774,11 @@
                                                                                         <TextBlock Text="{Binding OwnershipBadge}" FontSize="9" FontWeight="Black" Foreground="{Binding OwnershipColor, Converter={StaticResource HexToBrushConverter}}" />
                                                                                     </Border>
                                                                                 </StackPanel>
-                                                                                <Border Grid.Column="1" Background="#064E3B" BorderBrush="#059669" BorderThickness="1" CornerRadius="3" Padding="6,1" Margin="4,0,0,0">
-                                                                                    <TextBlock Text="{Binding BonusStat}" FontSize="10" FontWeight="Black" Foreground="#34D399" />
-                                                                                </Border>
+                                                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                                    <Border Background="#064E3B" BorderBrush="#059669" BorderThickness="1" CornerRadius="3" Padding="6,1" Margin="4,0,0,0">
+                                                                                        <TextBlock Text="{Binding BonusStat}" FontSize="10" FontWeight="Black" Foreground="#34D399" />
+                                                                                    </Border>
+                                                                                </StackPanel>
                                                                             </Grid>
                                                                             <!-- Effect / Synergy -->
                                                                             <TextBlock Grid.Row="1" Text="{Binding SkillOrReason}" FontSize="10" Foreground="#94A3B8" Margin="0,2,0,0" TextWrapping="Wrap" />
@@ -786,8 +790,63 @@
                                                     </StackPanel>
                                                 </Border>
 
-                                                <!-- Column 2: INSPIRATION BONUS CARDS (Hint Level, Rate & Skill Points) -->
-                                                <Border Grid.Column="2" Background="#161F30" BorderBrush="#D97706" BorderThickness="1" CornerRadius="6" Padding="10">
+                                                <!-- Column 2: FRIENDSHIP BONUS CARDS (Rainbow Specialty Multipliers) -->
+                                                <Border Grid.Column="2" Background="#161F30" BorderBrush="#8B5CF6" BorderThickness="1" CornerRadius="6" Padding="10">
+                                                    <StackPanel>
+                                                        <Grid Margin="0,0,0,6">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Border Background="#7C3AED" CornerRadius="3" Padding="5,2" Margin="0,0,6,0">
+                                                                    <TextBlock Text="FRIENDSHIP BONUS" FontSize="9" FontWeight="Black" Foreground="#FFFFFF" />
+                                                                </Border>
+                                                                <TextBlock Text="Top Rainbow Multipliers (+20-35%)" FontSize="11" FontWeight="Bold" Foreground="#C4B5FD" VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                        <TextBlock Text="High rainbow stat spikes when training on their specialty facility:" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6" />
+
+                                                        <ItemsControl ItemsSource="{Binding ActivePreset.FriendshipBonusCards}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border Background="#0F172A" BorderBrush="#1E293B" BorderThickness="1" CornerRadius="4" Padding="8,5" Margin="0,0,0,5">
+                                                                        <Grid>
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="Auto" />
+                                                                                <RowDefinition Height="Auto" />
+                                                                            </Grid.RowDefinitions>
+                                                                            <!-- Card Name + Speciality Pill + Ownership Badge + Friendship Bonus Pill -->
+                                                                            <Grid Grid.Row="0">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*" />
+                                                                                    <ColumnDefinition Width="Auto" />
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                                    <Border Background="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}" CornerRadius="3" Padding="5,1" Margin="0,0,6,0">
+                                                                                        <TextBlock Text="{Binding Speciality}" FontSize="9" FontWeight="Black" Foreground="#FFFFFF" />
+                                                                                    </Border>
+                                                                                    <TextBlock Text="{Binding CardName}" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis" />
+                                                                                    <!-- Ownership Pill -->
+                                                                                    <Border Background="#3B0764" BorderBrush="{Binding OwnershipColor, Converter={StaticResource HexToBrushConverter}}" BorderThickness="1" CornerRadius="3" Padding="4,1" Margin="6,0,0,0"
+                                                                                            Visibility="{Binding OwnershipBadge, Converter={StaticResource StringNotEmptyToVisibilityConverter}}">
+                                                                                        <TextBlock Text="{Binding OwnershipBadge}" FontSize="9" FontWeight="Black" Foreground="{Binding OwnershipColor, Converter={StaticResource HexToBrushConverter}}" />
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                                    <Border Background="#3B0764" BorderBrush="#8B5CF6" BorderThickness="1" CornerRadius="3" Padding="6,1" Margin="4,0,0,0">
+                                                                                        <TextBlock Text="{Binding BonusStat}" FontSize="10" FontWeight="Black" Foreground="#DDD6FE" />
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                            </Grid>
+                                                                            <!-- Effect / Synergy -->
+                                                                            <TextBlock Grid.Row="1" Text="{Binding SkillOrReason}" FontSize="10" Foreground="#94A3B8" Margin="0,2,0,0" TextWrapping="Wrap" />
+                                                                        </Grid>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Column 4: INSPIRATION BONUS CARDS (Hint Level, Rate & Skill Points) -->
+                                                <Border Grid.Column="4" Background="#161F30" BorderBrush="#D97706" BorderThickness="1" CornerRadius="6" Padding="10">
                                                     <StackPanel>
                                                         <Grid Margin="0,0,0,6">
                                                             <StackPanel Orientation="Horizontal">
@@ -825,9 +884,11 @@
                                                                                         <TextBlock Text="{Binding OwnershipBadge}" FontSize="9" FontWeight="Black" Foreground="{Binding OwnershipColor, Converter={StaticResource HexToBrushConverter}}" />
                                                                                     </Border>
                                                                                 </StackPanel>
-                                                                                <Border Grid.Column="1" Background="#78350F" BorderBrush="#D97706" BorderThickness="1" CornerRadius="3" Padding="6,1" Margin="4,0,0,0">
-                                                                                    <TextBlock Text="{Binding BonusStat}" FontSize="10" FontWeight="Black" Foreground="#FDE047" />
-                                                                                </Border>
+                                                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                                    <Border Background="#78350F" BorderBrush="#D97706" BorderThickness="1" CornerRadius="3" Padding="6,1" Margin="4,0,0,0">
+                                                                                        <TextBlock Text="{Binding BonusStat}" FontSize="10" FontWeight="Black" Foreground="#FDE047" />
+                                                                                    </Border>
+                                                                                </StackPanel>
                                                                             </Grid>
                                                                             <!-- Effect / Synergy -->
                                                                             <TextBlock Grid.Row="1" Text="{Binding SkillOrReason}" FontSize="10" Foreground="#94A3B8" Margin="0,2,0,0" TextWrapping="Wrap" />

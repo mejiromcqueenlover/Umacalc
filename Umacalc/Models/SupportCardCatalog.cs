@@ -34,6 +34,9 @@ public class SupportCardInfo
     [JsonPropertyName("colorHex")]
     public string ColorHex { get; set; } = "#2563EB";
 
+    [JsonPropertyName("friendshipBonus")]
+    public int[] FriendshipBonus { get; set; } = Array.Empty<int>();
+
     [JsonPropertyName("trainingBonus")]
     public int[] TrainingBonus { get; set; } = Array.Empty<int>();
 
@@ -45,6 +48,13 @@ public class SupportCardInfo
 
     [JsonPropertyName("specialtyRate")]
     public int[] SpecialtyRate { get; set; } = Array.Empty<int>();
+
+    public int GetFriendshipBonus(int lb)
+    {
+        if (FriendshipBonus == null || FriendshipBonus.Length == 0) return 0;
+        int idx = Math.Clamp(lb, 0, FriendshipBonus.Length - 1);
+        return FriendshipBonus[idx];
+    }
 
     public int GetTrainingBonus(int lb)
     {

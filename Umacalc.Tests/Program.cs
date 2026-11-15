@@ -248,10 +248,18 @@ class Program
         Assert(kitasan?.Speciality == "SPD", "Kitasan Black speciality is SPD");
         Assert(kitasan?.GetTrainingBonus(0) == 10, "Kitasan Black 0LB has +10% Training Bonus");
         Assert(kitasan?.GetTrainingBonus(4) == 15, "Kitasan Black 4LB has +15% Training Bonus");
+        Assert(kitasan?.GetFriendshipBonus(4) == 25, "Kitasan Black 4LB has +25% Friendship Bonus");
+        Assert(kitasan?.GetFriendshipBonus(0) == 20, "Kitasan Black 0LB has +20% Friendship Bonus");
+
+        var fineMotion = catalog.GetCard(30010);
+        Assert(fineMotion != null, "Catalog found Fine Motion SSR (ID 30010)");
+        Assert(fineMotion?.GetFriendshipBonus(4) == 35, "Fine Motion 4LB has +35% Friendship Bonus");
 
         var biko = catalog.GetCard(30020);
         Assert(biko != null, "Catalog found Biko Pegasus SSR (ID 30020)");
         Assert(biko?.GetTrainingBonus(4) == 20, "Biko Pegasus 4LB has +20% Training Bonus");
+        Assert(biko?.GetFriendshipBonus(4) == 25, "Biko Pegasus 4LB has +25% Friendship Bonus");
+        Assert(biko?.GetFriendshipBonus(0) == 20, "Biko Pegasus 0LB has +20% Friendship Bonus");
 
         // 2. Player Inventory Load Test
         string dumpPath = @"C:\Users\mejiromcqueenlover\Downloads\support_card_data.json";
@@ -267,9 +275,13 @@ class Program
             // 3. Preset Evaluation Test
             var presets = BuildPreset.GetDefaultPresets();
             var milePreset = presets.First(p => p.Id == "mile");
+            Assert(milePreset.TrainingBonusCards.Any(c => c.FriendshipBonus > 0), "Mile preset default training cards have FriendshipBonus populated");
+            Assert(milePreset.TrainingBonusCards.Any(c => c.FriendshipStat.Contains("% Friendship")), "Mile preset cards display FriendshipStat badge");
             
             var ownedTraining = inv!.EvaluateBestTrainingCards(milePreset, 4);
             Assert(ownedTraining.Count == 4, $"Evaluated {ownedTraining.Count} training cards for Mile from player inventory");
+            Assert(ownedTraining.Any(c => c.FriendshipBonus > 0), "Evaluated training cards include Friendship Bonus");
+            Assert(ownedTraining.Any(c => !string.IsNullOrEmpty(c.FriendshipStat)), "Evaluated training cards have FriendshipStat formatted badge");
             foreach (var card in ownedTraining)
             {
                 Assert(card.IsPlayerOwned, $"Card '{card.CardName}' is marked as player owned");
@@ -280,11 +292,28 @@ class Program
 
             var ownedInspiration = inv.EvaluateBestInspirationCards(milePreset, 3);
             Assert(ownedInspiration.Count == 3, $"Evaluated {ownedInspiration.Count} inspiration cards for Mile from player inventory");
+            Assert(ownedInspiration.Any(c => c.FriendshipBonus > 0), "Evaluated inspiration cards include Friendship Bonus");
+            Assert(ownedInspiration.Any(c => !string.IsNullOrEmpty(c.FriendshipStat)), "Evaluated inspiration cards have FriendshipStat formatted badge");
             foreach (var card in ownedInspiration)
             {
                 Assert(card.IsPlayerOwned, $"Card '{card.CardName}' is marked as player owned");
                 Assert(!string.IsNullOrEmpty(card.OwnershipBadge), $"Card '{card.CardName}' has ownership badge: {card.OwnershipBadge}");
                 Assert(card.BonusStat.Contains("Hint Lv"), $"Card '{card.CardName}' has hint bonus stat: {card.BonusStat}");
+            }
+
+            // Test Friendship box cards
+            Assert(milePreset.FriendshipBonusCards.Count >= 3, $"Mile preset has default FriendshipBonusCards (count: {milePreset.FriendshipBonusCards.Count})");
+            Assert(milePreset.FriendshipBonusCards.All(c => c.FriendshipBonus > 0), "Mile preset default friendship cards all have FriendshipBonus > 0");
+
+            var ownedFriendship = inv.EvaluateBestFriendshipCards(milePreset, 3);
+            Assert(ownedFriendship.Count == 3, $"Evaluated {ownedFriendship.Count} friendship cards for Mile from player inventory");
+            Assert(ownedFriendship.All(c => c.FriendshipBonus > 0), "Evaluated friendship cards all have Friendship Bonus > 0");
+            foreach (var card in ownedFriendship)
+            {
+                Assert(card.IsPlayerOwned, $"Card '{card.CardName}' is marked as player owned");
+                Assert(!string.IsNullOrEmpty(card.OwnershipBadge), $"Card '{card.CardName}' has ownership badge: {card.OwnershipBadge}");
+                Assert(card.BonusStat.Contains("% Friendship"), $"Card '{card.CardName}' has friendship bonus stat: {card.BonusStat}");
+                Assert(card.SkillOrReason.Contains("rainbow", StringComparison.OrdinalIgnoreCase) || card.SkillOrReason.Contains("multiplier", StringComparison.OrdinalIgnoreCase), $"Friendship card '{card.CardName}' has friendship reason: {card.SkillOrReason}");
             }
 
             // Test Long preset tailored cards
@@ -322,22 +351,26 @@ class Program
             Assert(vm.IsPlayerInventoryLoaded, "VM has IsPlayerInventoryLoaded = true after loading");
             Assert(vm.InventoryLoadedFileName == "support_card_data.json", $"VM loaded file name is {vm.InventoryLoadedFileName}");
             Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == true, "ActivePreset training cards are now from player inventory");
+            Assert(vm.ActivePreset?.FriendshipBonusCards.First().IsPlayerOwned == true, "ActivePreset friendship cards are now from player inventory");
             Assert(!string.IsNullOrEmpty(vm.ActivePreset?.TrainingBonusCards.First().OwnershipBadge), "ActivePreset card shows player LB badge");
 
             // Toggle back to meta
             vm.ToggleOwnedOnlyCommand.Execute(null);
             Assert(!vm.ShowOnlyOwnedCards, "ShowOnlyOwnedCards toggled to false");
             Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == false, "ActivePreset reverted to meta default cards");
+            Assert(vm.ActivePreset?.FriendshipBonusCards.First().IsPlayerOwned == false, "ActivePreset reverted to meta default friendship cards");
 
             // Toggle back to owned
             vm.ToggleOwnedOnlyCommand.Execute(null);
             Assert(vm.ShowOnlyOwnedCards, "ShowOnlyOwnedCards toggled back to true");
             Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == true, "ActivePreset restored player cards");
+            Assert(vm.ActivePreset?.FriendshipBonusCards.First().IsPlayerOwned == true, "ActivePreset restored player friendship cards");
 
             // Clear inventory
             vm.ClearPlayerInventoryCommand.Execute(null);
             Assert(!vm.IsPlayerInventoryLoaded, "IsPlayerInventoryLoaded cleared");
             Assert(vm.ActivePreset?.TrainingBonusCards.First().IsPlayerOwned == false, "ActivePreset reverted to meta after clear");
+            Assert(vm.ActivePreset?.FriendshipBonusCards.First().IsPlayerOwned == false, "ActivePreset friendship reverted to meta after clear");
 
             // 5. Test Trained Chara Legacy Integration
             Console.WriteLine("\n--> Testing Umadump Trained Chara Legacy Integration");
@@ -580,6 +613,7 @@ class Program
                     _ => new[] { 20, 25, 30, 35, 40 }
                 };
 
+                int[] fbVals = new int[5];
                 int[] tbVals = new int[5];
                 int[] hintLvVals = new int[5];
                 int[] hintRateVals = new int[5];
@@ -588,6 +622,7 @@ class Program
                 for (int lb = 0; lb < 5; lb++)
                 {
                     int lvl = maxLevels[lb];
+                    int fb = GetEffectVal(tableId, 1, lvl); // type 1 = Friendship Bonus (Friendship Training Effect)
                     int tb = GetEffectVal(tableId, 8, lvl); // type 8 = Training Effect
                     int hintLv = GetEffectVal(tableId, 17, lvl); // type 17 = Hint Lv Up
                     int hintRate = GetEffectVal(tableId, 18, lvl); // type 18 = Hint Rate Up
@@ -595,6 +630,9 @@ class Program
 
                     if (uniqueEffects.TryGetValue(uniqueId, out var u) && lvl >= u.unlockLv)
                     {
+                        if (u.type0 == 1) fb += u.val0;
+                        if (u.type1 == 1) fb += u.val1;
+
                         if (u.type0 == 8) tb += u.val0;
                         if (u.type1 == 8) tb += u.val1;
 
@@ -608,10 +646,16 @@ class Program
                         if (u.type1 == 19) specRate += u.val1;
                     }
 
+                    fbVals[lb] = fb;
                     tbVals[lb] = tb;
                     hintLvVals[lb] = hintLv > 0 ? hintLv + 1 : 1; // 1-based hint level
                     hintRateVals[lb] = hintRate;
                     specRateVals[lb] = specRate;
+                }
+
+                if (id == 30028 || id == 30016 || id == 30010 || id == 30011)
+                {
+                    Console.WriteLine($"[DEBUG CARD] ID {id} {chara} ({rarityStr}): FB=[{string.Join(",", fbVals)}] TB=[{string.Join(",", tbVals)}]");
                 }
 
                 cards.Add(new
@@ -624,6 +668,7 @@ class Program
                     rarity = rarityStr,
                     speciality = spec,
                     colorHex,
+                    friendshipBonus = fbVals,
                     trainingBonus = tbVals,
                     hintLevel = hintLvVals,
                     hintRate = hintRateVals,

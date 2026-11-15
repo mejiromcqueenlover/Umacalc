@@ -18,6 +18,8 @@ public class SupportCardTier
     public string Speciality { get; set; } = string.Empty; // "SPD", "STA", "POW", "GUT", "WIS", "PAL"
     public string ColorHex { get; set; } = "#3B82F6";
     public string BonusStat { get; set; } = string.Empty; // e.g. "+20% Training Effect"
+    public int FriendshipBonus { get; set; } = 0;
+    public string FriendshipStat => FriendshipBonus > 0 ? $"+{FriendshipBonus}% Friendship" : string.Empty;
     public string SkillOrReason { get; set; } = string.Empty;
 
     // Player ownership attributes from umadump
@@ -50,6 +52,17 @@ public class BuildPreset : INotifyPropertyChanged
         }
     }
 
+    private List<SupportCardTier> _friendshipBonusCards = new();
+    public List<SupportCardTier> FriendshipBonusCards
+    {
+        get => _friendshipBonusCards;
+        set
+        {
+            _friendshipBonusCards = value;
+            OnPropertyChanged();
+        }
+    }
+
     private List<SupportCardTier> _inspirationBonusCards = new();
     public List<SupportCardTier> InspirationBonusCards
     {
@@ -73,6 +86,7 @@ public class BuildPreset : INotifyPropertyChanged
     }
 
     public List<SupportCardTier> DefaultTrainingBonusCards { get; set; } = new();
+    public List<SupportCardTier> DefaultFriendshipBonusCards { get; set; } = new();
     public List<SupportCardTier> DefaultInspirationBonusCards { get; set; } = new();
     public List<LegacyRecommendationTier> DefaultRecommendedLegacies { get; set; } = new();
 
@@ -88,12 +102,17 @@ public class BuildPreset : INotifyPropertyChanged
         {
             DefaultTrainingBonusCards = new List<SupportCardTier>(TrainingBonusCards);
         }
+        if (DefaultFriendshipBonusCards.Count == 0 && FriendshipBonusCards.Count > 0)
+        {
+            DefaultFriendshipBonusCards = new List<SupportCardTier>(FriendshipBonusCards);
+        }
         if (DefaultInspirationBonusCards.Count == 0 && InspirationBonusCards.Count > 0)
         {
             DefaultInspirationBonusCards = new List<SupportCardTier>(InspirationBonusCards);
         }
 
-        TrainingBonusCards = inventory.EvaluateBestTrainingCards(this, 4);
+        TrainingBonusCards = inventory.EvaluateBestTrainingCards(this, 3);
+        FriendshipBonusCards = inventory.EvaluateBestFriendshipCards(this, 3);
         InspirationBonusCards = inventory.EvaluateBestInspirationCards(this, 3);
     }
 
@@ -112,6 +131,10 @@ public class BuildPreset : INotifyPropertyChanged
         if (DefaultTrainingBonusCards.Count > 0)
         {
             TrainingBonusCards = new List<SupportCardTier>(DefaultTrainingBonusCards);
+        }
+        if (DefaultFriendshipBonusCards.Count > 0)
+        {
+            FriendshipBonusCards = new List<SupportCardTier>(DefaultFriendshipBonusCards);
         }
         if (DefaultInspirationBonusCards.Count > 0)
         {
@@ -133,7 +156,7 @@ public class BuildPreset : INotifyPropertyChanged
 
     public static List<BuildPreset> GetDefaultPresets()
     {
-        return new List<BuildPreset>
+        var presets = new List<BuildPreset>
         {
             // === 1. DISTANCE BUILDS ===
             new BuildPreset
@@ -675,5 +698,59 @@ public class BuildPreset : INotifyPropertyChanged
                 }
             }
         };
+
+        try
+        {
+            var catalog = SupportCardCatalog.Instance;
+            if (catalog != null && catalog.AllCards.Count > 0)
+            {
+                foreach (var p in presets)
+                {
+                    foreach (var card in p.TrainingBonusCards.Concat(p.InspirationBonusCards))
+                    {
+                        if (card.FriendshipBonus == 0)
+                        {
+                            var info = catalog.AllCards.FirstOrDefault(c => 
+                                c.DisplayName.Equals(card.CardName, StringComparison.OrdinalIgnoreCase) ||
+                                card.CardName.StartsWith(c.CharaName, StringComparison.OrdinalIgnoreCase));
+                            if (info != null)
+                            {
+                                card.FriendshipBonus = info.GetFriendshipBonus(4); // Default meta cards are MLB
+                            }
+                        }
+                    }
+
+                    if (p.FriendshipBonusCards.Count == 0)
+                    {
+                        var relevantSpecs = PlayerInventory.GetRelevantSpecialities(p);
+                        var candidateCards = catalog.AllCards
+                            .Where(c => relevantSpecs.Contains(c.Speciality.ToUpperInvariant()) && c.GetFriendshipBonus(4) > 0)
+                            .OrderByDescending(c => c.GetFriendshipBonus(4) * 100 + c.GetSpecialtyRate(4))
+                            .Take(3)
+                            .ToList();
+
+                        p.FriendshipBonusCards = candidateCards.Select(c => new SupportCardTier
+                        {
+                            CardName = $"{c.CharaName} ({c.Rarity})",
+                            Speciality = c.Speciality,
+                            ColorHex = c.ColorHex,
+                            BonusStat = $"+{c.GetFriendshipBonus(4)}% Friendship",
+                            FriendshipBonus = c.GetFriendshipBonus(4),
+                            SkillOrReason = $"{c.Speciality} rainbow multiplier (+{c.GetFriendshipBonus(4)}%) • Specialty Rate +{c.GetSpecialtyRate(4)}"
+                        }).ToList();
+                    }
+
+                    p.DefaultTrainingBonusCards = new List<SupportCardTier>(p.TrainingBonusCards);
+                    p.DefaultFriendshipBonusCards = new List<SupportCardTier>(p.FriendshipBonusCards);
+                    p.DefaultInspirationBonusCards = new List<SupportCardTier>(p.InspirationBonusCards);
+                }
+            }
+        }
+        catch
+        {
+            // Catalog loading fallback handled by catalog
+        }
+
+        return presets;
     }
 }

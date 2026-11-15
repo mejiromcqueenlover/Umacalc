@@ -1105,14 +1105,7 @@ class UmacalcApp {
   }
 
   evaluateBestCards(preset) {
-    if (!this.playerInventory || !this.showOnlyOwnedCards || !window.SUPPORT_CARD_CATALOG) {
-      return {
-        training: preset.trainingCards,
-        inspiration: preset.inspirationCards,
-        isCustom: false
-      };
-    }
-
+    const catalog = window.SUPPORT_CARD_CATALOG;
     const relevantSpecs = new Set();
     preset.composition.forEach(c => {
       const parts = c.label.split(" ");
@@ -1127,7 +1120,35 @@ class UmacalcApp {
     });
     relevantSpecs.add("PAL");
 
-    const catalog = window.SUPPORT_CARD_CATALOG;
+    const getDefaultFriendshipCards = () => {
+      if (preset.friendshipCards && preset.friendshipCards.length > 0) {
+        return preset.friendshipCards;
+      }
+      if (!catalog) return [];
+      return catalog
+        .filter(c => relevantSpecs.has(c.speciality.toUpperCase()) && c.friendshipBonus && c.friendshipBonus[4] > 0)
+        .sort((a, b) => ((b.friendshipBonus[4] * 100) + (b.specialtyRate ? b.specialtyRate[4] : 0)) - ((a.friendshipBonus[4] * 100) + (a.specialtyRate ? a.specialtyRate[4] : 0)))
+        .slice(0, 3)
+        .map(c => ({
+          name: `${c.charaName} (${c.rarity})`,
+          spec: c.speciality,
+          color: c.colorHex,
+          bonus: `+${c.friendshipBonus[4]}% Friendship`,
+          friendship: c.friendshipBonus[4],
+          friendshipStat: `+${c.friendshipBonus[4]}% Friendship`,
+          reason: `${c.speciality} rainbow multiplier (+${c.friendshipBonus[4]}%) • Specialty Rate +${c.specialtyRate ? c.specialtyRate[4] : 0}`
+        }));
+    };
+
+    if (!this.playerInventory || !this.showOnlyOwnedCards || !window.SUPPORT_CARD_CATALOG) {
+      return {
+        training: preset.trainingCards,
+        friendship: getDefaultFriendshipCards(),
+        inspiration: preset.inspirationCards,
+        isCustom: false
+      };
+    }
+
     const ownedMap = this.playerInventory;
 
     const hasAffinity = (presetId, name) => {
@@ -1227,6 +1248,22 @@ class UmacalcApp {
       }
     };
 
+    const getTailoredFriendshipReason = (presetId, card, fb, specRate) => {
+      const spec = card.speciality.toUpperCase();
+      const title = card.cardTitle ? `${card.cardTitle} • ` : "";
+      const specPart = specRate > 0 ? ` • Specialty Rate +${specRate}` : "";
+
+      switch (spec) {
+        case "SPD": return `${title}Speed rainbow multiplier (+${fb}%)${specPart} • High speed stat spikes on rainbow turns`;
+        case "STA": return `${title}Stamina rainbow multiplier (+${fb}%)${specPart} • Massive endurance gains on rainbow turns`;
+        case "POW": return `${title}Power rainbow multiplier (+${fb}%)${specPart} • Overpowering stat growth on rainbow power training`;
+        case "GUT": return `${title}Guts rainbow multiplier (+${fb}%)${specPart} • High multi-stat rainbow yields across Speed, Power & Guts`;
+        case "WIS": return `${title}Wisdom rainbow multiplier (+${fb}%)${specPart} • Huge energy-restoring wisdom bursts & skill points`;
+        case "PAL": return `${title}Friend / Pal bond bonus (+${fb}%) • Maximizes turn efficiency`;
+        default: return `${title}Friendship rainbow multiplier (+${fb}%)${specPart}`;
+      }
+    };
+
     const getTailoredInspirationReason = (presetId, card, hintLv, discount) => {
       const pid = (presetId || "").toLowerCase();
       const title = card.cardTitle ? `${card.cardTitle} • ` : "";
@@ -1286,6 +1323,8 @@ class UmacalcApp {
 
     // Evaluate Training Bonus
     const trainingCandidates = [];
+    // Evaluate Friendship Bonus
+    const friendshipCandidates = [];
     // Evaluate Inspiration Bonus
     const inspirationCandidates = [];
 
@@ -1298,6 +1337,7 @@ class UmacalcApp {
 
       const lb = Math.min(4, Math.max(0, owned.lb));
       const tb = (card.trainingBonus && card.trainingBonus[lb]) || 0;
+      const fb = (card.friendshipBonus && card.friendshipBonus[lb]) || 0;
       const hintLv = (card.hintLevel && card.hintLevel[lb]) || 1;
       const hintRate = (card.hintRate && card.hintRate[lb]) || 0;
       const specRate = (card.specialtyRate && card.specialtyRate[lb]) || 0;
@@ -1306,25 +1346,39 @@ class UmacalcApp {
       const ownershipBadge = lb === 4 ? `MLB Lv ${owned.lvl}` : `${lb}LB Lv ${owned.lvl}`;
       const affinity = hasAffinity(preset.id, card.charaName);
 
-      if (tb > 0) {
-        const score = (tb * 1500) + (affinity ? 400 : 0) + (specRate * 12) + rarityBonus + (lb * 25) + owned.lvl;
+      if (tb > 0 || fb > 0) {
+        const score = (tb * 1200) + (fb * 800) + (affinity ? 400 : 0) + (specRate * 12) + rarityBonus + (lb * 25) + owned.lvl;
         trainingCandidates.push({
           card,
           owned,
           tb,
+          fb,
           specRate,
           score,
           ownershipBadge
         });
       }
 
+      if (fb > 0) {
+        const fScore = (fb * 1500) + (specRate * 18) + (affinity ? 400 : 0) + rarityBonus + (lb * 25) + owned.lvl;
+        friendshipCandidates.push({
+          card,
+          owned,
+          fb,
+          specRate,
+          score: fScore,
+          ownershipBadge
+        });
+      }
+
       if (hintLv >= 2 || hintRate >= 20) {
-        const inspScore = (hintLv * 250) + (hintRate * 8) + (affinity ? 500 : 0) + (card.rarity === "SSR" ? 50 : card.rarity === "SR" ? 30 : 10) + (lb * 15);
+        const inspScore = (hintLv * 250) + (hintRate * 8) + (fb * 5) + (affinity ? 500 : 0) + (card.rarity === "SSR" ? 50 : card.rarity === "SR" ? 30 : 10) + (lb * 15);
         inspirationCandidates.push({
           card,
           owned,
           hintLv,
           hintRate,
+          fb,
           inspScore,
           ownershipBadge
         });
@@ -1348,6 +1402,8 @@ class UmacalcApp {
           spec: match.card.speciality,
           color: match.card.colorHex,
           bonus: `+${match.tb}% Training Effect`,
+          friendship: match.fb,
+          friendshipStat: match.fb > 0 ? `+${match.fb}% Friendship` : "",
           ownershipBadge: match.ownershipBadge,
           reason: getTailoredTrainingReason(preset.id, match.card, match.tb)
         });
@@ -1367,10 +1423,58 @@ class UmacalcApp {
             spec: c.card.speciality,
             color: c.card.colorHex,
             bonus: `+${c.tb}% Training Effect`,
+            friendship: c.fb,
+            friendshipStat: c.fb > 0 ? `+${c.fb}% Friendship` : "",
             ownershipBadge: c.ownershipBadge,
             reason: getTailoredTrainingReason(preset.id, c.card, c.tb)
           });
           usedCharaIds.add(c.card.charaId);
+        });
+    }
+
+    // Select top friendship cards tailored to slot targets
+    const chosenFriendship = [];
+    const usedFriendshipCharaIds = new Set();
+
+    targetSlots.forEach(targetSpec => {
+      if (chosenFriendship.length >= 3) return;
+      const match = friendshipCandidates
+        .filter(c => c.card.speciality.toUpperCase() === targetSpec && !usedFriendshipCharaIds.has(c.card.charaId))
+        .sort((a, b) => b.score - a.score)[0];
+
+      if (match) {
+        chosenFriendship.push({
+          name: `${match.card.charaName} (${match.card.rarity})`,
+          spec: match.card.speciality,
+          color: match.card.colorHex,
+          bonus: `+${match.fb}% Friendship`,
+          friendship: match.fb,
+          friendshipStat: `+${match.fb}% Friendship`,
+          ownershipBadge: match.ownershipBadge,
+          reason: getTailoredFriendshipReason(preset.id, match.card, match.fb, match.specRate)
+        });
+        usedFriendshipCharaIds.add(match.card.charaId);
+      }
+    });
+
+    // Fill remaining if any
+    if (chosenFriendship.length < 3) {
+      friendshipCandidates
+        .filter(c => !usedFriendshipCharaIds.has(c.card.charaId))
+        .sort((a, b) => b.score - a.score)
+        .forEach(c => {
+          if (chosenFriendship.length >= 3) return;
+          chosenFriendship.push({
+            name: `${c.card.charaName} (${c.card.rarity})`,
+            spec: c.card.speciality,
+            color: c.card.colorHex,
+            bonus: `+${c.fb}% Friendship`,
+            friendship: c.fb,
+            friendshipStat: `+${c.fb}% Friendship`,
+            ownershipBadge: c.ownershipBadge,
+            reason: getTailoredFriendshipReason(preset.id, c.card, c.fb, c.specRate)
+          });
+          usedFriendshipCharaIds.add(c.card.charaId);
         });
     }
 
@@ -1390,14 +1494,34 @@ class UmacalcApp {
         spec: c.card.speciality,
         color: c.card.colorHex,
         bonus: `Hint Lv ${c.hintLv}${rateStr}`,
+        friendship: c.fb,
+        friendshipStat: c.fb > 0 ? `+${c.fb}% Friendship` : "",
         ownershipBadge: c.ownershipBadge,
         reason: getTailoredInspirationReason(preset.id, c.card, c.hintLv, c.hintLv * 10)
       });
     });
 
+    // Helper to ensure default cards have friendshipStat if missing
+    const populateDefaultFriendship = (list) => {
+      return (list || []).map(c => {
+        if (!c.friendshipStat) {
+          const info = catalog.find(card => card.displayName === c.name || (c.name && c.name.startsWith(card.charaName)));
+          if (info && info.friendshipBonus && info.friendshipBonus[4] > 0) {
+            return {
+              ...c,
+              friendship: info.friendshipBonus[4],
+              friendshipStat: `+${info.friendshipBonus[4]}% Friendship`
+            };
+          }
+        }
+        return c;
+      });
+    };
+
     return {
-      training: chosenTraining.length > 0 ? chosenTraining : preset.trainingCards,
-      inspiration: chosenInspiration.length > 0 ? chosenInspiration : preset.inspirationCards,
+      training: chosenTraining.length > 0 ? chosenTraining : populateDefaultFriendship(preset.trainingCards),
+      friendship: chosenFriendship.length > 0 ? chosenFriendship : getDefaultFriendshipCards(),
+      inspiration: chosenInspiration.length > 0 ? chosenInspiration : populateDefaultFriendship(preset.inspirationCards),
       isCustom: true
     };
   }
@@ -1425,7 +1549,29 @@ class UmacalcApp {
               <span class="card-name">${c.name}</span>
               ${badgeHtml}
             </div>
-            <span class="bonus-stat-pill training">${c.bonus}</span>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <span class="bonus-stat-pill training">${c.bonus}</span>
+            </div>
+          </div>
+          <div class="card-reason">${c.reason}</div>
+        </div>
+      `;
+    });
+
+    let friendshipCardsHtml = "";
+    evaluated.friendship.forEach(c => {
+      const badgeHtml = c.ownershipBadge ? `<span class="card-ownership-badge friendship">${c.ownershipBadge}</span>` : "";
+      friendshipCardsHtml += `
+        <div class="tier-card-item">
+          <div class="tier-card-top">
+            <div>
+              <span class="card-spec-badge" style="background-color: ${c.color}">${c.spec}</span>
+              <span class="card-name">${c.name}</span>
+              ${badgeHtml}
+            </div>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <span class="bonus-stat-pill friendship">${c.bonus}</span>
+            </div>
           </div>
           <div class="card-reason">${c.reason}</div>
         </div>
@@ -1443,7 +1589,9 @@ class UmacalcApp {
               <span class="card-name">${c.name}</span>
               ${badgeHtml}
             </div>
-            <span class="bonus-stat-pill inspiration">${c.bonus}</span>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <span class="bonus-stat-pill inspiration">${c.bonus}</span>
+            </div>
           </div>
           <div class="card-reason">${c.reason}</div>
         </div>
@@ -1492,7 +1640,7 @@ class UmacalcApp {
 
         ${syncBarHtml}
 
-        <!-- 2-Column Best Cards -->
+        <!-- 3-Column Best Cards -->
         <div class="cards-comparison-grid">
           <!-- Column 0: Training Bonus -->
           <div class="card-tier-column training">
@@ -1504,7 +1652,17 @@ class UmacalcApp {
             ${trainingCardsHtml}
           </div>
 
-          <!-- Column 1: Inspiration Bonus -->
+          <!-- Column 1: Friendship Bonus -->
+          <div class="card-tier-column friendship">
+            <div class="column-header friendship">
+              <span class="badge friendship">FRIENDSHIP BONUS</span>
+              <h4>Top Rainbow Multipliers (+20-35%)</h4>
+            </div>
+            <div class="column-sub">High rainbow stat spikes when training on their specialty facility:</div>
+            ${friendshipCardsHtml}
+          </div>
+
+          <!-- Column 2: Inspiration Bonus -->
           <div class="card-tier-column inspiration">
             <div class="column-header inspiration">
               <span class="badge inspiration">INSPIRATION BONUS</span>

@@ -93,7 +93,7 @@ public class PlayerInventory
         var catalog = SupportCardCatalog.Instance;
         var relevantSpecs = GetRelevantSpecialities(preset);
 
-        var candidates = new List<(SupportCardInfo card, PlayerCardEntry entry, int tb, int score)>();
+        var candidates = new List<(SupportCardInfo card, PlayerCardEntry entry, int tb, int fb, int score)>();
 
         foreach (var owned in OwnedCards.Values)
         {
@@ -102,7 +102,8 @@ public class PlayerInventory
             if (!relevantSpecs.Contains(card.Speciality.ToUpperInvariant())) continue;
 
             int tb = card.GetTrainingBonus(owned.LimitBreakCount);
-            if (tb <= 0) continue;
+            int fb = card.GetFriendshipBonus(owned.LimitBreakCount);
+            if (tb <= 0 && fb <= 0) continue;
 
             int specRate = card.GetSpecialtyRate(owned.LimitBreakCount);
             int rarityBonus = card.Rarity switch { "SSR" => 120, "SR" => 60, _ => 10 };
@@ -111,9 +112,9 @@ public class PlayerInventory
 
             int affinityBonus = HasPresetAffinity(preset.Id, card.CharaName) ? 400 : 0;
 
-            // Score strongly values Training Bonus percentage, preset affinity, speciality rate and LB
-            int score = (tb * 1500) + affinityBonus + (specRate * 12) + rarityBonus + lbBonus + lvlBonus;
-            candidates.Add((card, owned, tb, score));
+            // Score strongly values Training Bonus percentage, Friendship Bonus percentage, preset affinity, speciality rate and LB
+            int score = (tb * 1200) + (fb * 800) + affinityBonus + (specRate * 12) + rarityBonus + lbBonus + lvlBonus;
+            candidates.Add((card, owned, tb, fb, score));
         }
 
         if (candidates.Count == 0)
@@ -139,7 +140,7 @@ public class PlayerInventory
 
             if (match.card != null)
             {
-                result.Add(CreateTrainingTier(preset.Id, match.card, match.entry, match.tb));
+                result.Add(CreateTrainingTier(preset.Id, match.card, match.entry, match.tb, match.fb));
                 usedCharaIds.Add(match.card.CharaId);
             }
         }
@@ -154,7 +155,76 @@ public class PlayerInventory
             foreach (var c in remaining)
             {
                 if (result.Count >= count) break;
-                result.Add(CreateTrainingTier(preset.Id, c.card, c.entry, c.tb));
+                result.Add(CreateTrainingTier(preset.Id, c.card, c.entry, c.tb, c.fb));
+                usedCharaIds.Add(c.card.CharaId);
+            }
+        }
+
+        return result;
+    }
+
+    public List<SupportCardTier> EvaluateBestFriendshipCards(BuildPreset preset, int count = 3)
+    {
+        var catalog = SupportCardCatalog.Instance;
+        var relevantSpecs = GetRelevantSpecialities(preset);
+
+        var candidates = new List<(SupportCardInfo card, PlayerCardEntry entry, int fb, int specRate, int score)>();
+
+        foreach (var owned in OwnedCards.Values)
+        {
+            var card = catalog.GetCard(owned.SupportCardId);
+            if (card == null) continue;
+            if (!relevantSpecs.Contains(card.Speciality.ToUpperInvariant())) continue;
+
+            int fb = card.GetFriendshipBonus(owned.LimitBreakCount);
+            if (fb <= 0) continue;
+
+            int specRate = card.GetSpecialtyRate(owned.LimitBreakCount);
+            int rarityBonus = card.Rarity switch { "SSR" => 120, "SR" => 60, _ => 10 };
+            int lbBonus = owned.LimitBreakCount * 25;
+            int lvlBonus = owned.Level;
+            int affinityBonus = HasPresetAffinity(preset.Id, card.CharaName) ? 400 : 0;
+
+            // Friendship scoring strongly values Friendship Bonus, Specialty Rate (lands on facility), affinity, and LB
+            int score = (fb * 1500) + (specRate * 18) + affinityBonus + rarityBonus + lbBonus + lvlBonus;
+            candidates.Add((card, owned, fb, specRate, score));
+        }
+
+        if (candidates.Count == 0)
+        {
+            return preset.FriendshipBonusCards;
+        }
+
+        var result = new List<SupportCardTier>();
+        var usedCharaIds = new HashSet<int>();
+        var slotTargets = GetTargetSlotSequence(preset);
+
+        foreach (var targetSpec in slotTargets)
+        {
+            if (result.Count >= count) break;
+
+            var match = candidates
+                .Where(c => c.card.Speciality.Equals(targetSpec, StringComparison.OrdinalIgnoreCase) && !usedCharaIds.Contains(c.card.CharaId))
+                .OrderByDescending(c => c.score)
+                .FirstOrDefault();
+
+            if (match.card != null)
+            {
+                result.Add(CreateFriendshipTier(preset.Id, match.card, match.entry, match.fb, match.specRate));
+                usedCharaIds.Add(match.card.CharaId);
+            }
+        }
+
+        if (result.Count < count)
+        {
+            var remaining = candidates
+                .Where(c => !usedCharaIds.Contains(c.card.CharaId))
+                .OrderByDescending(c => c.score);
+
+            foreach (var c in remaining)
+            {
+                if (result.Count >= count) break;
+                result.Add(CreateFriendshipTier(preset.Id, c.card, c.entry, c.fb, c.specRate));
                 usedCharaIds.Add(c.card.CharaId);
             }
         }
@@ -167,7 +237,7 @@ public class PlayerInventory
         var catalog = SupportCardCatalog.Instance;
         var relevantSpecs = GetRelevantSpecialities(preset);
 
-        var candidates = new List<(SupportCardInfo card, PlayerCardEntry entry, int hintLv, int hintRate, int score)>();
+        var candidates = new List<(SupportCardInfo card, PlayerCardEntry entry, int hintLv, int hintRate, int fb, int score)>();
 
         foreach (var owned in OwnedCards.Values)
         {
@@ -177,13 +247,14 @@ public class PlayerInventory
 
             int hintLv = card.GetHintLevel(owned.LimitBreakCount);
             int hintRate = card.GetHintRate(owned.LimitBreakCount);
+            int fb = card.GetFriendshipBonus(owned.LimitBreakCount);
 
             if (hintLv < 2 && hintRate < 20) continue;
 
             int rarityBonus = card.Rarity switch { "SSR" => 50, "SR" => 30, _ => 10 };
             int affinityBonus = HasPresetAffinity(preset.Id, card.CharaName) ? 500 : 0;
-            int score = (hintLv * 250) + (hintRate * 8) + affinityBonus + rarityBonus + (owned.LimitBreakCount * 15);
-            candidates.Add((card, owned, hintLv, hintRate, score));
+            int score = (hintLv * 250) + (hintRate * 8) + (fb * 5) + affinityBonus + rarityBonus + (owned.LimitBreakCount * 15);
+            candidates.Add((card, owned, hintLv, hintRate, fb, score));
         }
 
         if (candidates.Count == 0)
@@ -200,7 +271,7 @@ public class PlayerInventory
             if (result.Count >= count) break;
             if (usedCharaIds.Contains(c.card.CharaId)) continue;
 
-            result.Add(CreateInspirationTier(preset.Id, c.card, c.entry, c.hintLv, c.hintRate));
+            result.Add(CreateInspirationTier(preset.Id, c.card, c.entry, c.hintLv, c.hintRate, c.fb));
             usedCharaIds.Add(c.card.CharaId);
         }
 
@@ -249,7 +320,7 @@ public class PlayerInventory
         };
     }
 
-    private static SupportCardTier CreateTrainingTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int tb)
+    private static SupportCardTier CreateTrainingTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int tb, int fb)
     {
         string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
         string reason = GetPresetTailoredTrainingReason(presetId, card, owned, tb);
@@ -260,6 +331,7 @@ public class PlayerInventory
             Speciality = card.Speciality,
             ColorHex = card.ColorHex,
             BonusStat = $"+{tb}% Training Effect",
+            FriendshipBonus = fb,
             SkillOrReason = reason,
             IsPlayerOwned = true,
             OwnershipBadge = lbText,
@@ -267,7 +339,43 @@ public class PlayerInventory
         };
     }
 
-    private static SupportCardTier CreateInspirationTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int hintLv, int hintRate)
+    private static SupportCardTier CreateFriendshipTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int fb, int specRate)
+    {
+        string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
+        string reason = GetPresetTailoredFriendshipReason(presetId, card, owned, fb, specRate);
+
+        return new SupportCardTier
+        {
+            CardName = $"{card.CharaName} ({card.Rarity})",
+            Speciality = card.Speciality,
+            ColorHex = card.ColorHex,
+            BonusStat = $"+{fb}% Friendship",
+            FriendshipBonus = fb,
+            SkillOrReason = reason,
+            IsPlayerOwned = true,
+            OwnershipBadge = lbText,
+            OwnershipColor = owned.LimitBreakCount == 4 ? "#10B981" : "#A78BFA"
+        };
+    }
+
+    private static string GetPresetTailoredFriendshipReason(string presetId, SupportCardInfo card, PlayerCardEntry owned, int fb, int specRate)
+    {
+        string spec = card.Speciality.ToUpperInvariant();
+        string titlePart = string.IsNullOrEmpty(card.CardTitle) ? "" : $"{card.CardTitle} • ";
+        string specPart = specRate > 0 ? $" • Specialty Rate +{specRate}" : "";
+
+        return spec switch
+        {
+            "SPD" => $"{titlePart}Speed rainbow multiplier (+{fb}%){specPart} • High speed stat spikes on rainbow turns",
+            "STA" => $"{titlePart}Stamina rainbow multiplier (+{fb}%){specPart} • Massive endurance gains on rainbow turns",
+            "POW" => $"{titlePart}Power rainbow multiplier (+{fb}%){specPart} • Powerful acceleration spikes on rainbow turns",
+            "GUT" => $"{titlePart}Guts rainbow multiplier (+{fb}%){specPart} • Maximum dual-stat rainbow gains",
+            "WIS" => $"{titlePart}Wisdom rainbow multiplier (+{fb}%){specPart} • Zero-energy rainbow training engine",
+            _ => $"{titlePart}High friendship training multiplier (+{fb}%){specPart}"
+        };
+    }
+
+    private static SupportCardTier CreateInspirationTier(string presetId, SupportCardInfo card, PlayerCardEntry owned, int hintLv, int hintRate, int fb)
     {
         string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
         int discount = hintLv * 10;
@@ -280,6 +388,7 @@ public class PlayerInventory
             Speciality = card.Speciality,
             ColorHex = card.ColorHex,
             BonusStat = $"Hint Lv {hintLv}{rateStr}",
+            FriendshipBonus = fb,
             SkillOrReason = reason,
             IsPlayerOwned = true,
             OwnershipBadge = lbText,
@@ -389,7 +498,7 @@ public class PlayerInventory
         };
     }
 
-    private static HashSet<string> GetRelevantSpecialities(BuildPreset preset)
+    public static HashSet<string> GetRelevantSpecialities(BuildPreset preset)
     {
         var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 

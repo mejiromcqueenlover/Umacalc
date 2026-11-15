@@ -23,7 +23,7 @@ A clean, responsive *Umamusume: Pretty Derby* companion designed to plan, optimi
    - Every build preset includes an exact **6-Card Support Deck Blueprint** (card specialities, counts, and deck split ratio).
    - Shows **Key Example Cards / Staples** (e.g. *Kitasan Black*, *Super Creek*, *Fine Motion*, *Tazuna*, *Riko Kashimoto*).
    - Provides **Parent Factor Inheritance Advice** (e.g. which 9★ sparks to borrow so you don't waste turns training off-stats).
-   - Shows the best options for **Training Bonus** and **Inspiration Bonus**.
+   - Displays three dedicated recommendation boxes for **Training Bonus** (stat multipliers & raw growth), **Friendship Bonus** (rainbow specialty multipliers & specialty rates), and **Inspiration Bonus** (skill hints & SP discounts).
    - Visual deck slot pills highlight the recommended card types on every preset button and in the active deck panel.
 
 3. **15 One-Click Build Presets**:
@@ -53,3 +53,4 @@ A clean, responsive *Umamusume: Pretty Derby* companion designed to plan, optimi
 5. **Umadump support card & legacy import**
    
    Use [umadump](https://github.com/Werseter/umadump/) to create JSON files of your account's data, import `support_card_data.json` and `trained_chara_data.json` into Umacalc and get **custom deck and parent recommendations** with cards/legacies you own based on **card level**, **LB** and **sparks**.
+
