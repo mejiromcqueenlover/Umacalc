@@ -983,15 +983,17 @@ class UmacalcApp {
 
     // Cards
     (trainingCards || []).concat(inspirationCards || []).forEach(sc => {
-      const card = allCards.find(c => c.displayName === sc.name || c.charaName === sc.name);
+      const card = allCards.find(c => c.displayName === sc.name || c.charaName === sc.name || (c.cardTitle && sc.name.includes(c.cardTitle)) || (c.displayName && sc.name.includes(c.displayName)) || (c.charaName && sc.name.includes(c.charaName)));
       if (card && skillCatalog.cardSkills && skillCatalog.cardSkills[card.id]) {
         skillCatalog.cardSkills[card.id].forEach(sid => {
           const sk = skillCatalog.skills[sid];
           if (sk && !seenNames.has(sk.name)) {
             seenNames.add(sk.name);
+            const sourceCardName = card.cardTitle ? card.cardTitle : card.charaName;
+            const badgeStr = sc.ownershipBadge ? ` (${sc.ownershipBadge})` : "";
             availableSkills.push({
               name: sk.name,
-              source: `${card.charaName} (${sc.ownershipBadge || "Meta"})`,
+              source: `${sourceCardName}${badgeStr}`,
               sourceColor: sc.color,
               hintLv: 3,
               discount: 30,
@@ -1120,9 +1122,41 @@ class UmacalcApp {
     });
     relevantSpecs.add("PAL");
 
+    const getCardFullName = (card) => {
+      return card.cardTitle ? `${card.cardTitle} (${card.rarity})` : `${card.charaName} (${card.rarity})`;
+    };
+
+    const populateDefaultCards = (list) => {
+      return (list || []).map(c => {
+        const info = catalog ? (catalog.find(card => card.displayName === c.name) ||
+                                catalog.find(card => c.name.includes(card.charaName) && c.name.includes(card.rarity)) ||
+                                catalog.find(card => c.name.includes(card.charaName))) : null;
+        let enhancedName = c.name;
+        let spec = c.spec;
+        let color = c.color;
+        let fb = c.friendship || 0;
+        let fbStat = c.friendshipStat || "";
+        if (info) {
+          enhancedName = info.cardTitle ? `${info.cardTitle} (${info.rarity})` : (info.displayName || c.name);
+          spec = info.speciality || spec;
+          color = info.colorHex || color;
+          if (!fb && info.friendshipBonus) fb = info.friendshipBonus[4];
+          if (!fbStat && fb > 0) fbStat = `+${fb}% Friendship`;
+        }
+        return {
+          ...c,
+          name: enhancedName,
+          spec: spec,
+          color: color,
+          friendship: fb,
+          friendshipStat: fbStat
+        };
+      });
+    };
+
     const getDefaultFriendshipCards = () => {
       if (preset.friendshipCards && preset.friendshipCards.length > 0) {
-        return preset.friendshipCards;
+        return populateDefaultCards(preset.friendshipCards);
       }
       if (!catalog) return [];
       return catalog
@@ -1130,7 +1164,7 @@ class UmacalcApp {
         .sort((a, b) => ((b.friendshipBonus[4] * 100) + (b.specialtyRate ? b.specialtyRate[4] : 0)) - ((a.friendshipBonus[4] * 100) + (a.specialtyRate ? a.specialtyRate[4] : 0)))
         .slice(0, 3)
         .map(c => ({
-          name: `${c.charaName} (${c.rarity})`,
+          name: getCardFullName(c),
           spec: c.speciality,
           color: c.colorHex,
           bonus: `+${c.friendshipBonus[4]}% Friendship`,
@@ -1142,9 +1176,9 @@ class UmacalcApp {
 
     if (!this.playerInventory || !this.showOnlyOwnedCards || !window.SUPPORT_CARD_CATALOG) {
       return {
-        training: preset.trainingCards,
+        training: populateDefaultCards(preset.trainingCards),
         friendship: getDefaultFriendshipCards(),
-        inspiration: preset.inspirationCards,
+        inspiration: populateDefaultCards(preset.inspirationCards),
         isCustom: false
       };
     }
@@ -1398,7 +1432,7 @@ class UmacalcApp {
 
       if (match) {
         chosenTraining.push({
-          name: `${match.card.charaName} (${match.card.rarity})`,
+          name: getCardFullName(match.card),
           spec: match.card.speciality,
           color: match.card.colorHex,
           bonus: `+${match.tb}% Training Effect`,
@@ -1419,7 +1453,7 @@ class UmacalcApp {
         .forEach(c => {
           if (chosenTraining.length >= 4) return;
           chosenTraining.push({
-            name: `${c.card.charaName} (${c.card.rarity})`,
+            name: getCardFullName(c.card),
             spec: c.card.speciality,
             color: c.card.colorHex,
             bonus: `+${c.tb}% Training Effect`,
@@ -1444,7 +1478,7 @@ class UmacalcApp {
 
       if (match) {
         chosenFriendship.push({
-          name: `${match.card.charaName} (${match.card.rarity})`,
+          name: getCardFullName(match.card),
           spec: match.card.speciality,
           color: match.card.colorHex,
           bonus: `+${match.fb}% Friendship`,
@@ -1465,7 +1499,7 @@ class UmacalcApp {
         .forEach(c => {
           if (chosenFriendship.length >= 3) return;
           chosenFriendship.push({
-            name: `${c.card.charaName} (${c.card.rarity})`,
+            name: getCardFullName(c.card),
             spec: c.card.speciality,
             color: c.card.colorHex,
             bonus: `+${c.fb}% Friendship`,
@@ -1490,7 +1524,7 @@ class UmacalcApp {
 
       const rateStr = c.hintRate > 0 ? ` (+${c.hintRate}% Rate)` : "";
       chosenInspiration.push({
-        name: `${c.card.charaName} (${c.card.rarity})`,
+        name: getCardFullName(c.card),
         spec: c.card.speciality,
         color: c.card.colorHex,
         bonus: `Hint Lv ${c.hintLv}${rateStr}`,
@@ -1501,27 +1535,10 @@ class UmacalcApp {
       });
     });
 
-    // Helper to ensure default cards have friendshipStat if missing
-    const populateDefaultFriendship = (list) => {
-      return (list || []).map(c => {
-        if (!c.friendshipStat) {
-          const info = catalog.find(card => card.displayName === c.name || (c.name && c.name.startsWith(card.charaName)));
-          if (info && info.friendshipBonus && info.friendshipBonus[4] > 0) {
-            return {
-              ...c,
-              friendship: info.friendshipBonus[4],
-              friendshipStat: `+${info.friendshipBonus[4]}% Friendship`
-            };
-          }
-        }
-        return c;
-      });
-    };
-
     return {
-      training: chosenTraining.length > 0 ? chosenTraining : populateDefaultFriendship(preset.trainingCards),
+      training: chosenTraining.length > 0 ? chosenTraining : populateDefaultCards(preset.trainingCards),
       friendship: chosenFriendship.length > 0 ? chosenFriendship : getDefaultFriendshipCards(),
-      inspiration: chosenInspiration.length > 0 ? chosenInspiration : populateDefaultFriendship(preset.inspirationCards),
+      inspiration: chosenInspiration.length > 0 ? chosenInspiration : populateDefaultCards(preset.inspirationCards),
       isCustom: true
     };
   }

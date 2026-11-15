@@ -64,8 +64,11 @@ public class CareerPointPrediction
         // Collect skills from Support Cards
         foreach (var sc in supportCards)
         {
-            var cardInfo = cardCatalog.AllCards.FirstOrDefault(c => c.DisplayName.Equals(sc.CardName, StringComparison.OrdinalIgnoreCase)
-                                                                 || c.CharaName.Equals(sc.CardName, StringComparison.OrdinalIgnoreCase));
+            var cardInfo = cardCatalog.AllCards.FirstOrDefault(c => 
+                (!string.IsNullOrEmpty(c.CardTitle) && sc.CardName.StartsWith(c.CardTitle, StringComparison.OrdinalIgnoreCase)) ||
+                c.DisplayName.Equals(sc.CardName, StringComparison.OrdinalIgnoreCase) ||
+                (sc.CardName.Contains(c.CharaName, StringComparison.OrdinalIgnoreCase) && sc.CardName.Contains(c.Rarity, StringComparison.OrdinalIgnoreCase)))
+                ?? cardCatalog.AllCards.FirstOrDefault(c => sc.CardName.Contains(c.CharaName, StringComparison.OrdinalIgnoreCase));
             if (cardInfo != null)
             {
                 var skills = skillCatalog.GetSkillsForCard(cardInfo.Id);
@@ -75,11 +78,13 @@ public class CareerPointPrediction
                     seenSkillNames.Add(sk.Name);
 
                     string reason = GetSkillSynergyReason(preset.Id, sk.Name);
+                    string cardTitle = string.IsNullOrEmpty(cardInfo.CardTitle) ? cardInfo.CharaName : cardInfo.CardTitle;
+                    string sourceName = string.IsNullOrEmpty(sc.OwnershipBadge) ? cardTitle : $"{cardTitle} ({sc.OwnershipBadge})";
                     availableSkills.Add(new SkillHintSuggestion
                     {
                         SkillId = sk.Id,
                         SkillName = sk.Name,
-                        SourceName = $"{cardInfo.CharaName} ({sc.OwnershipBadge})",
+                        SourceName = sourceName,
                         SourceType = "Support Card",
                         SourceColor = sc.ColorHex,
                         EstimatedHintLv = 3,

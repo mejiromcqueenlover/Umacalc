@@ -589,9 +589,9 @@ class Program
                 string spec = cmdId switch
                 {
                     101 => "SPD",
-                    102 => "STA",
-                    103 => "POW",
-                    105 => "GUT",
+                    102 => "POW",
+                    103 => "GUT",
+                    105 => "STA",
                     106 => "WIS",
                     _ => "PAL"
                 };

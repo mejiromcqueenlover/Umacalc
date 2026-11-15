@@ -708,15 +708,22 @@ public class BuildPreset : INotifyPropertyChanged
                 {
                     foreach (var card in p.TrainingBonusCards.Concat(p.InspirationBonusCards))
                     {
-                        if (card.FriendshipBonus == 0)
+                        var info = catalog.AllCards.FirstOrDefault(c => 
+                            c.DisplayName.Equals(card.CardName, StringComparison.OrdinalIgnoreCase) ||
+                            (card.CardName.Contains(c.CharaName, StringComparison.OrdinalIgnoreCase) && card.CardName.Contains(c.Rarity, StringComparison.OrdinalIgnoreCase)))
+                            ?? catalog.AllCards.FirstOrDefault(c => card.CardName.Contains(c.CharaName, StringComparison.OrdinalIgnoreCase));
+                        if (info != null)
                         {
-                            var info = catalog.AllCards.FirstOrDefault(c => 
-                                c.DisplayName.Equals(card.CardName, StringComparison.OrdinalIgnoreCase) ||
-                                card.CardName.StartsWith(c.CharaName, StringComparison.OrdinalIgnoreCase));
-                            if (info != null)
+                            if (card.FriendshipBonus == 0)
                             {
                                 card.FriendshipBonus = info.GetFriendshipBonus(4); // Default meta cards are MLB
                             }
+                            if (!string.IsNullOrEmpty(info.CardTitle))
+                            {
+                                card.CardName = $"{info.CardTitle} ({info.Rarity})";
+                            }
+                            card.Speciality = info.Speciality;
+                            card.ColorHex = info.ColorHex;
                         }
                     }
 
@@ -731,13 +738,29 @@ public class BuildPreset : INotifyPropertyChanged
 
                         p.FriendshipBonusCards = candidateCards.Select(c => new SupportCardTier
                         {
-                            CardName = $"{c.CharaName} ({c.Rarity})",
+                            CardName = string.IsNullOrEmpty(c.CardTitle) ? $"{c.CharaName} ({c.Rarity})" : $"{c.CardTitle} ({c.Rarity})",
                             Speciality = c.Speciality,
                             ColorHex = c.ColorHex,
                             BonusStat = $"+{c.GetFriendshipBonus(4)}% Friendship",
                             FriendshipBonus = c.GetFriendshipBonus(4),
                             SkillOrReason = $"{c.Speciality} rainbow multiplier (+{c.GetFriendshipBonus(4)}%) • Specialty Rate +{c.GetSpecialtyRate(4)}"
                         }).ToList();
+                    }
+                    else
+                    {
+                        foreach (var card in p.FriendshipBonusCards)
+                        {
+                            var info = catalog.AllCards.FirstOrDefault(c => 
+                                c.DisplayName.Equals(card.CardName, StringComparison.OrdinalIgnoreCase) ||
+                                (card.CardName.Contains(c.CharaName, StringComparison.OrdinalIgnoreCase) && card.CardName.Contains(c.Rarity, StringComparison.OrdinalIgnoreCase)))
+                                ?? catalog.AllCards.FirstOrDefault(c => card.CardName.Contains(c.CharaName, StringComparison.OrdinalIgnoreCase));
+                            if (info != null && !string.IsNullOrEmpty(info.CardTitle))
+                            {
+                                card.CardName = $"{info.CardTitle} ({info.Rarity})";
+                                card.Speciality = info.Speciality;
+                                card.ColorHex = info.ColorHex;
+                            }
+                        }
                     }
 
                     p.DefaultTrainingBonusCards = new List<SupportCardTier>(p.TrainingBonusCards);

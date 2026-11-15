@@ -324,10 +324,11 @@ public class PlayerInventory
     {
         string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
         string reason = GetPresetTailoredTrainingReason(presetId, card, owned, tb);
+        string cardName = string.IsNullOrEmpty(card.CardTitle) ? $"{card.CharaName} ({card.Rarity})" : $"{card.CardTitle} ({card.Rarity})";
 
         return new SupportCardTier
         {
-            CardName = $"{card.CharaName} ({card.Rarity})",
+            CardName = cardName,
             Speciality = card.Speciality,
             ColorHex = card.ColorHex,
             BonusStat = $"+{tb}% Training Effect",
@@ -343,10 +344,11 @@ public class PlayerInventory
     {
         string lbText = owned.LimitBreakCount == 4 ? $"MLB Lv {owned.Level}" : $"{owned.LimitBreakCount}LB Lv {owned.Level}";
         string reason = GetPresetTailoredFriendshipReason(presetId, card, owned, fb, specRate);
+        string cardName = string.IsNullOrEmpty(card.CardTitle) ? $"{card.CharaName} ({card.Rarity})" : $"{card.CardTitle} ({card.Rarity})";
 
         return new SupportCardTier
         {
-            CardName = $"{card.CharaName} ({card.Rarity})",
+            CardName = cardName,
             Speciality = card.Speciality,
             ColorHex = card.ColorHex,
             BonusStat = $"+{fb}% Friendship",
@@ -381,10 +383,11 @@ public class PlayerInventory
         int discount = hintLv * 10;
         string rateStr = hintRate > 0 ? $" (+{hintRate}% Rate)" : "";
         string reason = GetPresetTailoredInspirationReason(presetId, card, owned, hintLv, discount);
+        string cardName = string.IsNullOrEmpty(card.CardTitle) ? $"{card.CharaName} ({card.Rarity})" : $"{card.CardTitle} ({card.Rarity})";
 
         return new SupportCardTier
         {
-            CardName = $"{card.CharaName} ({card.Rarity})",
+            CardName = cardName,
             Speciality = card.Speciality,
             ColorHex = card.ColorHex,
             BonusStat = $"Hint Lv {hintLv}{rateStr}",
